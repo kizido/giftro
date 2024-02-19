@@ -17,6 +17,8 @@
 } */
 
 body {
+  /* slate-400 background coloring equivalent*/
+  background-color: rgb(148 163 184);
 }
 
 /* @layer utilities {
