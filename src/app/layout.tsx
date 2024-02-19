@@ -19,7 +19,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Navbar />
-        {children}
+        <div className="pt-16"> {/* Apply padding top to this div */}
+          {children}
+        </div>
       </body>
     </html>
   );
