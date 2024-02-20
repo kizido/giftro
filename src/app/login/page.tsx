@@ -8,7 +8,7 @@ export default function Login() {
         <h1 className="mb-4 text-3xl font-semibold">Log in</h1>
         <hr className="border border-slate-300"></hr>
         <h3 className="text-lg">Username</h3>
-        <input type="text" className="w-full h-10 rounded"></input>
+        <input type="text" className="p-4 h-10 rounded"></input>
 
         <div className="flex justify-between">
           <h3 className="text-lg">Password</h3>
@@ -16,7 +16,7 @@ export default function Login() {
             Forgot password?
           </Link>
         </div>
-        <input type="text" className="mb-4 w-full h-10 rounded"></input>
+        <input type="text" className="p-4 mb-4 h-10 rounded"></input>
 
         <div className="flex items-center">
           <input type="checkbox" className="mr-2 h-6 w-6 rounded-lg" />
@@ -27,15 +27,19 @@ export default function Login() {
           <button className="w-28 h-12 bg-blue-400 font-bold">Log In</button>
         </div>
       </div>
-      <div className="w-96 p-2 flex flex-col gap-2">
+      <div className="w-96 p-2 flex flex-col   gap-2">
         <h1 className="mb-4 text-3xl font-semibold">Sign Up</h1>
 
         <hr className="border border-slate-300"></hr>
 
-        <h3 className="font-semibold">New to Gift App? Sign up now to start finding perfect gifts for your loved ones!</h3>
+        <h3 className="font-semibold">
+          New to Gift App? Sign up now to start finding perfect gifts for your
+          loved ones!
+        </h3>
 
         <div className="flex justify-end">
-          <button className="w-28 h-12 bg-blue-400 font-bold">Join Now</button>
+          <Link href="/signup" className="w-28 h-12 bg-blue-400 font-bold flex items-center justify-center">Join Now
+          </Link>
         </div>
       </div>
     </div>
