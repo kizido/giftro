@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Login() {
   return (
-    <div className="w-full pt-24 flex justify-center gap-8">
+    <div className="w-full pt-24 flex flex-col md:flex-row items-center md:items-start justify-center gap-8">
       <div className="w-96 p-2 flex flex-col gap-2">
         <h1 className="mb-4 text-3xl font-semibold">Log in</h1>
         <hr className="border border-slate-300"></hr>
