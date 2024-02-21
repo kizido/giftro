@@ -34,10 +34,7 @@ export default function Form() {
         </div>
 
         <h3 className="text-lg">E-Mail</h3>
-        <input type="email" name='email' className="h-10 p-4 rounded"></input>
-
-        {/* <h3 className="text-lg">Username</h3>
-        <input className="h-10 rounded"></input> */}
+        <input type="email" name="email" className="h-10 p-4 rounded"></input>
 
         <div className="flex justify-between items-center">
           <h3 className="text-lg">Password</h3>
@@ -45,7 +42,11 @@ export default function Form() {
             Show password
           </h4>
         </div>
-        <input type="password" name='password' className="mb-4 p-4 h-10 rounded"></input>
+        <input
+          type="password"
+          name="password"
+          className="mb-4 p-4 h-10 rounded"
+        ></input>
 
         <div className="flex justify-end">
           <button type="submit" className="w-28 h-12 bg-blue-400 font-bold">
