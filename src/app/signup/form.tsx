@@ -20,7 +20,7 @@ export default function Form() {
     <form onSubmit={handleSubmit} className="w-full flex justify-center">
       <div className="w-70 flex flex-col gap-2">
         <h1 className="mt-8 font-bold text-3xl">Create an account</h1>
-        <h3 className="text-xl text-gray-200">It's free!</h3>
+        <h3 className="text-xl text-gray-200">It&apos;s free!</h3>
 
         <hr className="mb-4 border border-slate-300"></hr>
 
