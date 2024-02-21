@@ -17,7 +17,7 @@ export default function Form() {
 
     console.log({ response });
     if(!response?.error) {
-        router.push("/");
+        router.push("/dashboard");
         router.refresh();
     }
   };
