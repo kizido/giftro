@@ -1,7 +1,15 @@
 import NextAuth from "next-auth/next";
-import { CredentialsProvider } from "next-auth/providers/credentials";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { compare } from "bcrypt";
+import { sql } from "@vercel/postgres";
 
 const handler = NextAuth({
+  session: {
+    strategy: "jwt",
+  },
+  pages: {
+    signIn: "/login",
+  },
   providers: [
     CredentialsProvider({
       credentials: {
@@ -9,24 +17,21 @@ const handler = NextAuth({
         password: {},
       },
       async authorize(credentials, req) {
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
-        const res = await fetch("/your/endpoint", {
-          method: "POST",
-          body: JSON.stringify(credentials),
-          headers: { "Content-Type": "application/json" },
-        });
-        const user = await res.json();
+        const response = await sql`
+        SELECT * FROM users WHERE email=${credentials?.email}`;
+        const user = response.rows[0];
 
-        // If no error and we have user data, return it
-        if (res.ok && user) {
-          return user;
+        const passwordCorrect = await compare(
+          credentials?.password || "",
+          user.password
+        );
+        console.log({passwordCorrect});
+        if (passwordCorrect) {
+          return {
+            id: user.id,
+            email: user.email,
+          };
         }
-        // Return null if user data could not be retrieved
         return null;
       },
     }),

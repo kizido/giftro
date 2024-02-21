@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import { getServerSession } from "next-auth";
+import Link from "next/link";
+import Logout from "./logout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Navbar />
-        <div className="pt-20"> {/* Apply padding top to this div */}
+        <div className="pt-20">
           {children}
         </div>
       </body>

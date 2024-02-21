@@ -1,14 +1,36 @@
-'use client';
+"use client";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FormEvent } from "react";
 
 export default function Form() {
+    const router = useRouter();
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const response = await signIn("credentials", {
+      email: formData.get("email"),
+      password: formData.get("password"),
+      redirect: false,
+    });
+
+    console.log({ response });
+    if(!response?.error) {
+        router.push("/");
+        router.refresh();
+    }
+  };
   return (
-    <form className="w-full min-w-48 p-4 pt-6 md:pt-24 flex flex-col md:flex-row items-center md:items-start justify-center gap-2 md:gap-8">
+    <form
+      onSubmit={handleSubmit}
+      className="w-full min-w-48 p-4 pt-6 md:pt-24 flex flex-col md:flex-row items-center md:items-start justify-center gap-2 md:gap-8"
+    >
       <div className="w-full max-w-[28rem] p-2 flex flex-col gap-2">
         <h1 className="mb-4 text-3xl font-semibold">Log in</h1>
         <hr className="border border-slate-300"></hr>
         <h3 className="text-base">E-Mail</h3>
-        <input type="email" className="p-4 h-10 rounded"></input>
+        <input type="email" name="email" className="p-4 h-10 rounded"></input>
 
         <div className="flex justify-between">
           <h3 className="text-base">Password</h3>
@@ -19,7 +41,11 @@ export default function Form() {
             Forgot password?
           </Link>
         </div>
-        <input type="password" className="p-4 mb-4 h-10 rounded"></input>
+        <input
+          type="password"
+          name="password"
+          className="p-4 mb-4 h-10 rounded"
+        ></input>
 
         <div className="flex items-center">
           <input type="checkbox" className="mr-2 h-6 w-6 rounded-lg" />
