@@ -2,25 +2,50 @@
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
+import { z } from "zod";
+
+const loginSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z.string().min(4, { message: "Password is required" }),
+});
 
 export default function Form() {
-    const router = useRouter();
+
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const router = useRouter();
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const response = await signIn("credentials", {
-      email: formData.get("email"),
-      password: formData.get("password"),
-      redirect: false,
-    });
+    const formObject = Object.fromEntries(formData.entries());
 
-    console.log({ response });
-    if(!response?.error) {
-        router.push("/dashboard");
-        router.refresh();
+    try {
+      // Validate form data against the schema
+      const validatedData = loginSchema.parse(formObject);
+
+      const response = await signIn("credentials", {
+        redirect: false,
+        ...validatedData,
+      });
+
+      console.log({ response });
+      if(!response?.error) {
+          router.push("/dashboard");
+          router.refresh();
+      }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        // Handle validation errors
+        console.error(error.errors); // Log or display the error messages
+      } else {
+        console.error("Unexpected error:", error);
+      }
     }
   };
+
   return (
     <form
       onSubmit={handleSubmit}
