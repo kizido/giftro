@@ -12,7 +12,7 @@ export default function Form() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     setError,
   } = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
