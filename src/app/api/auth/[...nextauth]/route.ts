@@ -2,6 +2,7 @@ import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
 import { sql } from "@vercel/postgres";
+import { loginSchema } from "@/lib/types";
 
 const handler = NextAuth({
   session: {
@@ -25,7 +26,7 @@ const handler = NextAuth({
           credentials?.password || "",
           user.password
         );
-        console.log({passwordCorrect});
+        console.log({ passwordCorrect });
         if (passwordCorrect) {
           return {
             id: user.id,
