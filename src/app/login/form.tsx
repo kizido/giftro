@@ -22,7 +22,7 @@ export default function Form() {
     const { email, password } = data;
     const validationResponse = await fetch("/api/auth/login", {
       method: "POST",
-      body: JSON.stringify({ ...data, email }),
+      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },
@@ -82,6 +82,7 @@ export default function Form() {
           <Link
             href="/forgotpassword"
             className="text-sm text-blue-700 underline"
+            tabIndex={-1}
           >
             Forgot password?
           </Link>

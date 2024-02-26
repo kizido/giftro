@@ -47,7 +47,7 @@ export default function Form() {
         alert("Something went wrong!");
       }
     } else {
-      router.push('/login');
+      router.push("/login");
     }
   };
 

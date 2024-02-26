@@ -31,6 +31,7 @@ const handler = NextAuth({
           return {
             id: user.id,
             email: user.email,
+            is_first_time_user: user.is_first_time_user,
           };
         }
         return null;
