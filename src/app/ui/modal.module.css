@@ -11,9 +11,13 @@
   }
   
   .modalContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     background: rgb(220, 226, 231);
-    padding: 20px;
+    padding: 2rem;
     border-radius: 5px;
-    max-width: 35rem;
+    width: 30rem;
+    height: 25rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
