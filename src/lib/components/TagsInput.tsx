@@ -1,8 +1,10 @@
-import React, { useState, KeyboardEvent, ChangeEvent } from "react";
+import React, { useState, KeyboardEvent, ChangeEvent, useRef } from "react";
 
 const TagsInput: React.FC = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Event handlers will be defined here
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -12,7 +14,9 @@ const TagsInput: React.FC = () => {
       setTags([...tags, inputValue.trim()]);
       setInputValue("");
     }
-    // Implement backspace logic if needed
+    if (e.key === "Backspace" && inputValue === "" && tags.length > 0) {
+      setTags(tags.slice(0, -1));
+    }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +24,10 @@ const TagsInput: React.FC = () => {
   };
 
   return (
-    <div className="relative bg-white h-24 w-3/4 border border-gray-300 rounded p-2 flex items-start flex-wrap overflow-y-scroll">
+    <div
+      className="relative p-2 h-24 w-3/4 flex items-start flex-wrap bg-white overflow-y-scroll border border-gray-300 rounded cursor-text"
+      onClick={() => inputRef.current?.focus()}
+    >
       {tags.map((tag, index) => (
         <span key={index} className="bg-gray-200 rounded px-2 py-1 text-sm m-1">
           {tag}
@@ -33,6 +40,7 @@ const TagsInput: React.FC = () => {
         </span>
       ))}
       <input
+        ref={inputRef}
         type="text"
         value={inputValue}
         onChange={handleChange}

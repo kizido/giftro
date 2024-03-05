@@ -87,10 +87,10 @@ OnboardingModalProps) {
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div>
           <div className="flex justify-center gap-4">
-            <span className="inline-block rounded-full h-8 w-8 bg-cyan-300"></span>
+            <span className="inline-block rounded-full h-8 w-8 bg-slate-800"></span>
             <span
               className={`inline-block rounded-full h-8 w-8 ${
-                onboardStep < 1 ? "bg-white" : "bg-cyan-300"
+                onboardStep < 1 ? "bg-white" : "bg-slate-800"
               }`}
             ></span>
             {/* <span
