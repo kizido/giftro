@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "../../app/ui/modal.module.css";
+import TagsInput from "./TagsInput";
 
 type OnboardingModalProps = {
   isOpen: boolean;
@@ -72,32 +73,7 @@ OnboardingModalProps) {
               What are your main hobbies?
             </label>
             {/* <textarea className="w-2/3 p-1 mb-4 resize-none leading-4" spellCheck={false} /> */}
-            <div>
-              <div className="flex flex-wrap gap-2 p-2">
-                {hobbies.map((hobby, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-2 bg-blue-500 text-white px-2 py-1 rounded"
-                  >
-                    {hobby}
-                    <button
-                      onClick={() => removeHobby(index)}
-                      className="bg-red-500 rounded-full px-1"
-                    >
-                      x
-                    </button>
-                  </div>
-                ))}
-              </div>
-              <input
-                type="text"
-                value={inputValue}
-                onChange={handleChange}
-                onKeyDown={handleKeyDown}
-                className="border-2 border-gray-300 rounded p-2"
-                placeholder="Enter hobbies"
-              />
-            </div>
+            <TagsInput />
           </form>
         );
         break;
