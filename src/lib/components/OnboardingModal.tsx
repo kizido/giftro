@@ -1,18 +1,24 @@
 import React, { useState } from "react";
 import styles from "../../app/ui/modal.module.css";
 import TagsInput from "./TagsInput";
+import { useForm } from "react-hook-form";
+
+export type TOnboardSurvey = {
+  birthMonth: string;
+  birthDay: string;
+  birthYear: string;
+  hobbies: string[];
+};
 
 type OnboardingModalProps = {
   // isOpen: boolean;
   onClose: () => void; // Define onClose as a function that doesn't return anything
-  // children: React.ReactNode; // React.ReactNode covers anything that is renderable
 };
 
 export default function OnboardingModal({
   // isOpen,
   onClose,
-}: // children,
-OnboardingModalProps) {
+}: OnboardingModalProps) {
   // if (!isOpen) {
   //   return null;
   // }
@@ -20,28 +26,7 @@ OnboardingModalProps) {
   const [onboardStep, setOnboardStep] = useState<number>(0);
   const FormPageTitles = ["Getting to know you...", "Interests"];
 
-  const [hobbies, setHobbies] = useState<string[]>([]);
-  const [inputValue, setInputValue] = useState("");
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === " " || event.key === ",") {
-      event.preventDefault(); // Prevent default to avoid space or comma being added
-      const newHobby = inputValue.trim();
-
-      if (newHobby && !hobbies.includes(newHobby)) {
-        setHobbies([...hobbies, newHobby]);
-        setInputValue("");
-      }
-    }
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
-  };
-
-  const removeHobby = (index: number) => {
-    setHobbies(hobbies.filter((_, i) => i !== index));
-  };
+  const { register, handleSubmit, setValue } = useForm<TOnboardSurvey>();
 
   const FormDisplay = () => {
     switch (onboardStep) {
@@ -52,15 +37,29 @@ OnboardingModalProps) {
             <div className="flex gap-2">
               <div>
                 <label>Month</label>
-                <input className="block mb-4 w-12 h-8 px-2 text-center border-2 border-black" placeholder="mm"/>
+                <input
+                  className="block mb-4 w-14 h-8 px-2 text-center border-2 border-black"
+                  placeholder="mm"
+                  {...register("birthMonth", {
+                    required: "Must input a birth month",
+                  })}
+                />
               </div>
               <div>
                 <label>Day</label>
-                <input className="block mb-4 w-10 h-8 px-2 text-center border-2 border-black" placeholder="dd"/>
+                <input
+                  className="block mb-4 w-10 h-8 px-2 text-center border-2 border-black"
+                  placeholder="dd"
+                  {...register("birthDay")}
+                />
               </div>
               <div>
                 <label>Year</label>
-                <input className="block mb-4 w-16 h-8 px-2 text-center border-2 border-black" placeholder="yyyy"/>
+                <input
+                  className="block mb-4 w-16 h-8 px-2 text-center border-2 border-black"
+                  placeholder="yyyy"
+                  {...register("birthYear")}
+                />
               </div>
             </div>
           </form>
@@ -73,13 +72,17 @@ OnboardingModalProps) {
               What are your main hobbies?
             </label>
             {/* <textarea className="w-2/3 p-1 mb-4 resize-none leading-4" spellCheck={false} /> */}
-            <TagsInput />
+            <TagsInput setValue={setValue} />
           </form>
         );
         break;
       default:
         break;
     }
+  };
+
+  const onSubmit = (data: TOnboardSurvey) => {
+    const { birthMonth, birthDay, birthYear, hobbies } = data;
   };
 
   return (
@@ -93,11 +96,6 @@ OnboardingModalProps) {
                 onboardStep < 1 ? "bg-white" : "bg-slate-800"
               }`}
             ></span>
-            {/* <span
-              className={`inline-block rounded-full h-8 w-8 ${
-                onboardStep < 2 ? "bg-white" : "bg-cyan-300"
-              }`}
-            ></span> */}
           </div>
           <h1 className="mt-4 text-2xl text-center font-bold">
             {FormPageTitles[onboardStep]}
@@ -125,7 +123,7 @@ OnboardingModalProps) {
           ) : (
             <button
               className="px-4 py-2 bg-white font-semibold disabled:bg-gray-100"
-              onClick={() => console.log("Survey submitted")}
+              onClick={handleSubmit(onSubmit)}
             >
               Submit
             </button>

@@ -1,10 +1,26 @@
-import React, { useState, KeyboardEvent, ChangeEvent, useRef } from "react";
+import React, {
+  useState,
+  KeyboardEvent,
+  ChangeEvent,
+  useRef,
+  useEffect,
+} from "react";
+import { UseFormRegister, UseFormSetValue } from "react-hook-form";
+import { TOnboardSurvey } from "./OnboardingModal";
 
-const TagsInput: React.FC = () => {
+type TagsInputProps = {
+  setValue: UseFormSetValue<TOnboardSurvey>;
+};
+
+export default function TagsInput({ setValue }: TagsInputProps) {
   const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setValue("hobbies", tags);
+  }, tags);
 
   // Event handlers will be defined here
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -23,6 +39,10 @@ const TagsInput: React.FC = () => {
     setInputValue(e.target.value);
   };
 
+  const removeHobby = (index: number) => {
+    setTags(tags.filter((_, i) => i !== index));
+  };
+
   return (
     <div
       className="relative p-2 h-24 w-3/4 flex items-start flex-wrap bg-white overflow-y-scroll border border-gray-300 rounded cursor-text"
@@ -32,7 +52,7 @@ const TagsInput: React.FC = () => {
         <span key={index} className="bg-gray-200 rounded px-2 py-1 text-sm m-1">
           {tag}
           <span
-            onClick={() => setTags(tags.filter((_, i) => i !== index))}
+            onClick={() => removeHobby(index)}
             className="ml-2 cursor-pointer"
           >
             &times;
@@ -50,6 +70,4 @@ const TagsInput: React.FC = () => {
       />
     </div>
   );
-};
-
-export default TagsInput;
+}
