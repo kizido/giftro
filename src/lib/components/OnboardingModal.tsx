@@ -2,13 +2,7 @@ import React, { useState } from "react";
 import styles from "../../app/ui/modal.module.css";
 import TagsInput from "./TagsInput";
 import { useForm } from "react-hook-form";
-
-export type TOnboardSurvey = {
-  birthMonth: string;
-  birthDay: string;
-  birthYear: string;
-  hobbies: string[];
-};
+import { TOnboardSurvey } from "../types";
 
 type OnboardingModalProps = {
   // isOpen: boolean;
@@ -81,8 +75,14 @@ export default function OnboardingModal({
     }
   };
 
-  const onSubmit = (data: TOnboardSurvey) => {
-    const { birthMonth, birthDay, birthYear, hobbies } = data;
+  const onSubmit = async (data: TOnboardSurvey) => {
+    const response = await fetch("/api/userData/onboarding", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   };
 
   return (

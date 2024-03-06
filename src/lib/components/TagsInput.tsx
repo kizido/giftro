@@ -6,7 +6,7 @@ import React, {
   useEffect,
 } from "react";
 import { UseFormRegister, UseFormSetValue } from "react-hook-form";
-import { TOnboardSurvey } from "./OnboardingModal";
+import { TOnboardSurvey } from "../types";
 
 type TagsInputProps = {
   setValue: UseFormSetValue<TOnboardSurvey>;

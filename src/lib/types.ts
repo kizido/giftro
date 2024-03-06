@@ -13,3 +13,10 @@ export const signUpSchema = z.object({
 });
 
 export type TSignUpSchema = z.infer<typeof signUpSchema>
+
+export type TOnboardSurvey = {
+  birthMonth: string;
+  birthDay: string;
+  birthYear: string;
+  hobbies: string[];
+};
