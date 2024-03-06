@@ -3,19 +3,19 @@ import styles from "../../app/ui/modal.module.css";
 import TagsInput from "./TagsInput";
 
 type OnboardingModalProps = {
-  isOpen: boolean;
+  // isOpen: boolean;
   onClose: () => void; // Define onClose as a function that doesn't return anything
   // children: React.ReactNode; // React.ReactNode covers anything that is renderable
 };
 
 export default function OnboardingModal({
-  isOpen,
+  // isOpen,
   onClose,
 }: // children,
 OnboardingModalProps) {
-  if (!isOpen) {
-    return null;
-  }
+  // if (!isOpen) {
+  //   return null;
+  // }
 
   const [onboardStep, setOnboardStep] = useState<number>(0);
   const FormPageTitles = ["Getting to know you...", "Interests"];

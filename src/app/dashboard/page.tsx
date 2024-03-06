@@ -4,7 +4,7 @@ import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-export default function page() {
+export default function Page() {
   const [isFirstTimeUser, setIsFirstTimeUser] = useState(false);
   const [showOnboardingModal, setShowOnboardingModal] = useState(false);
   const [modalOpen, setModalOpen] = useState(true);
@@ -28,6 +28,8 @@ export default function page() {
     checkIsFirstTimeUser();
   }, []);
   return (
-    <OnboardingModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+    <div>
+      {modalOpen && <OnboardingModal onClose={() => setModalOpen(false)} />}
+    </div>
   );
 }
