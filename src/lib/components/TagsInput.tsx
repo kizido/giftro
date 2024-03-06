@@ -20,7 +20,8 @@ export default function TagsInput({ setValue }: TagsInputProps) {
 
   useEffect(() => {
     setValue("hobbies", tags);
-  }, tags);
+    console.log("TAGS: " + tags);
+  }, [tags]);
 
   // Event handlers will be defined here
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {

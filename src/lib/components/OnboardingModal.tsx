@@ -76,6 +76,7 @@ export default function OnboardingModal({
   };
 
   const onSubmit = async (data: TOnboardSurvey) => {
+    console.log("CLIENT HOBBIES: " + data.hobbies);
     const response = await fetch("/api/userData/onboarding", {
       method: "POST",
       body: JSON.stringify(data),

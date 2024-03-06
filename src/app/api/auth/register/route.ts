@@ -23,8 +23,7 @@ export async function POST(request: Request) {
     const hashedPassword = await hash(password, 10);
     await sql`
         INSERT INTO users (email, password)
-        VALUES (${email}, ${hashedPassword})
-    `;
+        VALUES (${email}, ${hashedPassword})`;
   } catch (e) {
     console.log({ e });
   }
