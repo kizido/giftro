@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Montserrat, Open_Sans, Poppins } from "next/font/google";
+import {  Montserrat, Open_Sans, Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/lib/components/Navbar";
 

@@ -25,10 +25,11 @@ export async function POST(request: Request) {
     const existingUser = await sql`
         SELECT * FROM users WHERE email = ${email} LIMIT 1`;
     if (existingUser.rowCount > 0) {
-      return NextResponse.json(
-        { error: "Email already exists" },
-        { status: 400 }
-      );
+      return NextResponse.json({
+        errors: {
+          email: "Email has already been taken.",
+        },
+      });
     }
     await sql`
         INSERT INTO users (email, password)

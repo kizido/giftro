@@ -91,7 +91,7 @@ export default function Form() {
           {...register("password")}
           type="password"
           name="password"
-          className="p-4 mb-4 h-10 rounded"
+          className="p-4 h-10 rounded"
         />
         {errors.password && (
           <p className="text-red-600">{`${errors.password.message}`}</p>

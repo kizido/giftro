@@ -74,7 +74,7 @@ export default function Form() {
         <h3 className="text-lg">E-Mail</h3>
         <input
           {...register("email")}
-          type="email"
+          type="text"
           className="h-10 p-4 rounded"
         />
         {errors.email && (
@@ -90,7 +90,7 @@ export default function Form() {
         <input
           {...register("password")}
           type="password"
-          className="mb-4 p-4 h-10 rounded"
+          className="p-4 h-10 rounded"
         />
         {errors.password && (
           <p className="text-red-600">{`${errors.password.message}`}</p>
