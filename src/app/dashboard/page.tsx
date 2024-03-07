@@ -6,30 +6,33 @@ import { useEffect, useState } from "react";
 
 export default function Page() {
   const [isFirstTimeUser, setIsFirstTimeUser] = useState(false);
-  const [showOnboardingModal, setShowOnboardingModal] = useState(false);
   const [modalOpen, setModalOpen] = useState(true);
 
   useEffect(() => {
-    const checkIsFirstTimeUser = async () => {
-      try {
-        const response = await fetch("/api/auth/firstTimeUser", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const responseData = await response.json();
-        console.log("Response: " + responseData);
-        setIsFirstTimeUser(responseData);
-      } catch (e) {
-        console.log(e);
-      }
-    };
     checkIsFirstTimeUser();
   }, []);
+
+  const checkIsFirstTimeUser = async () => {
+    try {
+      const response = await fetch("/api/auth/firstTimeUser", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const responseData = await response.json();
+      console.log("Response: " + responseData);
+      setIsFirstTimeUser(responseData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div>
-      {modalOpen && <OnboardingModal onClose={() => setModalOpen(false)} />}
+      {isFirstTimeUser && modalOpen && (
+        <OnboardingModal onClose={() => setModalOpen(false)} />
+      )}
     </div>
   );
 }

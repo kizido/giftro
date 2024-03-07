@@ -132,6 +132,14 @@ export default function OnboardingModal({ onClose }: OnboardingModalProps) {
       }
     } else {
       // Set first time user to false (to avoid repeat surveys on every login)
+      await fetch("/api/auth/firstTimeUser", {
+        method: "POST",
+        body: JSON.stringify({ is_first_time_user: false }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      // After first time user set to false, tell dashboard to re-check first time user value
       onClose();
     }
   };

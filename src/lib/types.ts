@@ -73,9 +73,3 @@ export const onboardSurveySchema = z.object({
 });
 
 export type TOnboardSurvey = z.infer<typeof onboardSurveySchema>;
-// export type TOnboardSurvey = {
-//   birthMonth: string;
-//   birthDay: string;
-//   birthYear: string;
-//   hobbies: string[];
-// };
