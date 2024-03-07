@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { hash } from "bcrypt";
 import { sql } from "@vercel/postgres";
-import { loginSchema } from "@/lib/types";
+import { loginSchema, signUpSchema } from "@/lib/types";
 
 export async function POST(request: Request) {
   const body: unknown = await request.json();
-  const result = loginSchema.safeParse(body);
+  const result = signUpSchema.safeParse(body);
 
   let zodErrors = {};
   if (!result.success) {
@@ -19,21 +19,33 @@ export async function POST(request: Request) {
     );
   }
   try {
-    const { email, password } = result.data;
+    const { email, username, password } = result.data;
     const hashedPassword = await hash(password, 10);
 
-    const existingUser = await sql`
+    // Check for if email / username already exist
+    const existingEmail = await sql`
         SELECT * FROM users WHERE email = ${email} LIMIT 1`;
-    if (existingUser.rowCount > 0) {
+    if (existingEmail.rowCount > 0) {
       return NextResponse.json({
         errors: {
           email: "Email has already been taken.",
         },
       });
     }
+    const existingUsername = await sql`
+        SELECT * FROM users WHERE username = ${username} LIMIT 1`;
+    if (existingUsername.rowCount > 0) {
+      return NextResponse.json({
+        errors: {
+          username: "Username has already been taken.",
+        },
+      });
+    }
+
+    // Add new user to database
     await sql`
-        INSERT INTO users (email, password)
-        VALUES (${email}, ${hashedPassword})`;
+        INSERT INTO users (email, username, password)
+        VALUES (${email}, ${username}, ${hashedPassword})`;
   } catch (e) {
     console.log({ e });
   }

@@ -1,11 +1,9 @@
 "use client";
-import { TSignUpSchema, loginSchema } from "@/lib/types";
+import { TSignUpSchema, loginSchema, signUpSchema } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent } from "react";
-import { FieldValues, useForm } from "react-hook-form";
-import { z } from "zod";
+import { useForm } from "react-hook-form";
 
 export default function Form() {
   const router = useRouter();
@@ -15,7 +13,7 @@ export default function Form() {
     formState: { errors },
     setError,
   } = useForm<TSignUpSchema>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(signUpSchema),
   });
 
   const onSubmit = async (data: TSignUpSchema) => {
@@ -31,12 +29,16 @@ export default function Form() {
       alert("Server validation error occurred!");
       return;
     } else if (responseData.errors) {
-      console.log("VALIDATION ERRORS");
       const errors = responseData.errors;
       if (errors.email) {
         setError("email", {
           type: "server",
           message: errors.email,
+        });
+      } else if (errors.username) {
+        setError("username", {
+          type: "server",
+          message: errors.username,
         });
       } else if (errors.password) {
         setError("password", {
@@ -60,9 +62,9 @@ export default function Form() {
         <h1 className="mt-8 font-bold text-3xl">Create an account</h1>
         <h3 className="text-xl text-gray-200">It&apos;s free!</h3>
 
-        <hr className="mb-4 border border-slate-300"></hr>
+        <hr className="mb-1 md:mb-4 border border-slate-300"></hr>
 
-        <div className="mb-8">
+        <div className="mb-2 md:mb-8">
           <h4 className="inline text-sm text-gray-200">
             Do you already have an account?{" "}
           </h4>
@@ -79,6 +81,16 @@ export default function Form() {
         />
         {errors.email && (
           <p className="text-red-600">{`${errors.email.message}`}</p>
+        )}
+
+        <h3 className="text-lg">Username</h3>
+        <input
+          {...register("username")}
+          type="text"
+          className="h-10 p-4 rounded"
+        />
+        {errors.username && (
+          <p className="text-red-600">{`${errors.username.message}`}</p>
         )}
 
         <div className="flex justify-between items-center">

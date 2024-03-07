@@ -25,7 +25,7 @@ export async function POST(request: Request) {
   const { is_first_time_user } = body;
   const session = await getServerSession();
 
-  console.log("FIRST TIME USER NEW VALUE:" + is_first_time_user);
+  ("FIRST TIME USER NEW VALUE:" + is_first_time_user);
   if (!session) {
     return NextResponse.json(
       {

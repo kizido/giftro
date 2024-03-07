@@ -31,7 +31,6 @@ export default function Form() {
     if (!validationResponse.ok) {
       alert("Server validation error occurred!");
     } else if (validationResponseData.errors) {
-      console.log("VALIDATION ERRORS");
       const errors = validationResponseData.errors;
       if (errors.email) {
         setError("email", {
