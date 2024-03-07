@@ -1,26 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../app/ui/modal.module.css";
 import TagsInput from "./TagsInput";
 import { useForm } from "react-hook-form";
-import { TOnboardSurvey } from "../types";
+import { TOnboardSurvey, onboardSurveySchema } from "../types";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type OnboardingModalProps = {
-  // isOpen: boolean;
   onClose: () => void; // Define onClose as a function that doesn't return anything
 };
 
-export default function OnboardingModal({
-  // isOpen,
-  onClose,
-}: OnboardingModalProps) {
-  // if (!isOpen) {
-  //   return null;
-  // }
-
+export default function OnboardingModal({ onClose }: OnboardingModalProps) {
   const [onboardStep, setOnboardStep] = useState<number>(0);
   const FormPageTitles = ["Getting to know you...", "Interests"];
 
-  const { register, handleSubmit, setValue } = useForm<TOnboardSurvey>();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+    setError,
+    trigger,
+  } = useForm<TOnboardSurvey>({
+    resolver: zodResolver(onboardSurveySchema),
+  });
+
+  const watchedHobbies = watch("hobbies") || [];
 
   const FormDisplay = () => {
     switch (onboardStep) {
@@ -34,9 +39,7 @@ export default function OnboardingModal({
                 <input
                   className="block mb-4 w-14 h-8 px-2 text-center border-2 border-black"
                   placeholder="mm"
-                  {...register("birthMonth", {
-                    required: "Must input a birth month",
-                  })}
+                  {...register("birthMonth")}
                 />
               </div>
               <div>
@@ -56,6 +59,9 @@ export default function OnboardingModal({
                 />
               </div>
             </div>
+            {(errors.birthDay || errors.birthMonth || errors.birthYear) && (
+              <p className="text-red-600">Must be a real date</p>
+            )}
           </form>
         );
         break;
@@ -66,7 +72,8 @@ export default function OnboardingModal({
               What are your main hobbies?
             </label>
             {/* <textarea className="w-2/3 p-1 mb-4 resize-none leading-4" spellCheck={false} /> */}
-            <TagsInput setValue={setValue} />
+            <TagsInput setValue={setValue} watchedTags={watchedHobbies} />
+            {errors.hobbies && <p>{errors.hobbies.message}</p>}
           </form>
         );
         break;
@@ -75,8 +82,18 @@ export default function OnboardingModal({
     }
   };
 
+  const handleNext = async () => {
+    const validateCurrentStep = await trigger([
+      "birthMonth",
+      "birthDay",
+      "birthYear",
+    ]); // Include fields to validate for the current step
+    if (validateCurrentStep) {
+      setOnboardStep((curStep) => curStep + 1); // Move to next step only if validation passes
+    }
+    // Otherwise, errors are already set by react-hook-form and will be displayed
+  };
   const onSubmit = async (data: TOnboardSurvey) => {
-    console.log("CLIENT HOBBIES: " + data.hobbies);
     const response = await fetch("/api/userData/onboarding", {
       method: "POST",
       body: JSON.stringify(data),
@@ -84,6 +101,39 @@ export default function OnboardingModal({
         "Content-Type": "application/json",
       },
     });
+    const responseData = await response.json();
+    if (!response.ok) {
+      alert("Server validation error occurred!");
+      return;
+    } else if (responseData.errors) {
+      const errors = responseData.errors;
+      if (errors.birthMonth) {
+        setError("birthMonth", {
+          type: "server",
+          message: errors.birthMonth,
+        });
+      } else if (errors.birthDay) {
+        setError("birthDay", {
+          type: "server",
+          message: errors.birthDay,
+        });
+      } else if (errors.birthYear) {
+        setError("birthYear", {
+          type: "server",
+          message: errors.birthYear,
+        });
+      } else if (errors.hobbies) {
+        setError("hobbies", {
+          type: "server",
+          message: errors.hobbies,
+        });
+      } else {
+        alert("Something went wrong!");
+      }
+    } else {
+      // Set first time user to false (to avoid repeat surveys on every login)
+      onClose();
+    }
   };
 
   return (
@@ -116,7 +166,7 @@ export default function OnboardingModal({
           {onboardStep < 1 ? (
             <button
               className="px-4 py-2 bg-white font-semibold disabled:bg-gray-100"
-              onClick={() => setOnboardStep((curStep) => curStep + 1)}
+              onClick={handleNext}
               disabled={onboardStep > 0}
             >
               Next
@@ -130,7 +180,6 @@ export default function OnboardingModal({
             </button>
           )}
         </div>
-        {/* {FormDisplay()} */}
       </div>
     </div>
   );

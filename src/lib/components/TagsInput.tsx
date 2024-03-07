@@ -10,9 +10,10 @@ import { TOnboardSurvey } from "../types";
 
 type TagsInputProps = {
   setValue: UseFormSetValue<TOnboardSurvey>;
+  watchedTags: string[];
 };
 
-export default function TagsInput({ setValue }: TagsInputProps) {
+export default function TagsInput({ setValue, watchedTags }: TagsInputProps) {
   const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
 
@@ -20,8 +21,11 @@ export default function TagsInput({ setValue }: TagsInputProps) {
 
   useEffect(() => {
     setValue("hobbies", tags);
-    console.log("TAGS: " + tags);
   }, [tags]);
+
+  useEffect(() => {
+    setTags(watchedTags);
+  }, []);
 
   // Event handlers will be defined here
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
