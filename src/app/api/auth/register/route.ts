@@ -21,6 +21,15 @@ export async function POST(request: Request) {
   try {
     const { email, password } = result.data;
     const hashedPassword = await hash(password, 10);
+
+    const existingUser = await sql`
+        SELECT * FROM users WHERE email = ${email} LIMIT 1`;
+    if (existingUser.rowCount > 0) {
+      return NextResponse.json(
+        { error: "Email already exists" },
+        { status: 400 }
+      );
+    }
     await sql`
         INSERT INTO users (email, password)
         VALUES (${email}, ${hashedPassword})`;
