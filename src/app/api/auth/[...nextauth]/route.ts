@@ -2,14 +2,31 @@ import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
 import { sql } from "@vercel/postgres";
-import { loginSchema } from "@/lib/types";
+import { AuthOptions } from "next-auth";
 
-const handler = NextAuth({
+export const authOptions: AuthOptions = {
   session: {
     strategy: "jwt",
   },
   pages: {
     signIn: "/login",
+  },
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      // First time JWT callback is run, user object is available
+      if (user && user.id && user.username) {
+        token.id = user.id;
+        token.username = user.username;
+      }
+      return token;
+    },
+    session: async ({ session, token }) => {
+      if (token && token.id && token.username) {
+        session.id = token.id;
+        session.username = token.username;
+      }
+      return session;
+    },
   },
   providers: [
     CredentialsProvider({
@@ -26,17 +43,20 @@ const handler = NextAuth({
           credentials?.password || "",
           user.password
         );
+        console.log({ passwordCorrect });
         if (passwordCorrect) {
           return {
             id: user.id,
             email: user.email,
-            is_first_time_user: user.is_first_time_user,
+            username: user.username,
           };
         }
         return null;
       },
     }),
   ],
-});
+}
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

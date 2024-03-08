@@ -1,10 +1,11 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Logout from "@/app/logout";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import React from "react";
 
 export default async function Navbar() {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   return (
     <nav className="fixed w-full h-20 bg-gray-800 flex items-center justify-between p-8">
       <div>
@@ -25,7 +26,12 @@ export default async function Navbar() {
           </Link>
         </div>
       )}
-      {!!session && <Logout />}
+      {!!session && (
+        <div className="flex items-center gap-4">
+          <h2 className="text-gray-400 text-xl">Hello, {session.username}!</h2>
+          <Logout />
+        </div>
+      )}
     </nav>
   );
 }

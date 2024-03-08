@@ -1,12 +1,13 @@
 "use client";
 import OnboardingModal from "@/lib/components/OnboardingModal";
-import { Session } from "next-auth";
-import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function Page() {
   const [isFirstTimeUser, setIsFirstTimeUser] = useState(false);
   const [modalOpen, setModalOpen] = useState(true);
+
+  const session = useSession();
 
   useEffect(() => {
     checkIsFirstTimeUser();
@@ -21,7 +22,6 @@ export default function Page() {
         },
       });
       const responseData = await response.json();
-      console.log("Response: " + responseData);
       setIsFirstTimeUser(responseData);
     } catch (e) {
       console.log(e);
@@ -30,6 +30,7 @@ export default function Page() {
 
   return (
     <div>
+      <h1>Welcome to your dashboard!</h1>
       {isFirstTimeUser && modalOpen && (
         <OnboardingModal onClose={() => setModalOpen(false)} />
       )}
