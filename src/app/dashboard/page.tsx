@@ -15,7 +15,7 @@ export default function Page() {
     searchQuery,
     500
   );
-  const [loadedUsers, setLoadedUsers] = useState<JSX.Element[]>([]);
+  const [loadedUsers, setLoadedUsers] = useState<QueryResultRow[]>([]);
 
   useEffect(() => {
     checkIsFirstTimeUser();
@@ -60,14 +60,7 @@ export default function Page() {
       console.log("USERS LOADED");
       const { retrievedUsers } = await response.json();
       console.log("USERS RETRIEVED");
-
-      if (retrievedUsers) {
-        const userElements = retrievedUsers.map((user: QueryResultRow, index: number) => (
-          // Ensure each element has a unique key, using index as a fallback
-          <span key={user.id}>{user.username}</span>
-        ));
-        setLoadedUsers(userElements);
-      }
+      setLoadedUsers(retrievedUsers);
     } catch (error) {
       console.log(error);
     }
@@ -84,7 +77,10 @@ export default function Page() {
           onChange={handleSearchChange}
         />
         <>
-        {loadedUsers}
+          {loadedUsers.map((user: QueryResultRow, index: number) => (
+            // Ensure each element has a unique key, using index as a fallback
+            <span key={user.id}>{user.username}</span>
+          ))}
         </>
       </section>
       {isFirstTimeUser && modalOpen && (
