@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     if (!session) {
       return NextResponse.json({ error: "No session established." });
     }
-    if(!query) {
+    if(query === null) {
         return NextResponse.json({ error: "No query provided." });
     }
     const retrievedUsersResult = await sql`

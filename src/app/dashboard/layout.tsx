@@ -1,3 +1,4 @@
+import SideNavbar from "@/lib/components/SideNavbar";
 import AuthContext from "./AuthContext";
 
 export interface AccountLayoutProps {
@@ -6,8 +7,10 @@ export interface AccountLayoutProps {
 
 export default function AccountLayout({ children }: AccountLayoutProps) {
   return (
-    <AuthContext>
-      {children}
-    </AuthContext>
+    <div>
+      <AuthContext>
+        <main className="w-full">{children}</main>
+      </AuthContext>
+    </div>
   );
 }
