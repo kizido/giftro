@@ -44,6 +44,20 @@ export default function Friends() {
       console.log(error);
     }
   };
+
+  const addFriend = async () => {
+    try {
+      const response = await fetch("/api/friends", {
+        method: "POST",
+        body: JSON.stringify({ receiver: "Junnelle" }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="w-full flex justify-center">
       <section className="mt-8 w-1/4">
@@ -58,7 +72,7 @@ export default function Friends() {
           {loadedUsers.map((user: QueryResultRow) => (
             <div key={user.id} className="flex justify-between">
               <span>{user.username}</span>
-              <span>Add</span>
+              <button onClick={addFriend}>Add</button>
             </div>
           ))}
         </div>
