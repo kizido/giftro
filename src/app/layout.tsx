@@ -5,6 +5,7 @@ import Navbar from "@/lib/components/Navbar";
 import { getServerSession } from "next-auth";
 import SideNavbar from "@/lib/components/SideNavbar";
 import { authOptions } from "./api/auth/[...nextauth]/options";
+import { redirect } from "next/navigation";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 const poppins = Poppins({ subsets: ["latin"], weight: "500" });
