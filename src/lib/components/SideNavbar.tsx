@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function SideNavbar() {
   return (
-    <div className="flex flex-col items-center py-4 gap-4 h-screen w-64 border-r-2 border-black fixed">
+    <div className="flex flex-col items-start p-4 gap-4 h-screen w-64 border-r-2 border-black fixed">
       <Link href={"/dashboard"} className="text-semibold text-xl">
         Home
       </Link>
