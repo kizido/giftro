@@ -1,7 +1,7 @@
 import { sql } from "@vercel/postgres";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route";
 import { NextResponse } from "next/server";
+import { authOptions } from "../auth/[...nextauth]/options";
 
 type FriendsReqestBody = {
   receiver: string;

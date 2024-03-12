@@ -3,8 +3,8 @@ import { Montserrat, Open_Sans, Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/lib/components/Navbar";
 import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
 import SideNavbar from "@/lib/components/SideNavbar";
+import { authOptions } from "./api/auth/[...nextauth]/options";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 const poppins = Poppins({ subsets: ["latin"], weight: "500" });
