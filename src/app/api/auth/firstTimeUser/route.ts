@@ -37,7 +37,7 @@ export async function POST(request: Request) {
   }
 
   await sql`
-    UPDATE users SET is_first_time_user = ${is_first_time_user} where email=${session.user?.email}`;
+    UPDATE users SET is_first_time_user = ${is_first_time_user} WHERE email=${session.user?.email}`;
 
   return NextResponse.json(
     { message: "User's first time user field set to false" },

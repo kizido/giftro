@@ -26,10 +26,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${poppins.className}`}>
         <Navbar />
-        <div className="flex pt-20">
-          {!!session && <SideNavbar />}
-          <div className={`w-full ${!!session ? 'ml-64' : ''}`}>{children}</div>
-        </div>
+        <div className='pt-20 w-full'>{children}</div>
       </body>
     </html>
   );

@@ -7,31 +7,54 @@ import React from "react";
 export default async function Navbar() {
   const session = await getServerSession(authOptions);
   return (
-    <nav className="fixed w-full h-20 bg-gray-800 flex items-center justify-between p-8">
-      <div>
+    <nav className="fixed w-full h-20 bg-background border-b">
+      <div className="container max-w-[70rem] flex items-center justify-center gap-12 py-4 px-1">
         <Link
           href={!!session ? "/dashboard" : "/"}
-          className="text-white md:text-4xl text-2xl"
+          className="text-foreground md:text-2xl text-xl flex-1"
         >
           Gift App
         </Link>
+        {!session && (
+          <div className="flex justify-center md:gap-8 gap-4">
+            <Link
+              href="/login"
+              className="bg-secondary text-secondary-foreground p-2 md:text-lg text-md rounded-md"
+            >
+              Login
+            </Link>
+            <Link
+              href="/signup"
+              className="bg-primary text-primary-foreground p-2 md:text-lg text-md rounded-md"
+            >
+              Sign Up
+            </Link>
+          </div>
+        )}
+        {!!session && (
+          <>
+            <Link href={"/dashboard"} className="text-semibold text-md">
+              Home
+            </Link>
+            <Link href={"/friends"} className="text-semibold text-md">
+              Friends
+            </Link>
+            <Link href={"/my-list"} className="text-semibold text-md">
+              My Lists
+            </Link>
+            <Link
+              href={"/upcoming-birthdays"}
+              className="text-semibold text-md"
+            >
+              Upcoming Birthdays
+            </Link>
+            <Link href={"/profile"} className="text-semibold text-md">
+              Profile
+            </Link>
+            <Logout />
+          </>
+        )}
       </div>
-      {!session && (
-        <div className="flex justify-center md:gap-8 gap-4">
-          <Link href="/login" className="text-white md:text-2xl text-xl">
-            Login
-          </Link>
-          <Link href="/signup" className="text-white md:text-2xl text-xl">
-            Sign Up
-          </Link>
-        </div>
-      )}
-      {!!session && (
-        <div className="flex items-center gap-4">
-          <h2 className="text-gray-400 text-xl">Hello, {session.username}!</h2>
-          <Logout />
-        </div>
-      )}
     </nav>
   );
 }

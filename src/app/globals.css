@@ -4,39 +4,41 @@
 
 @layer base {
   :root {
-    --background: 210 20% 65%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 0, 0%, 100%; /* white */
+    --foreground: 0, 0%, 20%; /* Dark grey for foreground text, ensures readability */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --body: 0, 0%, 100%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --card: 0, 0%, 100%; /* Pure white for card backgrounds to keep the UI clean */
+    --card-foreground: 0, 0%, 20%; /* Dark grey for text on cards, for contrast */
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --popover: 255, 100%, 100%; /* Soft pink for popover backgrounds, adds a gentle highlight */
+    --popover-foreground: 0, 0%, 20%; /* Dark grey for popover text */
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --primary: 330, 80%, 52%; /* Warm, vibrant pink for primary buttons and links */
+    --primary-foreground: 0, 0%, 100%; /* Pure white for text on primary elements, for clarity */
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --secondary: 46, 90%, 60%; /* Cheerful yellow for secondary buttons and accents */
+    --secondary-foreground: 0, 0%, 20%; /* Dark grey for text on secondary elements */
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: 210, 25%, 90%; /* Muted blue for less important elements, maintains tranquility */
+    --muted-foreground: 0, 0%, 20%; /* Dark grey for text on muted elements */
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --accent: 141, 53%, 47%; /* Soft teal for accents, adds a refreshing pop of color */
+    --accent-foreground: 0, 0%, 20%; /* Dark grey for text on accent elements */
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --destructive: 0, 100%, 50%; /* Bright red for warnings or actions with caution */
+    --destructive-foreground: 0, 0%, 100%; /* Pure white for text on destructive elements */
 
-    --radius: 0.5rem;
+    --border: 210, 15%, 85%; /* Light grey for borders, subtle and soft */
+    --input: 0, 0%, 96%; /* Very light grey for input fields, keeps the UI light and accessible */
+    --ring: 344, 80%, 52%; /* Warm, vibrant pink for focus rings, matches the primary color */
+
+    --radius: 0.5rem; /* Border radius for elements, softens the UI */
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 0 100% 4.9%;
     --foreground: 210 40% 98%;
 
     --card: 222.2 84% 4.9%;

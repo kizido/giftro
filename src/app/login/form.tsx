@@ -70,7 +70,7 @@ export default function Form() {
         <input
           {...register("email")}
           type="email"
-          className="p-4 h-10 rounded"
+          className="p-4 h-10 rounded bg-input border"
         />
         {errors.email && (
           <p className="text-red-600">{`${errors.email.message}`}</p>
@@ -80,7 +80,7 @@ export default function Form() {
           <h3 className="text-base">Password</h3>
           <Link
             href="/forgotpassword"
-            className="text-sm text-blue-700 underline"
+            className="text-sm text-accent underline"
             tabIndex={-1}
           >
             Forgot password?
@@ -90,7 +90,7 @@ export default function Form() {
           {...register("password")}
           type="password"
           name="password"
-          className="p-4 h-10 rounded"
+          className="p-4 h-10 rounded bg-input border"
         />
         {errors.password && (
           <p className="text-red-600">{`${errors.password.message}`}</p>
@@ -102,7 +102,7 @@ export default function Form() {
         </div>
 
         <div className="flex justify-end">
-          <button type="submit" className="w-28 h-12 bg-blue-400 font-bold">
+          <button type="submit" className="w-28 h-12 bg-primary text-primary-foreground font-bold">
             Log In
           </button>
         </div>
@@ -120,7 +120,7 @@ export default function Form() {
         <div className="flex justify-end">
           <Link
             href="/signup"
-            className="w-28 h-12 bg-blue-400 font-bold flex items-center justify-center"
+            className="w-28 h-12 bg-secondary text-secondary-foreground font-bold flex items-center justify-center"
           >
             Join Now
           </Link>
