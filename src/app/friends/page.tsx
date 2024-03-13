@@ -22,7 +22,7 @@ export default function Friends() {
     console.log("DEBOUNCE: " + debouncedSearchQuery);
     if (debouncedSearchQuery) {
       // Make api fetch request for users
-      loadUsers();
+      loadQueriedUsers();
     } else if (debouncedSearchQuery === "") {
       setLoadedUsers([]);
     }
@@ -33,7 +33,7 @@ export default function Friends() {
     setSearchQuery(value);
     updateDebouncedSearchQuery(value);
   };
-  const loadUsers = async () => {
+  const loadQueriedUsers = async () => {
     try {
       console.log("LOADING USERS");
       const response = await fetch(`/api/users?query=${debouncedSearchQuery}`, {
@@ -65,15 +65,29 @@ export default function Friends() {
     }
   };
 
-  const addFriend = async (receiver: string) => {
+  const addFriend = async (receiverId: string) => {
     try {
       await fetch("/api/friendRequests", {
         method: "POST",
-        body: JSON.stringify({ receiver }),
+        body: JSON.stringify({ receiverId }),
         headers: {
           "Content-Type": "application/json",
         },
       });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const acceptFriendRequest = async (senderId: string) => {
+    try {
+      await fetch("/api/friendRequests", {
+        method: "PATCH",
+        body: JSON.stringify({ senderId }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      loadFriendRequests();
     } catch (error) {
       console.log(error);
     }
@@ -83,25 +97,27 @@ export default function Friends() {
       <section className="mt-8 w-1/4 h-screen">
         <Input
           type="search"
-          className="bg-white"
+          className="bg-input border-2 border-border outline-black"
           placeholder="Search for friends..."
           value={searchQuery}
           onChange={handleSearchChange}
         />
-        <div className="mt-4 h-1/3 flex flex-col gap-4">
+        <div className="mt-4 h-2/5 flex flex-col gap-4 border-2 py-4 px-20">
           {loadedUsers.map((user: QueryResultRow) => (
             <div key={user.id} className="flex justify-between">
               <span>{user.username}</span>
-              <button onClick={() => addFriend(user.username)}>Add</button>
+              <button onClick={() => addFriend(user.id)}>Add</button>
             </div>
           ))}
         </div>
-        <div className="mt-4 h-1/3 flex flex-col gap-4">
-          <h1 className="self-center bold text-2xl">My Friends</h1>
+        <div className="mt-4 h-2/5 flex flex-col gap-4 border-2 py-4 px-20">
+          <h1 className="self-center bold text-2xl">My Friend Requests</h1>
           {loadedFriendRequests.map((requester: QueryResultRow) => (
             <div key={requester.id} className="flex justify-between">
               <span>{requester.username}</span>
-              <button>Accept</button>
+              <button onClick={() => acceptFriendRequest(requester.id)}>
+                Accept
+              </button>
             </div>
           ))}
         </div>
