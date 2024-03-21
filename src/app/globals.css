@@ -22,7 +22,7 @@
     --secondary-foreground: 0, 0%, 20%; /* Dark grey for text on secondary elements */
 
     --muted: 210, 25%, 90%; /* Muted blue for less important elements, maintains tranquility */
-    --muted-foreground: 0, 0%, 20%; /* Dark grey for text on muted elements */
+    --muted-foreground: 0, 0%, 50%; /* Dark grey for text on muted elements */
 
     --accent: 141, 53%, 47%; /* Soft teal for accents, adds a refreshing pop of color */
     --accent-foreground: 0, 0%, 20%; /* Dark grey for text on accent elements */
