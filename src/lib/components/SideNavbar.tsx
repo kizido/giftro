@@ -15,7 +15,7 @@ export default function SideNavbar() {
         Friends
       </Link>
       <Link href={"/my-list"} className="text-semibold text-xl">
-        My Lists
+        My List
       </Link>
       <Link href={"/upcoming-birthdays"} className="text-semibold text-xl">
         Upcoming Birthdays

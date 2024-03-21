@@ -40,7 +40,7 @@ export default async function Navbar() {
               Friends
             </Link>
             <Link href={"/my-list"} className="text-semibold text-md">
-              My Lists
+              My List
             </Link>
             <Link
               href={"/upcoming-birthdays"}

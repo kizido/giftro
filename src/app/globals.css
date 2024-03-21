@@ -31,7 +31,7 @@
     --destructive-foreground: 0, 0%, 100%; /* Pure white for text on destructive elements */
 
     --border: 210, 15%, 85%; /* Light grey for borders, subtle and soft */
-    --input: 0, 0%, 96%; /* Very light grey for input fields, keeps the UI light and accessible */
+    --input: 0, 0%, 97%; /* Very light grey for input fields, keeps the UI light and accessible */
     --ring: 344, 80%, 52%; /* Warm, vibrant pink for focus rings, matches the primary color */
 
     --radius: 0.5rem; /* Border radius for elements, softens the UI */
