@@ -10,14 +10,54 @@ export default function MyLists() {
         <div className="w-[45rem]">
           <h1 className="text-3xl font-semibold">Gift Finder</h1>
           <div className="py-4 flex flex-col gap-2">
-            <Input className="h-14 text-md" placeholder="Search for gifts here..." />
+            <Input
+              className="h-14 text-md"
+              placeholder="Search for gifts here..."
+            />
             <div className="flex flex-wrap gap-2 justify-start items-center">
-              <Button iconUrl="https://static-cdn.drawnames.com//Content/Assets/chevron-gray.svg" iconRotation={90} variant="secondary" >Category</Button>
-              <Button variant="secondary" iconUrl="https://static-cdn.drawnames.com//Content/Assets/chevron-gray.svg" iconRotation={90} >Shop</Button>
-              <Button variant="secondary" iconUrl="https://static-cdn.drawnames.com//Content/Assets/chevron-gray.svg" iconRotation={90}>$0 - $20</Button>
-              <Button variant="secondary" iconUrl="https://static-cdn.drawnames.com//Content/Assets/chevron-gray.svg" iconRotation={90}>18 -25 Years</Button>
-              <Button variant="secondary" iconUrl="https://static-cdn.drawnames.com//Content/Assets/chevron-gray.svg" iconRotation={90}>Men</Button>
-              <h3 className="ml-1 text-md text-semibold text-blue-500 cursor-pointer hover:underline">Clear all filters</h3>
+              <Button
+                iconUrl="https://static-cdn.drawnames.com//Content/Assets/chevron-gray.svg"
+                iconRotation={90}
+                variant="secondary"
+                className="font-semibold"
+              >
+                Category
+              </Button>
+              <Button
+                variant="secondary"
+                iconUrl="https://static-cdn.drawnames.com//Content/Assets/chevron-gray.svg"
+                iconRotation={90}
+                className="font-semibold"
+              >
+                Shop
+              </Button>
+              <Button
+                variant="secondary"
+                iconUrl="https://static-cdn.drawnames.com//Content/Assets/chevron-gray.svg"
+                iconRotation={90}
+                className="font-semibold"
+              >
+                $0 - $20
+              </Button>
+              <Button
+                variant="secondary"
+                iconUrl="https://static-cdn.drawnames.com//Content/Assets/chevron-gray.svg"
+                iconRotation={90}
+                className="font-semibold"
+              >
+                18 -25 Years
+              </Button>
+              <Button
+                variant="secondary"
+                iconUrl="https://static-cdn.drawnames.com//Content/Assets/chevron-gray.svg"
+                iconRotation={90}
+                className="font-semibold"
+              >
+                Men
+              </Button>
+              <h3 className="ml-1 text-md text-semibold text-blue-500 cursor-pointer hover:underline">
+                Clear all filters
+              </h3>
             </div>
           </div>
         </div>

@@ -1,6 +1,8 @@
+"use client";
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
+import { useState } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -16,7 +18,7 @@ const buttonVariants = cva(
         outline:
           "border border-slate-200 bg-white hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50",
         secondary:
-          "bg-input text-slate-900 hover:bg-input dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80",
+          "bg-input text-gray-500 text-hover:bg-input dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80 active:text-blue-600 active:bg-blue-100 active:border-2 active:border-blue-500",
         ghost:
           "hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50",
         link: "text-slate-900 underline-offset-4 hover:underline dark:text-slate-50",
@@ -45,19 +47,40 @@ export interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { className, variant, size, asChild = false, iconUrl, iconRotation, children, ...props },
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      iconUrl,
+      iconRotation,
+      children,
+      ...props
+    },
     ref
   ) => {
+    const [clicked, setClicked] = useState<boolean>(false);
+
     const Comp = asChild ? Slot : "button";
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
+        onClick={() => {
+          setClicked(!clicked);
+          console.log(clicked);
+        }}
       >
         {children}
         {iconUrl && (
-          <img src={iconUrl} alt="" className={`h-6 w-6 ${iconRotation ? `transform rotate-${iconRotation}` : ""}`} />
+          <img
+            src={iconUrl}
+            alt=""
+            className={`h-6 w-6 ${
+              variant === "secondary" && clicked ? "fill-blue-500" : ""
+            } ${iconRotation ? `transform rotate-${iconRotation}` : ""}`}
+          />
         )}
       </Comp>
     );
