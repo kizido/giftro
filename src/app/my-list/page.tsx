@@ -37,7 +37,7 @@ export default function MyLists() {
                 iconRotation={90}
                 className="font-semibold"
               >
-                $0 - $20
+                Price
               </Button>
               <Button
                 variant="secondary"
@@ -45,7 +45,7 @@ export default function MyLists() {
                 iconRotation={90}
                 className="font-semibold"
               >
-                18 -25 Years
+                Age
               </Button>
               <Button
                 variant="secondary"
@@ -53,7 +53,7 @@ export default function MyLists() {
                 iconRotation={90}
                 className="font-semibold"
               >
-                Men
+                Gender
               </Button>
               <h3 className="ml-1 text-md text-semibold text-blue-500 cursor-pointer hover:underline">
                 Clear all filters

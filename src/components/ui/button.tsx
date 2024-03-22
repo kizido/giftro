@@ -1,8 +1,6 @@
-"use client";
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import { useState } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -59,7 +57,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const [clicked, setClicked] = useState<boolean>(false);
 
     const Comp = asChild ? Slot : "button";
     return (
@@ -67,19 +64,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
-        onClick={() => {
-          setClicked(!clicked);
-          console.log(clicked);
-        }}
       >
         {children}
-        {iconUrl && (
+        {iconUrl !== undefined && (
           <img
             src={iconUrl}
             alt=""
-            className={`h-6 w-6 ${
-              variant === "secondary" && clicked ? "fill-blue-500" : ""
-            } ${iconRotation ? `transform rotate-${iconRotation}` : ""}`}
+            className={`h-6 w-6 transform ${iconRotation && iconRotation === 90 ? `rotate-90` : ""}`}
           />
         )}
       </Comp>
