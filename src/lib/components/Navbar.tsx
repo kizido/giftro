@@ -7,7 +7,7 @@ import React from "react";
 export default async function Navbar() {
   const session = await getServerSession(authOptions);
   return (
-    <nav className="fixed w-full h-20 bg-background border-b">
+    <nav className="fixed w-full h-20 bg-background border-b z-50">
       <div className="container max-w-[70rem] flex items-center justify-center gap-12 py-4 px-1">
         <Link
           href={!!session ? "/dashboard" : "/"}

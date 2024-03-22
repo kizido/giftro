@@ -1,15 +1,45 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import { useEffect, useState } from "react";
 
 export default function MyLists() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const offset = window.scrollY;
+      const threshold = 68; // Set the scroll threshold in pixels
+
+      if (offset > threshold) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    // Add the scroll event listener
+    window.addEventListener("scroll", handleScroll);
+
+    // Clean up the scroll event listener
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="container max-w-[72rem] h-screen gap-12 mt-8">
+    <div className="container max-w-[72rem] gap-12 mt-8">
       <div className="h-full flex justify-between">
         {/* Gift Searching Area */}
         <div className="w-[45rem]">
           <h1 className="text-3xl font-semibold">Gift Finder</h1>
-          <div className="py-4 flex flex-col gap-2">
+          {/* Search Bar and Categories */}
+          <div className={`z-index${scrolled ? `w-full h-[136px]` : ""}`}></div>
+          <div
+            className={`py-4 flex flex-col gap-2 bg-white ${
+              scrolled ? "fixed top-20 w-[45rem]" : ""
+            }`}
+          >
             <Input
               className="h-14 text-md"
               placeholder="Search for gifts here..."
@@ -55,15 +85,37 @@ export default function MyLists() {
               >
                 Gender
               </Button>
-              <h3 className="ml-1 text-md text-semibold text-blue-500 cursor-pointer hover:underline">
+              <h3 className="ml-1 text-md text-semibold text-blue-500 cursor-pointer hover:underline overflow-y-hided">
                 Clear all filters
               </h3>
             </div>
           </div>
+          {/* Searched Items */}
+          <div className="flex justify-evenly flex-wrap gap-6">
+            <div className="w-40 h-48 my-2 border border-dashed"></div>
+            <div className="w-40 h-48 my-2 border border-dashed"></div>
+            <div className="w-40 h-48 my-2 border border-dashed"></div>
+            <div className="w-40 h-48 my-2 border border-dashed"></div>
+            <div className="w-40 h-48 my-2 border border-dashed"></div>
+            <div className="w-40 h-48 my-2 border border-dashed"></div>
+            <div className="w-40 h-48 my-2 border border-dashed"></div>
+            <div className="w-40 h-48 my-2 border border-dashed"></div>
+            <div className="w-40 h-48 my-2 border border-dashed"></div>
+            <div className="w-40 h-48 my-2 border border-dashed"></div>
+            <div className="w-40 h-48 my-2 border border-dashed"></div>
+            <div className="w-40 h-48 my-2 border border-dashed"></div>
+            <div className="w-40 h-48 my-2 border border-dashed"></div>
+            <div className="w-40 h-48 my-2 border border-dashed"></div>
+            <div className="w-40 h-48 my-2 border border-dashed"></div>
+            <div className="w-40 h-48 my-2 border border-dashed"></div>
+            <div className="w-40 h-48 my-2 border border-dashed"></div>
+          </div>
         </div>
 
         {/* Wish List Area */}
-        <div className="w-[24rem] border border-black border-dashed"></div>
+        <div className="w-[24rem] h-[calc(100vh-112px)] ">
+          <div className="fixed w-[24rem] border border-dashed bottom-10 top-32 overflow-y-scroll"></div>
+        </div>
       </div>
     </div>
   );
