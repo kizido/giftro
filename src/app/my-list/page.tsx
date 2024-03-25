@@ -2,8 +2,27 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
+import { SearchItemsRequest, PartnerType, Host, Region } from 'paapi5-typescript-sdk'
+
+const commonParameters = {
+  AccessKey: 'AKIAJUDJSHRMOK7KVLEQ',
+  SecretKey: '4SjclgzbbUc1IUHljQiK2scP7E8+87OkKA5zkTbk',
+  PartnerTag: 'shufflebirdco-20', // yourtag-20
+  PartnerType: 'Associates', // Default value is Associates.
+  Marketplace: 'www.amazon.com', // Default value is US. Note: Host and Region are predetermined based on the marketplace value. There is no need for you to add Host and Region as soon as you specify the correct Marketplace value. If your region is not US or .com, please make sure you add the correct Marketplace value.
+};
 
 export default function MyLists() {
+  const requestParameters = {
+    Keywords: 'Harry Potter',
+    SearchIndex: 'Books',
+    ItemCount: 2,
+    Resources: [
+      'Images.Primary.Medium',
+      'ItemInfo.Title',
+      'Offers.Listings.Price',
+    ],
+  };
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -26,6 +45,25 @@ export default function MyLists() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    const searchAmazon = async () => {
+      try {
+        const request = await fetch("/api/searchAmazon", {
+          method: "POST",
+          body: JSON.stringify("Harry Potter"),
+          headers: {
+            "Content-Type": "application/json",
+          }
+        });
+        const response = await request.json();
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    searchAmazon();
+  }, [])
 
   return (
     <div className="container max-w-[20rem] sm:max-w-[30rem] md:max-w-[45rem] lg:max-w-[62rem] xl:max-w-[72rem] gap-4 mt-8">
