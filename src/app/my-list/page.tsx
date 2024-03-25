@@ -28,10 +28,10 @@ export default function MyLists() {
   }, []);
 
   return (
-    <div className="container max-w-[72rem] gap-12 mt-8">
-      <div className="h-full flex justify-between">
+    <div className="container max-w-[20rem] sm:max-w-[30rem] md:max-w-[45rem] lg:max-w-[62rem] xl:max-w-[72rem] gap-4 mt-8">
+      <div className="h-full flex justify-center lg:justify-between">
         {/* Gift Searching Area */}
-        <div className="w-[45rem]">
+        <div className="w-full lg:w-[36rem] xl:w-[45rem]">
           <h1 className="text-3xl font-semibold">Gift Finder</h1>
           {/* Search Bar and Categories */}
           <div className={`z-index${scrolled ? `w-full h-[136px]` : ""}`}></div>
@@ -113,7 +113,7 @@ export default function MyLists() {
         </div>
 
         {/* Wish List Area */}
-        <div className="w-[24rem] h-[calc(100vh-112px)] ">
+        <div className="hidden lg:inline-block w-[24rem] h-[calc(100vh-112px)] ">
           <div className="fixed w-[24rem] border border-dashed bottom-10 top-32 overflow-y-scroll"></div>
         </div>
       </div>
