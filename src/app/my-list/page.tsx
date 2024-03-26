@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { SearchResultItem } from "paapi5-typescript-sdk";
+import SearchCard from "@/components/ui/searchCard";
 
 export default function MyLists() {
   const [scrolled, setScrolled] = useState(false);
@@ -58,12 +59,13 @@ export default function MyLists() {
 
   const DisplayImages = () => {
     return responseItems.map((item, index) => (
-      <div className="w-40 h-48 my-2 border border-dashed" key={index}>
-        <img className="w-full h-full object-contain"
-          src={item!.Images!.Primary!.Medium!.URL}
-          alt={`Item ${index + 1}`}
-        />
-      </div>
+      // <div className="w-40 h-48 my-2 border border-dashed" key={index}>
+      //   <img className="w-full h-full object-contain"
+      //     src={item!.Images!.Primary!.Medium!.URL}
+      //     alt={`Item ${index + 1}`}
+      //   />
+      // </div>
+      <SearchCard imageUrl={item!.Images!.Primary!.Medium!.URL} key={index} index={index} />
     ));
   };
 
