@@ -3,9 +3,12 @@ import { Attributes } from "react";
 type SearchCardProps = {
   imageUrl: string;
   index: number;
+  itemName: string;
+  itemPrice: string;
 };
 
-const SearchCard = ({ imageUrl, index }: SearchCardProps) => {
+const SearchCard = ({ imageUrl, index, itemName, itemPrice }: SearchCardProps) => {
+    const titleDisplayedCharacters = 14;
   return (
     <div className="w-[162px] h-[222px] my-2 border-2 border-gray rounded-lg overflow-hidden">
       <div className="w-full h-[166px]">
@@ -15,9 +18,9 @@ const SearchCard = ({ imageUrl, index }: SearchCardProps) => {
           alt={`Item ${index + 1}`}
         />
       </div>
-      <div className="w-full h-[60px] bg-gray-100 flex flex-col">
-        <p className="text-sm">Product Name</p>
-        <p className="text-lg text-black font-semibold">${(Math.random() * 50).toFixed()}.{(Math.random() * 99).toFixed()}</p>
+      <div className="w-full h-[56px] bg-gray-100 flex flex-col p-2">
+        <p className="text-sm">{itemName.length > titleDisplayedCharacters ? itemName.substring(0, titleDisplayedCharacters) + '...' : itemName}</p>
+        <p className="text-md text-black font-bold">{itemPrice}</p>
       </div>
     </div>
   );

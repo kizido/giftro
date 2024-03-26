@@ -11,7 +11,7 @@ export async function POST(request: Request) {
 
   try {
     const amazonRequest = new SearchItemsRequest(
-      { ItemCount: 10, Keywords: body, Resources: ["Images.Primary.Medium"] },
+      { ItemCount: 10, Keywords: body, Resources: ["Images.Primary.Medium", "Offers.Listings.Price", "ItemInfo.Title"] },
       "shufflebirdco-20",
       PartnerType.ASSOCIATES,
       "AKIAJUDJSHRMOK7KVLEQ",

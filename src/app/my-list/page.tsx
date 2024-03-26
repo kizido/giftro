@@ -58,14 +58,11 @@ export default function MyLists() {
   }, [responseItems]);
 
   const DisplayImages = () => {
+    // for(let i = 0; i < responseItems.length; i++) {
+    //   console.log(responseItems[i]);
+    // }
     return responseItems.map((item, index) => (
-      // <div className="w-40 h-48 my-2 border border-dashed" key={index}>
-      //   <img className="w-full h-full object-contain"
-      //     src={item!.Images!.Primary!.Medium!.URL}
-      //     alt={`Item ${index + 1}`}
-      //   />
-      // </div>
-      <SearchCard imageUrl={item!.Images!.Primary!.Medium!.URL} key={index} index={index} />
+      <SearchCard imageUrl={item!.Images!.Primary!.Medium!.URL} key={index} index={index}itemName={item!.ItemInfo!.Title!.DisplayValue!} itemPrice={item!.Offers!.Listings[0]!.Price!.DisplayAmount!}/>
     ));
   };
 
