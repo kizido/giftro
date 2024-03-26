@@ -2,28 +2,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
-import { SearchItemsRequest, PartnerType, Host, Region } from 'paapi5-typescript-sdk'
-
-const commonParameters = {
-  AccessKey: 'AKIAJUDJSHRMOK7KVLEQ',
-  SecretKey: '4SjclgzbbUc1IUHljQiK2scP7E8+87OkKA5zkTbk',
-  PartnerTag: 'shufflebirdco-20', // yourtag-20
-  PartnerType: 'Associates', // Default value is Associates.
-  Marketplace: 'www.amazon.com', // Default value is US. Note: Host and Region are predetermined based on the marketplace value. There is no need for you to add Host and Region as soon as you specify the correct Marketplace value. If your region is not US or .com, please make sure you add the correct Marketplace value.
-};
+import { SearchResultItem } from "paapi5-typescript-sdk";
 
 export default function MyLists() {
-  const requestParameters = {
-    Keywords: 'Harry Potter',
-    SearchIndex: 'Books',
-    ItemCount: 2,
-    Resources: [
-      'Images.Primary.Medium',
-      'ItemInfo.Title',
-      'Offers.Listings.Price',
-    ],
-  };
   const [scrolled, setScrolled] = useState(false);
+  const [responseImageUrls, setResponseImageUrls] = useState<string[]>([]);
+  const [responseItems, setResponseItems] = useState<SearchResultItem[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,25 +30,42 @@ export default function MyLists() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+  const searchAmazon = async () => {
+    try {
+      const request = await fetch("/api/searchAmazon", {
+        method: "POST",
+        body: JSON.stringify(searchQuery),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const { SearchResult } = await request.json();
+      console.log(SearchResult);
+      const retrievedItems = SearchResult.Items;
+      console.log(retrievedItems);
+      setResponseItems(retrievedItems);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    // searchAmazon();
+  }, []);
 
   useEffect(() => {
-    const searchAmazon = async () => {
-      try {
-        const request = await fetch("/api/searchAmazon", {
-          method: "POST",
-          body: JSON.stringify("Harry Potter"),
-          headers: {
-            "Content-Type": "application/json",
-          }
-        });
-        const response = await request.json();
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    searchAmazon();
-  }, [])
+    console.log("Response Items: " + responseItems);
+  }, [responseItems]);
+
+  const DisplayImages = () => {
+    return responseItems.map((item, index) => (
+      <div className="w-40 h-48 my-2 border border-dashed" key={index}>
+        <img className="w-full h-full object-contain"
+          src={item!.Images!.Primary!.Medium!.URL}
+          alt={`Item ${index + 1}`}
+        />
+      </div>
+    ));
+  };
 
   return (
     <div className="container max-w-[20rem] sm:max-w-[30rem] md:max-w-[45rem] lg:max-w-[62rem] xl:max-w-[72rem] gap-4 mt-8">
@@ -81,6 +83,13 @@ export default function MyLists() {
             <Input
               className="h-14 text-md"
               placeholder="Search for gifts here..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  searchAmazon();
+                }
+              }}
             />
             <div className="flex flex-wrap gap-2 justify-start items-center">
               <Button
@@ -129,7 +138,9 @@ export default function MyLists() {
             </div>
           </div>
           {/* Searched Items */}
-          <div className="flex justify-evenly flex-wrap gap-6">
+          <div className="flex justify-start flex-wrap gap-6">
+            {responseItems && DisplayImages()}
+            {/* <div className="w-40 h-48 my-2 border border-dashed"></div>
             <div className="w-40 h-48 my-2 border border-dashed"></div>
             <div className="w-40 h-48 my-2 border border-dashed"></div>
             <div className="w-40 h-48 my-2 border border-dashed"></div>
@@ -145,8 +156,7 @@ export default function MyLists() {
             <div className="w-40 h-48 my-2 border border-dashed"></div>
             <div className="w-40 h-48 my-2 border border-dashed"></div>
             <div className="w-40 h-48 my-2 border border-dashed"></div>
-            <div className="w-40 h-48 my-2 border border-dashed"></div>
-            <div className="w-40 h-48 my-2 border border-dashed"></div>
+            <div className="w-40 h-48 my-2 border border-dashed"></div> */}
           </div>
         </div>
 
