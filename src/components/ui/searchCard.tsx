@@ -10,7 +10,7 @@ type SearchCardProps = {
 const SearchCard = ({ imageUrl, index, itemName, itemPrice }: SearchCardProps) => {
     const titleDisplayedCharacters = 14;
   return (
-    <div className="w-[162px] h-[222px] my-2 border-2 border-gray rounded-lg overflow-hidden">
+    <div className="w-[162px] h-[222px] my-2 rounded-lg overflow-hidden shadow-[0_0_8px_0px_rgba(0,0,0,0.2)]">
       <div className="w-full h-[166px]">
         <img
           className="w-full h-full object-contain"
