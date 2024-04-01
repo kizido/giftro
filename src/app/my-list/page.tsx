@@ -73,7 +73,7 @@ export default function MyLists() {
         <div className="w-full lg:w-[36rem] xl:w-[45rem]">
           <h1 className="text-3xl font-semibold">Gift Finder</h1>
           {/* Search Bar and Categories */}
-          <div className={`z-index${scrolled ? `w-full h-[136px]` : ""}`}></div>
+          <div className={`${scrolled ? `w-full h-[136px]` : ""}`}></div>
           <div
             className={`py-4 flex flex-col gap-2 bg-white ${
               scrolled ? "fixed top-20 w-[45rem]" : ""
