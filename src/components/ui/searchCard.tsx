@@ -26,14 +26,16 @@ const SearchCard = ({
           alt={`Item ${index + 1}`}
         />
       </div>
-      <div className="w-full h-[56px] bg-gray-100 flex flex-col p-2">
-        <p className="text-sm">
-          {itemName.length > titleDisplayedCharacters
-            ? itemName.substring(0, titleDisplayedCharacters) + "..."
-            : itemName}
-        </p>
-        <p className="text-md text-black font-bold">{itemPrice}</p>
-      </div>
+      <footer className="w-full h-[56px] bg-gray-100 flex flex-col p-2">
+        <div>
+            <p className="text-sm">
+              {itemName.length > titleDisplayedCharacters
+                ? itemName.substring(0, titleDisplayedCharacters) + "..."
+                : itemName}
+            </p>
+            <p className="text-md text-black font-bold">{itemPrice}</p>
+        </div>
+      </footer>
     </div>
   );
 };
