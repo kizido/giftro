@@ -17,6 +17,7 @@ export async function POST(request: Request) {
         Keywords: body,
         Resources: [
           "Images.Primary.Large",
+          "Images.Variants.Large",
           "Offers.Listings.Price",
           "ItemInfo.Title",
         ],
@@ -29,6 +30,10 @@ export async function POST(request: Request) {
       Region.UNITED_STATES
     );
     const data = await amazonRequest.send();
+    console.log("Data: " + data.SearchResult);
+    if(data.SearchResult === undefined) {
+      return NextResponse.json({ error: "No search result found." })
+    }
     const responseItems = data.SearchResult.Items;
     responseItems.forEach(item => console.log("Response Item: " + item.ASIN));
 

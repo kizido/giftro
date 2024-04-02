@@ -40,11 +40,14 @@ export default function MyLists() {
           "Content-Type": "application/json",
         },
       });
-      const { SearchResult } = await request.json();
-      console.log(SearchResult);
-      const retrievedItems = SearchResult.Items;
-      console.log(retrievedItems);
-      setResponseItems(retrievedItems);
+      const response = await request.json();
+      if (!response.error) {
+        const { SearchResult } = response;
+        console.log(SearchResult);
+        const retrievedItems = SearchResult.Items;
+        console.log(retrievedItems);
+        setResponseItems(retrievedItems);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -62,7 +65,11 @@ export default function MyLists() {
     //   console.log(responseItems[i]);
     // }
     return responseItems.map((item, index) => (
-      <SearchCard imageUrl={item!.Images!.Primary!.Large!.URL} key={index} index={index}itemName={item!.ItemInfo!.Title!.DisplayValue!} itemPrice={item!.Offers!.Listings[0]!.Price!.DisplayAmount!} redirectUrl={item!.DetailPageURL}/>
+      <SearchCard
+        key={index}
+        index={index}
+        item={item}
+      />
     ));
   };
 
