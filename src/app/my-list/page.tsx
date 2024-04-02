@@ -82,7 +82,7 @@ export default function MyLists() {
           {/* Search Bar and Categories */}
           <div className={`${scrolled ? `w-full h-[136px]` : ""}`}></div>
           <div
-            className={`py-4 flex flex-col gap-2 bg-white ${
+            className={`py-4 flex flex-col gap-2 bg-white z-30 ${
               scrolled ? "fixed top-20 w-[45rem]" : ""
             }`}
           >
