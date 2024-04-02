@@ -62,7 +62,7 @@ export default function MyLists() {
     //   console.log(responseItems[i]);
     // }
     return responseItems.map((item, index) => (
-      <SearchCard imageUrl={item!.Images!.Primary!.Medium!.URL} key={index} index={index}itemName={item!.ItemInfo!.Title!.DisplayValue!} itemPrice={item!.Offers!.Listings[0]!.Price!.DisplayAmount!} redirectUrl={item!.DetailPageURL}/>
+      <SearchCard imageUrl={item!.Images!.Primary!.Large!.URL} key={index} index={index}itemName={item!.ItemInfo!.Title!.DisplayValue!} itemPrice={item!.Offers!.Listings[0]!.Price!.DisplayAmount!} redirectUrl={item!.DetailPageURL}/>
     ));
   };
 

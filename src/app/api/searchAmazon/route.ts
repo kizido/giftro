@@ -16,7 +16,7 @@ export async function POST(request: Request) {
         ItemCount: 10,
         Keywords: body,
         Resources: [
-          "Images.Primary.Medium",
+          "Images.Primary.Large",
           "Offers.Listings.Price",
           "ItemInfo.Title",
         ],
