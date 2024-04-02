@@ -7,6 +7,7 @@ type SearchCardProps = {
   index: number;
   itemName: string;
   itemPrice: string;
+  redirectUrl: string;
 };
 
 const SearchCard = ({
@@ -14,6 +15,7 @@ const SearchCard = ({
   index,
   itemName,
   itemPrice,
+  redirectUrl,
 }: SearchCardProps) => {
   const titleDisplayedCharacters = 14;
   const [productModalOpen, setProductModalOpen] = useState(false);
@@ -59,8 +61,28 @@ const SearchCard = ({
       </div>
       {productModalOpen && (
         <div className="fixed inset-0 bg-gray-400 bg-opacity-40 z-40 flex justify-center items-center">
-            <div className="w-[60rem] h-[36rem] bg-white rounded-3xl shadow-[0_0_8px_0px_rgba(0,0,0,0.2)]">
+          <div className="w-[62rem] h-[36rem] bg-white rounded-3xl shadow-[0_0_8px_0px_rgba(0,0,0,0.2)] flex">
+            <div className="h-full w-7/12 bg-white">
+              <img
+                className="w-full h-full object-contain"
+                src={imageUrl}
+                alt={`Large Image`}
+              />
             </div>
+            <div className="h-full w-5/12 py-4 pl-12 pr-24 bg-gray-100 flex flex-col gap-2 relative">
+              <h2 className="text-lg font-bold">{itemName}</h2>
+              <a
+                href={redirectUrl}
+                target="_blank"
+                rel="noopener noreferrer" // Added for security
+                className="h-12 w-full p-4 bg-white rounded-xl flex justify-between items-center cursor-pointer hover:underline"
+              >
+                <p className="font-semibold">Amazon</p>
+                <p className="text-blue-500">{itemPrice}</p>
+              </a>
+              <img src="https://static-cdn.drawnames.com/Content/Assets/icon-close.svg" width={40} className="absolute top-4 right-4 cursor-pointer" onClick={() => setProductModalOpen(false)}/>
+            </div>
+          </div>
         </div>
       )}
     </div>

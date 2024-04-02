@@ -62,7 +62,7 @@ export default function MyLists() {
     //   console.log(responseItems[i]);
     // }
     return responseItems.map((item, index) => (
-      <SearchCard imageUrl={item!.Images!.Primary!.Medium!.URL} key={index} index={index}itemName={item!.ItemInfo!.Title!.DisplayValue!} itemPrice={item!.Offers!.Listings[0]!.Price!.DisplayAmount!}/>
+      <SearchCard imageUrl={item!.Images!.Primary!.Medium!.URL} key={index} index={index}itemName={item!.ItemInfo!.Title!.DisplayValue!} itemPrice={item!.Offers!.Listings[0]!.Price!.DisplayAmount!} redirectUrl={item!.DetailPageURL}/>
     ));
   };
 
@@ -139,23 +139,6 @@ export default function MyLists() {
           {/* Searched Items */}
           <div className="flex justify-start flex-wrap gap-6">
             {responseItems && DisplayImages()}
-            {/* <div className="w-40 h-48 my-2 border border-dashed"></div>
-            <div className="w-40 h-48 my-2 border border-dashed"></div>
-            <div className="w-40 h-48 my-2 border border-dashed"></div>
-            <div className="w-40 h-48 my-2 border border-dashed"></div>
-            <div className="w-40 h-48 my-2 border border-dashed"></div>
-            <div className="w-40 h-48 my-2 border border-dashed"></div>
-            <div className="w-40 h-48 my-2 border border-dashed"></div>
-            <div className="w-40 h-48 my-2 border border-dashed"></div>
-            <div className="w-40 h-48 my-2 border border-dashed"></div>
-            <div className="w-40 h-48 my-2 border border-dashed"></div>
-            <div className="w-40 h-48 my-2 border border-dashed"></div>
-            <div className="w-40 h-48 my-2 border border-dashed"></div>
-            <div className="w-40 h-48 my-2 border border-dashed"></div>
-            <div className="w-40 h-48 my-2 border border-dashed"></div>
-            <div className="w-40 h-48 my-2 border border-dashed"></div>
-            <div className="w-40 h-48 my-2 border border-dashed"></div>
-            <div className="w-40 h-48 my-2 border border-dashed"></div> */}
           </div>
         </div>
 
