@@ -19,11 +19,11 @@ const SearchCardModal = ({ item, onClose }: SearchCardModalProps) => {
         onClick={(e) => e.stopPropagation()}
       >
         <img
-            src="https://static-cdn.drawnames.com/Content/Assets/icon-close.svg"
-            width={40}
-            className="absolute top-4 right-4 cursor-pointer"
-            onClick={onClose}
-          />
+          src="https://static-cdn.drawnames.com/Content/Assets/icon-close.svg"
+          width={40}
+          className="absolute top-4 right-4 cursor-pointer"
+          onClick={onClose}
+        />
         <div className="h-2/5 w-full lg:h-full lg:w-7/12 bg-white">
           <img
             className="w-full h-full object-contain"
@@ -35,7 +35,7 @@ const SearchCardModal = ({ item, onClose }: SearchCardModalProps) => {
             alt={`Large Image`}
           />
         </div>
-        <div className="w-full lg:h-full lg:w-5/12 py-4 pl-12 pr-20 bg-gray-100 flex flex-col gap-2">
+        <div className="w-full lg:h-full lg:w-5/12 py-4 pl-12 pr-20 bg-gray-100 flex flex-col gap-1">
           {item.Images.Variants !== undefined && (
             <div className="hidden lg:flex flex-wrap justify-start">
               <div
@@ -75,6 +75,27 @@ const SearchCardModal = ({ item, onClose }: SearchCardModalProps) => {
           <h2 className="text-lg font-bold">
             {item.ItemInfo?.Title?.DisplayValue}
           </h2>
+
+          <span className="text-xs">
+            {item.ItemInfo!.ByLineInfo!.Brand!.DisplayValue!}
+          </span>
+          <div>
+              <span className="text-xs">
+                {item &&
+                item.ItemInfo &&
+                item.ItemInfo.ProductInfo &&
+                item.ItemInfo.ProductInfo.Size
+                  ? item.ItemInfo?.ProductInfo?.Size?.DisplayValue +
+                    " | " +
+                    item.ItemInfo!.ProductInfo!.Color!.DisplayValue! +
+                    " - "
+                  : item.ItemInfo?.Classifications?.ProductGroup?.DisplayValue + " - "}
+              </span>
+              <span className="text-xs">
+                {item.BrowseNodeInfo!.BrowseNodes[0]!.ContextFreeName!}
+              </span>
+          </div>
+
           <a
             href={item!.DetailPageURL}
             target="_blank"
@@ -86,12 +107,6 @@ const SearchCardModal = ({ item, onClose }: SearchCardModalProps) => {
               {item!.Offers!.Listings[0]!.Price!.DisplayAmount!}
             </p>
           </a>
-          {/* <img
-            src="https://static-cdn.drawnames.com/Content/Assets/icon-close.svg"
-            width={40}
-            className="absolute top-4 right-4 cursor-pointer"
-            onClick={onClose}
-          /> */}
         </div>
       </div>
     </div>
