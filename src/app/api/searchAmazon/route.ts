@@ -20,6 +20,7 @@ export async function POST(request: Request) {
           "Images.Variants.Large",
           "Offers.Listings.Price",
           "ItemInfo.Title",
+          "BrowseNodeInfo.BrowseNodes",
         ],
       },
       "shufflebirdco-20",

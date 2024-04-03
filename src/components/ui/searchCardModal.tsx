@@ -15,10 +15,16 @@ const SearchCardModal = ({ item, onClose }: SearchCardModalProps) => {
       onClick={onClose}
     >
       <div
-        className="flex lg:w-[62rem] lg:h-[36rem] w-[24rem] h-full bg-white shadow-[0_0_8px_0px_rgba(0,0,0,0.2)] rounded-3xl overflow-hidden"
+        className="relative flex flex-col lg:flex-row lg:w-[62rem] lg:h-[36rem] w-[24rem] h-full bg-white shadow-[0_0_8px_0px_rgba(0,0,0,0.2)] rounded-3xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="h-full w-7/12 bg-white">
+        <img
+            src="https://static-cdn.drawnames.com/Content/Assets/icon-close.svg"
+            width={40}
+            className="absolute top-4 right-4 cursor-pointer"
+            onClick={onClose}
+          />
+        <div className="h-2/5 w-full lg:h-full lg:w-7/12 bg-white">
           <img
             className="w-full h-full object-contain"
             src={
@@ -29,9 +35,9 @@ const SearchCardModal = ({ item, onClose }: SearchCardModalProps) => {
             alt={`Large Image`}
           />
         </div>
-        <div className="h-full w-5/12 py-4 pl-12 pr-20 bg-gray-100 flex flex-col gap-2 relative">
+        <div className="w-full lg:h-full lg:w-5/12 py-4 pl-12 pr-20 bg-gray-100 flex flex-col gap-2">
           {item.Images.Variants !== undefined && (
-            <div className="flex flex-wrap justify-start">
+            <div className="hidden lg:flex flex-wrap justify-start">
               <div
                 className={`w-[60px] h-[60px] m-[5px] cursor-pointer bg-white ${
                   selectedImageIndex === null ? "border-2 border-blue-400" : ""
@@ -80,12 +86,12 @@ const SearchCardModal = ({ item, onClose }: SearchCardModalProps) => {
               {item!.Offers!.Listings[0]!.Price!.DisplayAmount!}
             </p>
           </a>
-          <img
+          {/* <img
             src="https://static-cdn.drawnames.com/Content/Assets/icon-close.svg"
             width={40}
             className="absolute top-4 right-4 cursor-pointer"
             onClick={onClose}
-          />
+          /> */}
         </div>
       </div>
     </div>
