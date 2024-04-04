@@ -1,7 +1,4 @@
-import { Attributes, Key, useEffect, useState } from "react";
-import styles from "../../app/ui/modal.module.css";
-import OnboardingModal from "@/lib/components/OnboardingModal";
-import { SearchResultItem } from "paapi5-typescript-sdk";
+import { useEffect, useState } from "react";
 import SearchCardModal from "./searchCardModal";
 
 type SearchCardProps = {
@@ -28,6 +25,19 @@ const SearchCard = ({ index, item }: SearchCardProps) => {
     }
   }, [item]);
 
+  const likeProduct = async () => {
+    try {
+      const request = await fetch("/api/products/" + item.ASIN, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const response = await request.json();
+      console.log(response);
+    } catch (error) {}
+  };
+
   return (
     <div>
       <div
@@ -52,19 +62,22 @@ const SearchCard = ({ index, item }: SearchCardProps) => {
               : item.ItemInfo!.Title!.DisplayValue}
           </p>
           <div className="flex justify-between">
-            <p className="text-md text-black font-bold">
-              {formattedPrice}
-            </p>
+            <p className="text-md text-black font-bold">{formattedPrice}</p>
             <div>
               <img
                 src="https://static-cdn.drawnames.com/Content/Assets/icon-like-liked.svg"
                 className="inline mb-1 mr-2"
               />
+
+              {/* PRODUCT LIKES */}
               <p className="inline text-md text-blue-500 font-bold">{2}</p>
             </div>
           </div>
         </footer>
-        <div className="absolute top-[140px] right-[8px] w-[45px] h-[45px] rounded-full bg-white shadow-[0_0_8px_0px_rgba(0,0,0,0.2)] flex items-center justify-center">
+        <div
+          onClick={likeProduct}
+          className="absolute top-[140px] right-[8px] w-[45px] h-[45px] rounded-full bg-white shadow-[0_0_8px_0px_rgba(0,0,0,0.2)] flex items-center justify-center"
+        >
           <img
             src="https://static-cdn.drawnames.com/Content/Assets/icon-like-unliked.svg"
             width={20}

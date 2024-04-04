@@ -61,9 +61,6 @@ export default function MyLists() {
   }, [responseItems]);
 
   const DisplayImages = () => {
-    // for(let i = 0; i < responseItems.length; i++) {
-    //   console.log(responseItems[i]);
-    // }
     return responseItems.map((item, index) => (
       <SearchCard
         key={index}
