@@ -5,6 +5,10 @@ import { useEffect, useState } from "react";
 import { SearchResultItem } from "paapi5-typescript-sdk";
 import SearchCard from "@/components/ui/searchCard";
 
+type SearchResultItemWithLikes = SearchResultItem & {
+  isLikedByUser: boolean;
+}
+
 export default function MyLists() {
   const [scrolled, setScrolled] = useState(false);
   const [responseImageUrls, setResponseImageUrls] = useState<string[]>([]);

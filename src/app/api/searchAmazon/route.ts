@@ -54,6 +54,8 @@ export async function POST(request: Request) {
     (${responseItems[8].ASIN}, ${responseItems[8].ItemInfo?.Title?.DisplayValue}),
     (${responseItems[9].ASIN}, ${responseItems[9].ItemInfo?.Title?.DisplayValue})
     ON CONFLICT (asin) DO NOTHING;`;
+    // const likedItems = await sql`
+    // `;
 
     return NextResponse.json(data);
   } catch (error) {
