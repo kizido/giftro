@@ -2,9 +2,10 @@ import { Key, useState } from "react";
 
 type SearchCardModalProps = {
   item: any;
+  price: string;
   onClose: () => void;
 };
-const SearchCardModal = ({ item, onClose }: SearchCardModalProps) => {
+const SearchCardModal = ({ item, price, onClose }: SearchCardModalProps) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<
     Key | null | undefined
   >(null);
@@ -76,24 +77,25 @@ const SearchCardModal = ({ item, onClose }: SearchCardModalProps) => {
             {item.ItemInfo?.Title?.DisplayValue}
           </h2>
 
-          <span className="text-xs">
-            {item.ItemInfo!.ByLineInfo!.Brand!.DisplayValue!}
-          </span>
           <div>
-              <span className="text-xs">
-                {item &&
-                item.ItemInfo &&
-                item.ItemInfo.ProductInfo &&
-                item.ItemInfo.ProductInfo.Size
-                  ? item.ItemInfo?.ProductInfo?.Size?.DisplayValue +
-                    " | " +
-                    item.ItemInfo!.ProductInfo!.Color!.DisplayValue! +
-                    " - "
-                  : item.ItemInfo?.Classifications?.ProductGroup?.DisplayValue + " - "}
-              </span>
-              <span className="text-xs">
-                {item.BrowseNodeInfo!.BrowseNodes[0]!.ContextFreeName!}
-              </span>
+            <span className="text-xs block">
+              {item.ItemInfo!.ByLineInfo!.Brand!.DisplayValue!}
+            </span>
+            <span className="text-xs">
+              {item &&
+              item.ItemInfo &&
+              item.ItemInfo.ProductInfo &&
+              item.ItemInfo.ProductInfo.Size
+                ? item.ItemInfo?.ProductInfo?.Size?.DisplayValue +
+                  " | " +
+                  item.ItemInfo!.ProductInfo!.Color!.DisplayValue! +
+                  " - "
+                : item.ItemInfo?.Classifications?.ProductGroup?.DisplayValue +
+                  " - "}
+            </span>
+            <span className="text-xs">
+              {item.BrowseNodeInfo!.BrowseNodes[0]!.ContextFreeName!}
+            </span>
           </div>
 
           <a
@@ -104,7 +106,7 @@ const SearchCardModal = ({ item, onClose }: SearchCardModalProps) => {
           >
             <p className="font-semibold">Amazon</p>
             <p className="text-blue-500">
-              {item!.Offers!.Listings[0]!.Price!.DisplayAmount!}
+              {price}
             </p>
           </a>
         </div>

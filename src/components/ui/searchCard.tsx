@@ -13,9 +13,20 @@ const SearchCard = ({ index, item }: SearchCardProps) => {
   const titleDisplayedCharacters = 14;
   const [productModalOpen, setProductModalOpen] = useState(false);
 
-  const [selectedImageIndex, setSelectedImageIndex] = useState<
-    Key | null | undefined
-  >(null);
+  const [formattedPrice, setFormattedPrice] = useState<string>("");
+
+  useEffect(() => {
+    if (item?.Offers?.Listings[0]?.Price?.DisplayAmount !== undefined) {
+      const originalPrice: string = item.Offers.Listings[0].Price.DisplayAmount;
+      const firstSpaceIndex: number = originalPrice.indexOf(" ");
+
+      if (firstSpaceIndex !== -1) {
+        setFormattedPrice(originalPrice.substring(0, firstSpaceIndex));
+      } else {
+        setFormattedPrice(originalPrice);
+      }
+    }
+  }, [item]);
 
   return (
     <div>
@@ -42,7 +53,7 @@ const SearchCard = ({ index, item }: SearchCardProps) => {
           </p>
           <div className="flex justify-between">
             <p className="text-md text-black font-bold">
-              {item!.Offers!.Listings[0]!.Price!.DisplayAmount!}
+              {formattedPrice}
             </p>
             <div>
               <img
@@ -63,7 +74,11 @@ const SearchCard = ({ index, item }: SearchCardProps) => {
         </div>
       </div>
       {productModalOpen && (
-        <SearchCardModal item={item} onClose={() => setProductModalOpen(false)}/>
+        <SearchCardModal
+          item={item}
+          onClose={() => setProductModalOpen(false)}
+          price={formattedPrice}
+        />
       )}
     </div>
   );
