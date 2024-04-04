@@ -25,7 +25,8 @@ const SearchCard = ({ index, item }: SearchCardProps) => {
     }
   }, [item]);
 
-  const likeProduct = async () => {
+  const likeProduct = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     try {
       const request = await fetch("/api/products/" + item.ASIN, {
         method: "POST",
@@ -75,7 +76,7 @@ const SearchCard = ({ index, item }: SearchCardProps) => {
           </div>
         </footer>
         <div
-          onClick={likeProduct}
+          onClick={(e) => likeProduct(e)}
           className="absolute top-[140px] right-[8px] w-[45px] h-[45px] rounded-full bg-white shadow-[0_0_8px_0px_rgba(0,0,0,0.2)] flex items-center justify-center"
         >
           <img
