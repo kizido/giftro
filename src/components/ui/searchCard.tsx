@@ -35,7 +35,12 @@ const SearchCard = ({ index, item }: SearchCardProps) => {
         },
       });
       const response = await request.json();
-      console.log(response);
+      const { likes, error } = response;
+      if(error) {
+        console.log(error);
+      } else {
+        console.log("Product's Likes Amount: " + likes);
+      }
     } catch (error) {}
   };
 

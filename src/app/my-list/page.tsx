@@ -11,7 +11,6 @@ type SearchResultItemWithLikes = SearchResultItem & {
 
 export default function MyLists() {
   const [scrolled, setScrolled] = useState(false);
-  const [responseImageUrls, setResponseImageUrls] = useState<string[]>([]);
   const [responseItems, setResponseItems] = useState<SearchResultItem[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
