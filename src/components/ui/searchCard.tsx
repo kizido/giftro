@@ -11,6 +11,7 @@ const SearchCard = ({ index, item }: SearchCardProps) => {
   const [productModalOpen, setProductModalOpen] = useState(false);
 
   const [formattedPrice, setFormattedPrice] = useState<string>("");
+  const [productLikes, setProductLikes] = useState("0");
 
   useEffect(() => {
     if (item?.Offers?.Listings[0]?.Price?.DisplayAmount !== undefined) {
@@ -39,7 +40,7 @@ const SearchCard = ({ index, item }: SearchCardProps) => {
       if(error) {
         console.log(error);
       } else {
-        console.log("Product's Likes Amount: " + likes);
+        setProductLikes(likes);
       }
     } catch (error) {}
   };
@@ -76,7 +77,7 @@ const SearchCard = ({ index, item }: SearchCardProps) => {
               />
 
               {/* PRODUCT LIKES */}
-              <p className="inline text-md text-blue-500 font-bold">{2}</p>
+              <p className="inline text-md text-blue-500 font-bold">{productLikes}</p>
             </div>
           </div>
         </footer>
