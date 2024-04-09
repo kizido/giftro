@@ -5,13 +5,14 @@ import { useEffect, useState } from "react";
 import { SearchResultItem } from "paapi5-typescript-sdk";
 import SearchCard from "@/components/ui/searchCard";
 
-type SearchResultItemWithLikes = SearchResultItem & {
+export type ItemWithLikeInfo = SearchResultItem & {
+  likes: number;
   isLikedByUser: boolean;
 }
 
 export default function MyLists() {
   const [scrolled, setScrolled] = useState(false);
-  const [responseItems, setResponseItems] = useState<SearchResultItem[]>([]);
+  const [responseItems, setResponseItems] = useState<ItemWithLikeInfo[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
@@ -45,22 +46,15 @@ export default function MyLists() {
       });
       const response = await request.json();
       if (!response.error) {
-        const { SearchResult } = response;
-        console.log(SearchResult);
-        const retrievedItems = SearchResult.Items;
-        console.log(retrievedItems);
-        setResponseItems(retrievedItems);
+        setResponseItems(response);
       }
     } catch (error) {
       console.log(error);
     }
   };
-  useEffect(() => {
-    // searchAmazon();
-  }, []);
 
   useEffect(() => {
-    console.log("Response Items: " + responseItems);
+    responseItems.forEach(item => console.log(item));
   }, [responseItems]);
 
   const DisplayImages = () => {

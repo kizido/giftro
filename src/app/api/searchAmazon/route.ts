@@ -1,13 +1,21 @@
 import { sql } from "@vercel/postgres";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import {
   SearchItemsRequest,
   PartnerType,
   Host,
   Region,
+  SearchResultItem,
 } from "paapi5-typescript-sdk";
+import { authOptions } from "../auth/[...nextauth]/options";
+import { ItemWithLikeInfo } from "@/app/my-list/page";
 
 export async function POST(request: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: "Session could not be found." });
+  }
   const body: string = await request.json();
 
   try {
@@ -33,14 +41,19 @@ export async function POST(request: Request) {
       Host.UNITED_STATES,
       Region.UNITED_STATES
     );
+    // Collect data and verify there is a result
     const data = await amazonRequest.send();
-    console.log("Data: " + data.SearchResult);
-    if(data.SearchResult === undefined) {
-      return NextResponse.json({ error: "No search result found." })
+    if (data.SearchResult === undefined) {
+      return NextResponse.json({ error: "No search result found." });
     }
-    const responseItems = data.SearchResult.Items;
-    responseItems.forEach(item => console.log("Response Item: " + item.ASIN));
 
+    const responseItems = data.SearchResult.Items;
+    // const asins = responseItems.map((item) => item.ASIN);
+    // const asinsStringified = JSON.stringify(asins)
+    //   .replace("[", "{")
+    //   .replace("]", "}");
+
+    // Insert queried items into DB if not already there
     await sql`
     INSERT INTO products (asin, title)
     VALUES (${responseItems[0].ASIN}, ${responseItems[0].ItemInfo?.Title?.DisplayValue}),
@@ -54,10 +67,32 @@ export async function POST(request: Request) {
     (${responseItems[8].ASIN}, ${responseItems[8].ItemInfo?.Title?.DisplayValue}),
     (${responseItems[9].ASIN}, ${responseItems[9].ItemInfo?.Title?.DisplayValue})
     ON CONFLICT (asin) DO NOTHING;`;
-    // const likedItems = await sql`
-    // `;
 
-    return NextResponse.json(data);
+    const productInfo = await sql`
+    SELECT asin, likes, likerIds @> ARRAY[${session.id}::varchar] AS isLikedByUser
+    FROM products
+    WHERE asin
+    IN (${responseItems[0].ASIN}, ${responseItems[1].ASIN}, ${responseItems[2].ASIN}, 
+      ${responseItems[3].ASIN}, ${responseItems[4].ASIN}, ${responseItems[5].ASIN}, 
+      ${responseItems[6].ASIN}, ${responseItems[7].ASIN}, ${responseItems[8].ASIN}, 
+      ${responseItems[9].ASIN})`;
+
+    const productInfoRows = productInfo.rows;
+    
+    const enrichedItems: ItemWithLikeInfo[] = responseItems.map(item => {
+      // Find the matching productInfoRow for the current item
+      const matchingProductInfo = productInfoRows.find(info => info.asin === item.ASIN);
+    
+      // Return a new object combining the original item properties
+      // with likes and isLikedByUser, defaulting to 0 and false if not found
+      return {
+        ...item, // Spread the original item properties
+        likes: matchingProductInfo ? matchingProductInfo.likes : 0, // Default to 0 if no match is found
+        isLikedByUser: matchingProductInfo ? matchingProductInfo.isLikedByUser : false, // Default to false if no match is found
+      };
+    });
+
+    return NextResponse.json(enrichedItems);
   } catch (error) {
     console.log(error);
     return NextResponse.json({ error });
