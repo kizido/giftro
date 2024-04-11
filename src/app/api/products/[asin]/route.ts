@@ -13,16 +13,24 @@ export async function POST(
   if (asin !== undefined && session?.id !== undefined) {
     await sql`
     UPDATE products
-    SET likes = likes + 1,
-        likerIds = array_append(likerIds, ${session?.id}::varchar)
-    WHERE asin = ${asin}
-    AND NOT (likerIds @> ARRAY[${session?.id}::varchar])`;
-    const response = await sql`
-    SELECT likes
-    FROM products
-    WHERE asin = ${asin}`;
-    const productLikes = response.rows[0].likes;
-    return NextResponse.json({ likes: productLikes });
+    SET likes = CASE
+                    WHEN likerIds @> ARRAY[${session?.id}::varchar]
+                    THEN likes - 1
+                    ELSE likes + 1
+                  END,
+        likerIds = CASE
+                       WHEN likerIds @> ARRAY[${session?.id}::varchar]
+                       THEN array_remove(likerIds, ${session?.id}::varchar)
+                       ELSE array_append(likerIds, ${session?.id}::varchar)
+                     END
+    WHERE asin = ${asin};`;
+
+    // const response = await sql`
+    // SELECT likes
+    // FROM products
+    // WHERE asin = ${asin}`;
+    // const productLikes = response.rows[0].likes;
+    return NextResponse.json({ message: "Likes changed successfully." });
   }
   return NextResponse.json({ error: "Product ASIN or session not defined." });
 }

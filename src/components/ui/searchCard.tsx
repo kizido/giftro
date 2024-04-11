@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import SearchCardModal from "./searchCardModal";
+import { ItemWithLikeInfo } from "@/app/my-list/page";
 
 type SearchCardProps = {
   index: number;
-  item: any;
+  item: ItemWithLikeInfo;
 };
 
 const SearchCard = ({ index, item }: SearchCardProps) => {
@@ -11,7 +12,8 @@ const SearchCard = ({ index, item }: SearchCardProps) => {
   const [productModalOpen, setProductModalOpen] = useState(false);
 
   const [formattedPrice, setFormattedPrice] = useState<string>("");
-  const [productLikes, setProductLikes] = useState("0");
+  const [productLikes, setProductLikes] = useState(item.likes);
+  const [productIsLiked, setProductIsLiked] = useState(item.isLikedByUser);
 
   useEffect(() => {
     if (item?.Offers?.Listings[0]?.Price?.DisplayAmount !== undefined) {
@@ -28,6 +30,12 @@ const SearchCard = ({ index, item }: SearchCardProps) => {
 
   const likeProduct = async (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (productIsLiked) {
+      setProductLikes(productLikes - 1);
+    } else {
+      setProductLikes(productLikes + 1);
+    }
+    setProductIsLiked(!productIsLiked);
     try {
       const request = await fetch("/api/products/" + item.ASIN, {
         method: "POST",
@@ -36,12 +44,12 @@ const SearchCard = ({ index, item }: SearchCardProps) => {
         },
       });
       const response = await request.json();
-      const { likes, error } = response;
-      if(error) {
-        console.log(error);
-      } else {
-        setProductLikes(likes);
-      }
+      // const { likes, error } = response;
+      // if (error) {
+      //   console.log(error);
+      // } else {
+      //   setProductLikes(likes);
+      // }
     } catch (error) {}
   };
 
@@ -77,20 +85,31 @@ const SearchCard = ({ index, item }: SearchCardProps) => {
               />
 
               {/* PRODUCT LIKES */}
-              <p className="inline text-md text-blue-500 font-bold">{productLikes}</p>
+              <p className="inline text-md text-blue-500 font-bold">
+                {productLikes}
+              </p>
             </div>
           </div>
         </footer>
         <div
           onClick={(e) => likeProduct(e)}
-          className="absolute top-[140px] right-[8px] w-[45px] h-[45px] rounded-full bg-white shadow-[0_0_8px_0px_rgba(0,0,0,0.2)] flex items-center justify-center"
+          className="absolute top-[140px] right-[8px] w-[45px] h-[45px] rounded-full bg-white shadow-[0_0_8px_0px_rgba(0,0,0,0.2)] flex items-center justify-center select-none"
         >
-          <img
-            src="https://static-cdn.drawnames.com/Content/Assets/icon-like-unliked.svg"
-            width={20}
-            height={19}
-            className="mt-1"
-          />
+          {productIsLiked ? (
+            <img
+              src="https://static-cdn.drawnames.com/Content/Assets/icon-like-liked.svg"
+              width={20}
+              height={19}
+              className="mt-1"
+            />
+          ) : (
+            <img
+              src="https://static-cdn.drawnames.com/Content/Assets/icon-like-unliked.svg"
+              width={20}
+              height={19}
+              className="mt-1"
+            />
+          )}
         </div>
       </div>
       {productModalOpen && (
