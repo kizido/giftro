@@ -32,7 +32,7 @@ const WishList = () => {
   }, []);
 
   return (
-    <div className="w-full h-full">
+    <div className="p-4 w-full h-full">
       {listItems.map((item) => (
         <WishListItem key={item.asin} wishListItem={item} />
       ))}
