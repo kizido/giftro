@@ -7,31 +7,36 @@ export type ListItem = {
   name?: string;
 };
 
-type WishListProps = {
-  items: ItemWithLikeInfo[];
-};
-const WishList = ({ items }: WishListProps) => {
+const WishList = () => {
   const [listItems, setListItems] = useState<ListItem[]>([]);
 
   useEffect(() => {
     const getListItems = async () => {
-
-    }
-
-    const modifiedItems: ListItem[] = items.map((item) => {
-      return {
-        asin: item.ASIN,
-        name: item.ItemInfo?.Title?.DisplayValue,
-      };
-    });
-    setListItems(modifiedItems);
-  }, [items]);
+      try {
+        const request = await fetch("/api/products/likedProducts", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const response = await request.json();
+        if(!response.error) {
+            const likedItems: ListItem[] = response;
+            setListItems(likedItems);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getListItems();
+  }, []);
 
   return (
     <div className="w-full h-full">
       {listItems.map((item) => (
         <WishListItem key={item.asin} wishListItem={item} />
       ))}
+      <button className="block p-2 bg-gray-200">Add Item</button>
     </div>
   );
 };

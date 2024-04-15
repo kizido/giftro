@@ -147,7 +147,7 @@ export default function MyLists() {
         {/* Wish List Area */}
         <div className="hidden lg:inline-block w-[24rem] h-[calc(100vh-112px)] ">
           <div className="fixed w-[24rem] border border-dashed bottom-10 top-32 overflow-y-scroll">
-            <WishList items={responseItems}/>
+            <WishList/>
           </div>
         </div>
       </div>

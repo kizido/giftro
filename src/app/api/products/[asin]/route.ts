@@ -24,12 +24,7 @@ export async function POST(
                        ELSE array_append(likerIds, ${session?.id}::varchar)
                      END
     WHERE asin = ${asin};`;
-
-    // const response = await sql`
-    // SELECT likes
-    // FROM products
-    // WHERE asin = ${asin}`;
-    // const productLikes = response.rows[0].likes;
+    
     return NextResponse.json({ message: "Likes changed successfully." });
   }
   return NextResponse.json({ error: "Product ASIN or session not defined." });
