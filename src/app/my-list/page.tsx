@@ -58,10 +58,10 @@ export default function MyLists() {
     responseItems.forEach(item => console.log(item));
   }, [responseItems]);
 
-  const DisplayImages = () => {
+  const DisplayCards = () => {
     return responseItems.map((item, index) => (
       <SearchCard
-        key={index}
+        key={item.ASIN}
         index={index}
         item={item}
       />
@@ -140,7 +140,7 @@ export default function MyLists() {
           </div>
           {/* Searched Items */}
           <div className="flex justify-start flex-wrap gap-6">
-            {responseItems && DisplayImages()}
+            {responseItems && DisplayCards()}
           </div>
         </div>
 
