@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { SearchResultItem } from "paapi5-typescript-sdk";
 import SearchCard from "@/components/ui/searchCard";
+import WishList from "@/components/ui/wishList";
 
 export type ItemWithLikeInfo = SearchResultItem & {
   likes: number;
@@ -145,7 +146,9 @@ export default function MyLists() {
 
         {/* Wish List Area */}
         <div className="hidden lg:inline-block w-[24rem] h-[calc(100vh-112px)] ">
-          <div className="fixed w-[24rem] border border-dashed bottom-10 top-32 overflow-y-scroll"></div>
+          <div className="fixed w-[24rem] border border-dashed bottom-10 top-32 overflow-y-scroll">
+            <WishList items={responseItems}/>
+          </div>
         </div>
       </div>
     </div>
