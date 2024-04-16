@@ -7,9 +7,9 @@ export interface AccountLayoutProps {
 
 export default function AccountLayout({ children }: AccountLayoutProps) {
   return (
-    <div>
+    <div className="w-full h-full">
       <AuthContext>
-        <main className="w-full">{children}</main>
+        <main className="w-full h-full">{children}</main>
       </AuthContext>
     </div>
   );
