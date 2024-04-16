@@ -5,7 +5,7 @@ type WishListItemProps = {
 }
 const WishListItem = ({wishListItem}: WishListItemProps) => {
 
-    return (<div className="w-full mb-2 p-2 border border-black flex items-center">
+    return (<div className="w-full mb-4 p-2 border border-black flex items-center">
         <h2>{wishListItem.name ?? wishListItem.asin}</h2>
     </div>);
 }

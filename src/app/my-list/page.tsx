@@ -145,8 +145,8 @@ export default function MyLists() {
         </div>
 
         {/* Wish List Area */}
-        <div className="hidden lg:inline-block w-[24rem] h-[calc(100vh-112px)] ">
-          <div className="fixed w-[24rem] border border-dashed bottom-10 top-32 overflow-y-scroll">
+        <div className="hidden lg:inline-block w-[24rem] h-[calc(100vh-112px)]">
+          <div className="fixed w-[24rem] bottom-10 top-32 overflow-y-scroll rounded-3xl shadow-[0_0_8px_0px_rgba(0,0,0,0.2)]">
             <WishList/>
           </div>
         </div>

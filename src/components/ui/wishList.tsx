@@ -32,11 +32,16 @@ const WishList = () => {
   }, []);
 
   return (
-    <div className="p-4 w-full h-full">
+    <div className="w-full h-full">
+        <div className="w-full bg-blue-400 p-4 mb-4">
+            <h1 className="text-center font-bold text-2xl">My Wish List</h1>
+        </div>
+        <div className="px-4">
       {listItems.map((item) => (
         <WishListItem key={item.asin} wishListItem={item} />
       ))}
-      <button className="block p-2 bg-gray-200">Add Item</button>
+      </div>
+      {/* <button className="block p-2 bg-gray-200">Add Item</button> */}
     </div>
   );
 };
