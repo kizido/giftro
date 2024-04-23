@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useDebounceValue } from "@/hooks/useDebounceValue";
 import { QueryResultRow } from "@vercel/postgres";
+import EventDisplayModal from "@/components/ui/eventDisplayModal";
 
 export default function Page() {
   const [isFirstTimeUser, setIsFirstTimeUser] = useState(false);
   const [modalOpen, setModalOpen] = useState(true);
 
   const [filterState, setFilterState] = useState('trending');
+  const [eventDisplayModal, setEventDisplayModal] = useState(false);
 
   useEffect(() => {
     checkIsFirstTimeUser();
@@ -35,9 +37,13 @@ export default function Page() {
     <div className="w-full h-full flex justify-between items-center px-72">
       {/* Upcoming Events */}
       <div className="pt-4 px-4 w-80 h-4/5 shadow-[0_0_8px_0px_rgba(0,0,0,0.5)] rounded-lg flex flex-col gap-4 bg-gray-50">
+
+        {/* Event Display Modal */}
+        {eventDisplayModal && <EventDisplayModal onClose={() => setEventDisplayModal(false)}/>}
+
         <h2 className="text-center font-semibold">Upcoming Events</h2>
-        <p>May 12 - Mother's Day</p>
-        <p>June 14 - Kyle's Birthday</p>
+        <p className="cursor-pointer hover:text-gray-400" onClick={() => setEventDisplayModal(true)}>{`May 12 - Mother's Day`}</p>
+        <p className="cursor-pointer hover:text-gray-400" onClick={() => setEventDisplayModal(true)}>{`June 14 - Kyle's Birthday`}</p>
       </div>
 
       {/* Trending/Popular Items */}
@@ -54,7 +60,7 @@ export default function Page() {
             <h2 className="text-center py-10 font-semibold">Seasonal</h2>
           </div>
           <div className={`flex justify-center items-center w-36 h-28 border-2 border-black bg-green-200 cursor-pointer ${filterState === 'holiday' ? 'border-4 border-yellow-200' : ''}`} onClick={() => setFilterState('holiday')}>
-            <h2 className="text-center py-10 font-semibold">Mother's Day</h2>
+            <h2 className="text-center py-10 font-semibold">Mothers Day</h2>
           </div>
         </div>
 
