@@ -18,6 +18,41 @@ export async function POST(request: Request) {
   }
   const body: string = await request.json();
 
+  // if (body === "|||POPULAR|||") {
+  //   try {
+  //     const productInfo = await sql`
+  //   SELECT asin, likes, likerids
+  //   FROM products
+  //   ORDER BY likes DESC
+  //   LIMIT 10`;
+
+  //   const productInfoRows = productInfo.rows;
+  //   const sessionId = session.id.toString();
+  //   const enrichedItems: ItemWithLikeInfo[] = productInfoRows.map((row) => {
+  //     // Find the matching productInfoRow for the current item
+
+  //     const likerIds: string = row
+  //       ? row.likerids.toString()
+  //       : "";
+  //     const likerIdsArray: string[] = likerIds
+  //       .split(",")
+  //       .map((id) => id.trim());
+
+  //     // Return a new object combining the original item properties
+  //     // with likes and isLikedByUser, defaulting to 0 and false if not found
+  //     return {
+  //       ...item, // Spread the original item properties
+  //       likes: matchingProductInfo ? matchingProductInfo.likes : 0, // Default to 0 if no match is found
+  //       isLikedByUser: likerIdsArray.includes(sessionId), // Default to false if no match is found
+  //     };
+  //   });
+
+  //   return NextResponse.json(enrichedItems);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
   try {
     const amazonRequest = new SearchItemsRequest(
       {
@@ -87,7 +122,9 @@ export async function POST(request: Request) {
       const likerIds: string = matchingProductInfo
         ? matchingProductInfo.likerids.toString()
         : "";
-      const likerIdsArray: string[] = likerIds.split(",").map(id => id.trim());
+      const likerIdsArray: string[] = likerIds
+        .split(",")
+        .map((id) => id.trim());
 
       // Return a new object combining the original item properties
       // with likes and isLikedByUser, defaulting to 0 and false if not found

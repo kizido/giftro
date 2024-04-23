@@ -9,7 +9,7 @@ import WishList from "@/components/ui/wishList";
 export type ItemWithLikeInfo = SearchResultItem & {
   likes: number;
   isLikedByUser: boolean;
-}
+};
 
 export default function MyLists() {
   const [scrolled, setScrolled] = useState(false);
@@ -36,6 +36,28 @@ export default function MyLists() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    // Set response items to most liked items on first render
+    const getMostPopularItems = async () => {
+      try {
+        const request = await fetch("/api/searchAmazon", {
+          method: "POST",
+          body: JSON.stringify("|||POPULAR|||"),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const response = await request.json();
+        if (!response.error) {
+          setResponseItems(response);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getMostPopularItems;
+  }, []);
   const searchAmazon = async () => {
     try {
       const request = await fetch("/api/searchAmazon", {
@@ -55,16 +77,12 @@ export default function MyLists() {
   };
 
   useEffect(() => {
-    responseItems.forEach(item => console.log(item));
+    responseItems.forEach((item) => console.log(item));
   }, [responseItems]);
 
   const DisplayCards = () => {
     return responseItems.map((item, index) => (
-      <SearchCard
-        key={item.ASIN}
-        index={index}
-        item={item}
-      />
+      <SearchCard key={item.ASIN} index={index} item={item} />
     ));
   };
 
@@ -107,14 +125,6 @@ export default function MyLists() {
                 iconRotation={90}
                 className="font-semibold"
               >
-                Shop
-              </Button>
-              <Button
-                variant="secondary"
-                iconUrl="https://static-cdn.drawnames.com//Content/Assets/chevron-gray.svg"
-                iconRotation={90}
-                className="font-semibold"
-              >
                 Price
               </Button>
               <Button
@@ -147,7 +157,7 @@ export default function MyLists() {
         {/* Wish List Area */}
         <div className="hidden lg:inline-block w-[24rem] h-[calc(100vh-112px)]">
           <div className="fixed w-[24rem] bottom-10 top-32 overflow-y-scroll rounded-3xl shadow-[0_0_8px_0px_rgba(0,0,0,0.2)]">
-            <WishList/>
+            <WishList />
           </div>
         </div>
       </div>
