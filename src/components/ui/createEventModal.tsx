@@ -10,6 +10,11 @@ import {
 } from "./form";
 import { Input } from "./input";
 import { Checkbox } from "./checkbox";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
+import { Calendar } from "./calendar";
+import { Button } from "./button";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 
 type CreateEventModalProps = {
   onClose: () => void;
@@ -37,7 +42,10 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
           />
         </header>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full flex flex-col items-center">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4 w-full flex flex-col items-center"
+          >
             <FormField
               control={form.control}
               name="eventName"
@@ -54,11 +62,38 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
               control={form.control}
               name="eventDate"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex flex-col w-96">
                   <FormLabel>Event Date</FormLabel>
-                  <FormControl>
-                  <Input className="h-8 w-96" {...field} />
-                  </FormControl>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={(date) =>
+                          date < new Date()
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </FormItem>
               )}
             />
@@ -69,7 +104,7 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
                 <FormItem>
                   <FormLabel>Giftees</FormLabel>
                   <FormControl>
-                  <Input className="h-8 w-96" {...field} />
+                    <Input className="h-8 w-96" {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -81,7 +116,7 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
                 <FormItem>
                   <FormLabel>Event Gifts</FormLabel>
                   <FormControl>
-                  <Input className="h-8 w-96" {...field} />
+                    <Input className="h-8 w-96" {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -93,7 +128,7 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
                 <FormItem>
                   <FormLabel>Gift Budget</FormLabel>
                   <FormControl>
-                  <Input className="h-8 w-96" {...field} />
+                    <Input className="h-8 w-96" {...field} />
                   </FormControl>
                 </FormItem>
               )}
