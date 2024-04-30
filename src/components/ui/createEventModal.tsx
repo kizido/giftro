@@ -1,8 +1,26 @@
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./form";
+import { Input } from "./input";
+import { Checkbox } from "./checkbox";
+
 type CreateEventModalProps = {
   onClose: () => void;
 };
 
 const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
+  const form = useForm();
+
+  const onSubmit = () => {
+    console.log("Form submitted");
+  };
   return (
     <div className="fixed inset-0 bg-gray-400 bg-opacity-40 z-40 flex justify-center items-center">
       <div
@@ -18,7 +36,89 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
             onClick={onClose}
           />
         </header>
-        <label>Event Name</label>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full flex flex-col items-center">
+            <FormField
+              control={form.control}
+              name="eventName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Event Name</FormLabel>
+                  <FormControl>
+                    <Input className="h-8 w-96" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="eventDate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Event Date</FormLabel>
+                  <FormControl>
+                  <Input className="h-8 w-96" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="giftees"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Giftees</FormLabel>
+                  <FormControl>
+                  <Input className="h-8 w-96" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="eventGifts"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Event Gifts</FormLabel>
+                  <FormControl>
+                  <Input className="h-8 w-96" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="budget"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Gift Budget</FormLabel>
+                  <FormControl>
+                  <Input className="h-8 w-96" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="annual"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Annual? </FormLabel>
+                  <FormControl>
+                    <Checkbox />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <button
+              type="submit"
+              className="p-2 text-secondary-foreground bg-secondary text-2xl self-end"
+            >
+              Create Event
+            </button>
+          </form>
+        </Form>
+        {/* <label>Event Name</label>
         <input className="bg-gray-100 w-64" />
         <label>Event Date</label>
         <input className="bg-gray-100 w-64" />
@@ -38,13 +138,7 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
           <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
             Annual?
           </label>
-        </div>
-        <button
-          type="submit"
-          className="p-2 text-secondary-foreground bg-secondary text-2xl self-end"
-        >
-          Create Event
-        </button>
+        </div> */}
       </div>
     </div>
   );
