@@ -1,5 +1,7 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import Logout from "@/app/logout";
+import { Button } from "@/components/ui/button";
+import CreateEventButton from "@/components/ui/createEventButton";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import React from "react";
@@ -51,6 +53,7 @@ export default async function Navbar() {
             <Link href={"/profile"} className="text-semibold text-md">
               Profile
             </Link>
+            <CreateEventButton />
             <Logout />
           </>
         )}
