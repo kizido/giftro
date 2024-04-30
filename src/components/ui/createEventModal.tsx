@@ -15,6 +15,24 @@ import { Calendar } from "./calendar";
 import { Button } from "./button";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "./command";
+import { Check, ChevronsUpDown } from "lucide-react";
+
+const gifteeList = [
+  { label: "Josh", value: "Josh" },
+  { label: "Justin", value: "Justin" },
+  { label: "Kyle", value: "Kyle" },
+  { label: "Jason", value: "Jason" },
+  { label: "Matthew", value: "Matthew" },
+  { label: "Dave", value: "Dave" },
+  { label: "Aaron", value: "Aaron" },
+] as const;
 
 type CreateEventModalProps = {
   onClose: () => void;
@@ -87,9 +105,7 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) =>
-                          date < new Date()
-                        }
+                        disabled={(date) => date < new Date()}
                         initialFocus
                       />
                     </PopoverContent>
@@ -101,6 +117,63 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
               control={form.control}
               name="giftees"
               render={({ field }) => (
+                <FormItem className="flex flex-col w-96">
+                  <FormLabel>Giftees</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "justify-between",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? gifteeList.find(
+                                (giftee) => giftee.value === field.value
+                              )?.label
+                            : "Select Friend(s)"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0">
+                      <Command>
+                        <CommandInput placeholder="Search for a friend..." />
+                        <CommandEmpty>No language found.</CommandEmpty>
+                        <CommandGroup>
+                          {gifteeList.map((giftee) => (
+                            <CommandItem
+                              value={giftee.label}
+                              key={giftee.value}
+                              onSelect={() => {
+                                form.setValue("giftee", giftee.label);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  giftee.label === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                              {giftee.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                </FormItem>
+              )}
+            />
+            {/* <FormField
+              control={form.control}
+              name="giftees"
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Giftees</FormLabel>
                   <FormControl>
@@ -108,7 +181,7 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
                   </FormControl>
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="eventGifts"
