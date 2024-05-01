@@ -2,11 +2,9 @@ import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "./form";
 import { Input } from "./input";
 import { Checkbox } from "./checkbox";
@@ -23,6 +21,8 @@ import {
   CommandItem,
 } from "./command";
 import { Check, ChevronsUpDown } from "lucide-react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const gifteeList = [
   { label: "Josh", value: "Josh" },
@@ -34,12 +34,34 @@ const gifteeList = [
   { label: "Aaron", value: "Aaron" },
 ] as const;
 
+const FormSchema = z.object({
+  eventName: z.string({
+    required_error: "Please select a name.",
+  }),
+  eventDate: z.string({
+    required_error: "Please select a date.",
+  }),
+  giftees: z.string({
+    required_error: "Please select a giftee.",
+  }),
+  eventGifts: z.string({
+    required_error: "Please select a name.",
+  }),
+  budget: z.string({
+    required_error: "Please select a name.",
+  }),
+  annual: z.boolean(),
+}
+);
+
 type CreateEventModalProps = {
   onClose: () => void;
 };
 
 const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
-  const form = useForm();
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+  })
 
   const onSubmit = () => {
     console.log("Form submitted");
@@ -47,7 +69,7 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
   return (
     <div className="fixed inset-0 bg-gray-400 bg-opacity-40 z-40 flex justify-center items-center">
       <div
-        className="relative px-8 py-4 flex flex-col items-start lg:w-[62rem] lg:h-[36rem] w-[24rem] h-full bg-white shadow-[0_0_8px_0px_rgba(0,0,0,0.2)] rounded-3xl overflow-hidden"
+        className="relative px-8 py-4 flex flex-col justify-between items-start lg:w-[62rem] lg:h-[36rem] w-[24rem] h-full bg-white shadow-[0_0_8px_0px_rgba(0,0,0,0.2)] rounded-3xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         <header>
@@ -142,14 +164,14 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
                     <PopoverContent className="w-[200px] p-0">
                       <Command>
                         <CommandInput placeholder="Search for a friend..." />
-                        <CommandEmpty>No language found.</CommandEmpty>
+                        <CommandEmpty>No giftee found.</CommandEmpty>
                         <CommandGroup>
                           {gifteeList.map((giftee) => (
                             <CommandItem
                               value={giftee.label}
                               key={giftee.value}
                               onSelect={() => {
-                                form.setValue("giftee", giftee.label);
+                                form.setValue("giftees", giftee.label);
                               }}
                             >
                               <Check
@@ -170,18 +192,6 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
                 </FormItem>
               )}
             />
-            {/* <FormField
-              control={form.control}
-              name="giftees"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Giftees</FormLabel>
-                  <FormControl>
-                    <Input className="h-8 w-96" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            /> */}
             <FormField
               control={form.control}
               name="eventGifts"
@@ -226,27 +236,6 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
             </button>
           </form>
         </Form>
-        {/* <label>Event Name</label>
-        <input className="bg-gray-100 w-64" />
-        <label>Event Date</label>
-        <input className="bg-gray-100 w-64" />
-        <label>Giftees</label>
-        <input className="bg-gray-100 w-64" />
-        <label>Gift Ideas</label>
-        <input className="bg-gray-100 w-64" />
-        <label>Budget</label>
-        <input className="bg-gray-100 w-64" />
-
-        <div className="flex items-center">
-          <input
-            id="default-checkbox"
-            type="checkbox"
-            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-          />
-          <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-            Annual?
-          </label>
-        </div> */}
       </div>
     </div>
   );
