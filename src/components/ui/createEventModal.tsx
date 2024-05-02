@@ -1,11 +1,5 @@
 import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "./form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "./form";
 import { Input } from "./input";
 import { Checkbox } from "./checkbox";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
@@ -19,12 +13,13 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from "./command";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-const gifteeList = [
+const giftees = [
   { label: "Josh", value: "Josh" },
   { label: "Justin", value: "Justin" },
   { label: "Kyle", value: "Kyle" },
@@ -41,7 +36,7 @@ const FormSchema = z.object({
   eventDate: z.string({
     required_error: "Please select a date.",
   }),
-  giftees: z.string({
+  giftee: z.string({
     required_error: "Please select a giftee.",
   }),
   eventGifts: z.string({
@@ -51,8 +46,7 @@ const FormSchema = z.object({
     required_error: "Please select a name.",
   }),
   annual: z.boolean(),
-}
-);
+});
 
 type CreateEventModalProps = {
   onClose: () => void;
@@ -61,7 +55,7 @@ type CreateEventModalProps = {
 const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-  })
+  });
 
   const onSubmit = () => {
     console.log("Form submitted");
@@ -125,7 +119,9 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
                         mode="single"
-                        selected={field.value}
+                        selected={
+                          field.value ? new Date(field.value) : undefined
+                        }
                         onSelect={field.onChange}
                         disabled={(date) => date < new Date()}
                         initialFocus
@@ -137,7 +133,7 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
             />
             <FormField
               control={form.control}
-              name="giftees"
+              name="giftee"
               render={({ field }) => (
                 <FormItem className="flex flex-col w-96">
                   <FormLabel>Giftees</FormLabel>
@@ -153,10 +149,10 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
                           )}
                         >
                           {field.value
-                            ? gifteeList.find(
+                            ? giftees.find(
                                 (giftee) => giftee.value === field.value
                               )?.label
-                            : "Select Friend(s)"}
+                            : "Select Friend"}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </FormControl>
@@ -166,25 +162,27 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
                         <CommandInput placeholder="Search for a friend..." />
                         <CommandEmpty>No giftee found.</CommandEmpty>
                         <CommandGroup>
-                          {gifteeList.map((giftee) => (
-                            <CommandItem
-                              value={giftee.label}
-                              key={giftee.value}
-                              onSelect={() => {
-                                form.setValue("giftees", giftee.label);
-                              }}
-                            >
-                              <Check
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  giftee.label === field.value
-                                    ? "opacity-100"
-                                    : "opacity-0"
-                                )}
-                              />
-                              {giftee.label}
-                            </CommandItem>
-                          ))}
+                          <CommandList>
+                            {giftees.map((giftee) => (
+                              <CommandItem
+                                value={giftee.label}
+                                key={giftee.value}
+                                onSelect={() => {
+                                  form.setValue("giftee", giftee.value);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    giftee.value === field.value
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                {giftee.label}
+                              </CommandItem>
+                            ))}
+                          </CommandList>
                         </CommandGroup>
                       </Command>
                     </PopoverContent>
