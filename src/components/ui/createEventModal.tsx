@@ -20,13 +20,13 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const giftees = [
-  { label: "Josh", value: "Josh" },
-  { label: "Justin", value: "Justin" },
-  { label: "Kyle", value: "Kyle" },
-  { label: "Jason", value: "Jason" },
-  { label: "Matthew", value: "Matthew" },
-  { label: "Dave", value: "Dave" },
-  { label: "Aaron", value: "Aaron" },
+  { value: "Josh" },
+  { value: "Justin" },
+  { value: "Kyle" },
+  { value: "Jason" },
+  { value: "Matthew" },
+  { value: "Dave" },
+  { value: "Aaron" },
 ] as const;
 
 const FormSchema = z.object({
@@ -151,7 +151,7 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
                           {field.value
                             ? giftees.find(
                                 (giftee) => giftee.value === field.value
-                              )?.label
+                              )?.value
                             : "Select Friend"}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
@@ -165,7 +165,7 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
                           <CommandList>
                             {giftees.map((giftee) => (
                               <CommandItem
-                                value={giftee.label}
+                                value={giftee.value}
                                 key={giftee.value}
                                 onSelect={() => {
                                   form.setValue("giftee", giftee.value);
@@ -179,7 +179,7 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
                                       : "opacity-0"
                                   )}
                                 />
-                                {giftee.label}
+                                {giftee.value}
                               </CommandItem>
                             ))}
                           </CommandList>
