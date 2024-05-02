@@ -23,7 +23,8 @@ export async function GET() {
         FROM user_friends
         WHERE (user_id = ${session.id} OR friend_user_id = ${session.id})
         AND status = 'accepted'
-    ) fr ON u.id = fr.friend_id;`;
+    ) fr ON u.id = fr.friend_id
+    ORDER BY friend_name ASC;`;
     const responseValue = response.rows;
     return NextResponse.json(responseValue);
   } catch (error) {
