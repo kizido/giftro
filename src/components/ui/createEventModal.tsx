@@ -18,6 +18,7 @@ import {
 import { Check, ChevronsUpDown } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
 
 const giftees = [
   { value: "Josh" },
@@ -56,6 +57,30 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
+
+  const [friends, setFriends] = useState<string[]>([]);
+
+  useEffect(() => {
+    const loadFriends = async () => {
+      try {
+        const request = await fetch("/api/friends", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const requestedFriends = await request.json();
+        const friendNames = requestedFriends.map((friend: { friend_name: string; }) => friend.friend_name);
+        setFriends(friendNames);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    loadFriends();
+  }, []);
+  useEffect(() => {
+    console.log(friends);
+  }, [friends])
 
   const onSubmit = () => {
     console.log("Form submitted");
@@ -149,9 +174,9 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
                           )}
                         >
                           {field.value
-                            ? giftees.find(
-                                (giftee) => giftee.value === field.value
-                              )?.value
+                            ? friends.find(
+                                (friend) => friend === field.value
+                              )
                             : "Select Friend"}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
@@ -163,23 +188,23 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
                         <CommandEmpty>No giftee found.</CommandEmpty>
                         <CommandGroup>
                           <CommandList>
-                            {giftees.map((giftee) => (
+                            {friends.map((friend) => (
                               <CommandItem
-                                value={giftee.value}
-                                key={giftee.value}
+                                value={friend}
+                                key={friend}
                                 onSelect={() => {
-                                  form.setValue("giftee", giftee.value);
+                                  form.setValue("giftee", friend);
                                 }}
                               >
                                 <Check
                                   className={cn(
                                     "mr-2 h-4 w-4",
-                                    giftee.value === field.value
+                                    friend === field.value
                                       ? "opacity-100"
                                       : "opacity-0"
                                   )}
                                 />
-                                {giftee.value}
+                                {friend}
                               </CommandItem>
                             ))}
                           </CommandList>
