@@ -1,5 +1,12 @@
-import { useForm } from "react-hook-form";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "./form";
+import { Controller, useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./form";
 import { Input } from "./input";
 import { Checkbox } from "./checkbox";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
@@ -16,46 +23,22 @@ import {
   CommandList,
 } from "./command";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
+import { TCreateEvent, createEventSchema } from "@/lib/types";
 
-const giftees = [
-  { value: "Josh" },
-  { value: "Justin" },
-  { value: "Kyle" },
-  { value: "Jason" },
-  { value: "Matthew" },
-  { value: "Dave" },
-  { value: "Aaron" },
-] as const;
 
-const FormSchema = z.object({
-  eventName: z.string({
-    required_error: "Please select a name.",
-  }),
-  eventDate: z.string({
-    required_error: "Please select a date.",
-  }),
-  giftee: z.string({
-    required_error: "Please select a giftee.",
-  }),
-  eventGifts: z.string({
-    required_error: "Please select a name.",
-  }),
-  budget: z.string({
-    required_error: "Please select a name.",
-  }),
-  annual: z.boolean(),
-});
 
 type CreateEventModalProps = {
   onClose: () => void;
 };
 
 const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<TCreateEvent>({
+    resolver: zodResolver(createEventSchema),
+    defaultValues: {
+      annual: false,
+    },
   });
 
   const [friends, setFriends] = useState<string[]>([]);
@@ -70,7 +53,9 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
           },
         });
         const requestedFriends = await request.json();
-        const friendNames = requestedFriends.map((friend: { friend_name: string; }) => friend.friend_name);
+        const friendNames = requestedFriends.map(
+          (friend: { friend_name: string }) => friend.friend_name
+        );
         setFriends(friendNames);
       } catch (error) {
         console.log(error);
@@ -80,10 +65,35 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
   }, []);
   useEffect(() => {
     console.log(friends);
-  }, [friends])
+  }, [friends]);
 
-  const onSubmit = () => {
-    console.log("Form submitted");
+  const createEvent = async (data: TCreateEvent) => {
+    console.log(data);
+    try {
+      const request = await fetch("/api/events", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const response = await request.json();
+      if(response.errors) {
+        console.log(response.errors);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onSubmit = (data: TCreateEvent) => {
+    console.log(form.getValues("annual"));
+
+    // Close the modal
+    onClose();
+
+    // Create a new event with the form's information
+    createEvent(data);
   };
   return (
     <div className="fixed inset-0 bg-gray-400 bg-opacity-40 z-40 flex justify-center items-center">
@@ -174,9 +184,7 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
                           )}
                         >
                           {field.value
-                            ? friends.find(
-                                (friend) => friend === field.value
-                              )
+                            ? friends.find((friend) => friend === field.value)
                             : "Select Friend"}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
@@ -242,15 +250,30 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
             <FormField
               control={form.control}
               name="annual"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Annual? </FormLabel>
                   <FormControl>
-                    <Checkbox />
+                    <Controller
+                      control={form.control}
+                      name="annual"
+                      render={({ field: { ref, value, onChange } }) => (
+                        <Checkbox
+                          checked={value}
+                          onCheckedChange={(isChecked) => onChange(isChecked)}
+                          ref={ref}
+                        />
+                      )}
+                    />
                   </FormControl>
                 </FormItem>
               )}
             />
+            <FormMessage>
+              {form.formState.errors.annual && (
+                <p>{form.formState.errors.annual.message}</p>
+              )}
+            </FormMessage>
             <button
               type="submit"
               className="p-2 text-secondary-foreground bg-secondary text-2xl self-end"
