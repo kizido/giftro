@@ -8,6 +8,20 @@ import {
 } from "@/lib/types";
 import { sql } from "@vercel/postgres";
 
+export async function GET() {
+  // Verifies the session
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ errors: "No session could be found." });
+  }
+
+  const eventsQuery = await sql`
+  SELECT * FROM events
+  WHERE creator_id=${session.id}`;
+  const events = eventsQuery.rows;
+  return NextResponse.json(events);
+}
+
 export async function POST(request: Request) {
   // Verifies the session
   const session = await getServerSession(authOptions);
