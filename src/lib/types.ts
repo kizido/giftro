@@ -74,3 +74,42 @@ export const onboardSurveySchema = z.object({
 });
 
 export type TOnboardSurvey = z.infer<typeof onboardSurveySchema>;
+
+export const createEventSchema = z.object({
+  eventName: z.string({
+    required_error: "Please select a name.",
+  }),
+  eventDate: z.date({
+    required_error: "Please select a date.",
+  }),
+  giftee: z.string({
+    required_error: "Please select a giftee.",
+  }),
+  eventGifts: z.string({
+    required_error: "Please select a name.",
+  }),
+  budget: z.string({
+    required_error: "Please select a name.",
+  }),
+  annual: z.boolean(),
+});
+export type TCreateEvent = z.infer<typeof createEventSchema>;
+
+export const createEventSchemaDateString = z.object({
+  eventName: z.string({
+    required_error: "Please select a name.",
+  }),
+  eventDate: z.string({
+    required_error: "Please select a date.",
+  }),
+  giftee: z.string({
+    required_error: "Please select a giftee.",
+  }),
+  eventGifts: z.string({
+    required_error: "Please select a name.",
+  }),
+  budget: z.string({
+    required_error: "Please select a name.",
+  }),
+  annual: z.boolean(),
+});
