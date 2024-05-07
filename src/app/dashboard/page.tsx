@@ -7,7 +7,7 @@ import { QueryResultRow } from "@vercel/postgres";
 import EventDisplayModal from "@/components/ui/eventDisplayModal";
 import { TCreateEvent } from "@/lib/types";
 
-type TEventDisplay = {
+export type TEventDisplay = {
   event_id: number;
   event_name: string;
   event_date: string;
@@ -16,7 +16,20 @@ type TEventDisplay = {
   budget: string;
   annual: boolean;
 };
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+export const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 export default function Page() {
   const [isFirstTimeUser, setIsFirstTimeUser] = useState(false);
@@ -25,9 +38,10 @@ export default function Page() {
   const [filterState, setFilterState] = useState("trending");
   const [eventDisplayModal, setEventDisplayModal] = useState(false);
 
-  const [upcomingEvents, setUpcomingEvents] = useState<TEventDisplay[]>(
-    []
+  const [displayedEvent, setDisplayedEvent] = useState<TEventDisplay | null>(
+    null
   );
+  const [upcomingEvents, setUpcomingEvents] = useState<TEventDisplay[]>([]);
 
   useEffect(() => {
     checkIsFirstTimeUser();
@@ -74,7 +88,13 @@ export default function Page() {
       <div className="pt-4 px-4 w-80 h-4/5 shadow-[0_0_8px_0px_rgba(0,0,0,0.5)] rounded-lg flex flex-col gap-4 bg-gray-50">
         {/* Event Display Modal */}
         {eventDisplayModal && (
-          <EventDisplayModal onClose={() => setEventDisplayModal(false)} />
+          <EventDisplayModal
+            onClose={() => {
+              setDisplayedEvent(null);
+              setEventDisplayModal(false);
+            }}
+            event={displayedEvent}
+          />
         )}
 
         <h2 className="text-center font-semibold">Upcoming Events</h2>
@@ -82,9 +102,13 @@ export default function Page() {
           <p
             key={event.event_id}
             className="cursor-pointer hover:text-gray-400"
-            onClick={() => setEventDisplayModal(true)}
+            onClick={() => {
+              setDisplayedEvent(event);
+              setEventDisplayModal(true);
+            }}
           >
-            {months[new Date(event.event_date).getMonth()]} {new Date(event.event_date).getDate()} - {event.event_name}
+            {months[new Date(event.event_date).getMonth()]}{" "}
+            {new Date(event.event_date).getDate()} - {event.event_name}
           </p>
         ))}
         {/* <p
