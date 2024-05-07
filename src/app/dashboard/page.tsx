@@ -7,6 +7,17 @@ import { QueryResultRow } from "@vercel/postgres";
 import EventDisplayModal from "@/components/ui/eventDisplayModal";
 import { TCreateEvent } from "@/lib/types";
 
+type TEventDisplay = {
+  event_id: number;
+  event_name: string;
+  event_date: string;
+  giftees: string;
+  event_gifts: string;
+  budget: string;
+  annual: boolean;
+};
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
 export default function Page() {
   const [isFirstTimeUser, setIsFirstTimeUser] = useState(false);
   const [modalOpen, setModalOpen] = useState(true);
@@ -14,12 +25,18 @@ export default function Page() {
   const [filterState, setFilterState] = useState("trending");
   const [eventDisplayModal, setEventDisplayModal] = useState(false);
 
-  const [upcomingEvents, setUpcomingEvents] = useState<TCreateEvent[]>([]);
+  const [upcomingEvents, setUpcomingEvents] = useState<TEventDisplay[]>(
+    []
+  );
 
   useEffect(() => {
     checkIsFirstTimeUser();
     loadUpcomingEvents();
   }, []);
+
+  useEffect(() => {
+    console.log(upcomingEvents);
+  }, [upcomingEvents]);
 
   const checkIsFirstTimeUser = async () => {
     try {
@@ -45,7 +62,7 @@ export default function Page() {
         },
       });
       const responseData = await response.json();
-      console.log(responseData);
+      setUpcomingEvents(responseData);
     } catch (error) {
       console.log(error);
     }
@@ -61,14 +78,23 @@ export default function Page() {
         )}
 
         <h2 className="text-center font-semibold">Upcoming Events</h2>
-        <p
+        {upcomingEvents.map((event) => (
+          <p
+            key={event.event_id}
+            className="cursor-pointer hover:text-gray-400"
+            onClick={() => setEventDisplayModal(true)}
+          >
+            {months[new Date(event.event_date).getMonth()]} {new Date(event.event_date).getDate()} - {event.event_name}
+          </p>
+        ))}
+        {/* <p
           className="cursor-pointer hover:text-gray-400"
           onClick={() => setEventDisplayModal(true)}
         >{`May 12 - Mother's Day`}</p>
         <p
           className="cursor-pointer hover:text-gray-400"
           onClick={() => setEventDisplayModal(true)}
-        >{`June 14 - Kyle's Birthday`}</p>
+        >{`June 14 - Kyle's Birthday`}</p> */}
       </div>
 
       {/* Trending/Popular Items */}
