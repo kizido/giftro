@@ -6,6 +6,9 @@ import { useDebounceValue } from "@/hooks/useDebounceValue";
 import { QueryResultRow } from "@vercel/postgres";
 import EventDisplayModal from "@/components/ui/eventDisplayModal";
 import { TCreateEvent } from "@/lib/types";
+import { Button } from "@/components/ui/button";
+import { ItemWithLikeInfo } from "../my-list/page";
+import SearchCard from "@/components/ui/searchCard";
 
 export type TEventDisplay = {
   event_id: number;
@@ -42,6 +45,9 @@ export default function Page() {
     null
   );
   const [upcomingEvents, setUpcomingEvents] = useState<TEventDisplay[]>([]);
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [responseItems, setResponseItems] = useState<ItemWithLikeInfo[]>([]);
 
   useEffect(() => {
     checkIsFirstTimeUser();
@@ -82,6 +88,30 @@ export default function Page() {
     }
   };
 
+  const searchAmazon = async () => {
+    try {
+      const request = await fetch("/api/searchAmazon", {
+        method: "POST",
+        body: JSON.stringify(searchQuery),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const response = await request.json();
+      if (!response.error) {
+        setResponseItems(response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const DisplayCards = () => {
+    return responseItems.map((item, index) => (
+      <SearchCard key={item.ASIN} index={index} item={item} />
+    ));
+  };
+
   return (
     <div className="w-full h-full flex justify-between items-center px-72">
       {/* Upcoming Events */}
@@ -111,14 +141,6 @@ export default function Page() {
             {new Date(event.event_date).getDate()} - {event.event_name}
           </p>
         ))}
-        {/* <p
-          className="cursor-pointer hover:text-gray-400"
-          onClick={() => setEventDisplayModal(true)}
-        >{`May 12 - Mother's Day`}</p>
-        <p
-          className="cursor-pointer hover:text-gray-400"
-          onClick={() => setEventDisplayModal(true)}
-        >{`June 14 - Kyle's Birthday`}</p> */}
       </div>
 
       {/* Trending/Popular Items */}
@@ -160,7 +182,68 @@ export default function Page() {
         </div>
 
         {/* Recommended Items */}
-        <div className="w-full flex flex-wrap"></div>
+        {/* <div className="w-full flex flex-wrap"></div> */}
+        {/* Gift Searching Area */}
+        <div className="w-full lg:w-[36rem] xl:w-[45rem]">
+          {/* Search Bar and Categories */}
+          {/* <div className={`${scrolled ? `w-full h-[136px]` : ""}`}></div> */}
+          <div
+            className={`py-4 flex flex-col gap-2 bg-white z-30`}
+          >
+            <Input
+              className="h-14 text-md"
+              placeholder="Search for gifts here..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  searchAmazon();
+                }
+              }}
+            />
+            <div className="flex flex-wrap gap-2 justify-start items-center">
+              <Button
+                iconUrl="https://static-cdn.drawnames.com//Content/Assets/chevron-gray.svg"
+                iconRotation={90}
+                variant="secondary"
+                className="font-semibold"
+              >
+                Category
+              </Button>
+              <Button
+                variant="secondary"
+                iconUrl="https://static-cdn.drawnames.com//Content/Assets/chevron-gray.svg"
+                iconRotation={90}
+                className="font-semibold"
+              >
+                Price
+              </Button>
+              <Button
+                variant="secondary"
+                iconUrl="https://static-cdn.drawnames.com//Content/Assets/chevron-gray.svg"
+                iconRotation={90}
+                className="font-semibold"
+              >
+                Age
+              </Button>
+              <Button
+                variant="secondary"
+                iconUrl="https://static-cdn.drawnames.com//Content/Assets/chevron-gray.svg"
+                iconRotation={90}
+                className="font-semibold"
+              >
+                Gender
+              </Button>
+              <h3 className="ml-1 text-md text-semibold text-blue-500 cursor-pointer hover:underline overflow-y-hided">
+                Clear all filters
+              </h3>
+            </div>
+          </div>
+          {/* Searched Items */}
+          <div className="flex justify-start flex-wrap gap-6">
+            {responseItems && DisplayCards()}
+          </div>
+        </div>
       </div>
 
       {/* Recent Friend Activity */}
