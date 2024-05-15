@@ -33,6 +33,7 @@ const WishList = () => {
 
   async function removeFromWishlist(asin: string) {
     try {
+      setListItems(listItems.filter((item) => asin !== item.asin));
       await fetch("/api/products/likedProducts", {
         method: "POST",
         body: JSON.stringify(asin),
