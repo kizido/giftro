@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { SearchResultItem } from "paapi5-typescript-sdk";
 import SearchCard from "@/components/ui/searchCard";
-import WishList from "@/components/ui/wishList";
+import WishList, { ListItem } from "@/components/ui/wishList";
 
 export type ItemWithLikeInfo = SearchResultItem & {
   likes: number;
@@ -15,6 +15,43 @@ export default function MyLists() {
   const [scrolled, setScrolled] = useState(false);
   const [responseItems, setResponseItems] = useState<ItemWithLikeInfo[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [listItems, setListItems] = useState<ListItem[]>([]);
+
+  useEffect(() => {
+    const getListItems = async () => {
+      try {
+        const request = await fetch("/api/products/likedProducts", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const response = await request.json();
+        if (!response.error) {
+          const likedItems: ListItem[] = response;
+          setListItems(likedItems);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getListItems();
+  }, []);
+
+  async function removeFromWishList(asin: string) {
+    try {
+      setListItems(listItems.filter((item) => asin !== item.asin));
+      await fetch("/api/products/likedProducts", {
+        method: "POST",
+        body: JSON.stringify(asin),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -82,7 +119,15 @@ export default function MyLists() {
 
   const DisplayCards = () => {
     return responseItems.map((item, index) => (
-      <SearchCard key={item.ASIN} index={index} item={item} />
+      <SearchCard
+        key={item.ASIN}
+        index={index}
+        item={item}
+        addToWishList={(newItem) => setListItems([...listItems, newItem])}
+        removeFromWishList={(removedItem) =>
+          setListItems(listItems.filter((listItem) => listItem.asin !== removedItem.asin))
+        }
+      />
     ));
   };
 
@@ -157,7 +202,10 @@ export default function MyLists() {
         {/* Wish List Area */}
         <div className="hidden lg:inline-block w-[24rem] h-[calc(100vh-112px)]">
           <div className="fixed w-[24rem] bottom-10 top-32 overflow-y-scroll rounded-3xl shadow-[0_0_8px_0px_rgba(0,0,0,0.2)]">
-            <WishList />
+            <WishList
+              listItems={listItems}
+              removeFromWishList={removeFromWishList}
+            />
           </div>
         </div>
       </div>

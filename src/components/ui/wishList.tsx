@@ -7,45 +7,12 @@ export type ListItem = {
   name?: string;
 };
 
-const WishList = () => {
-  const [listItems, setListItems] = useState<ListItem[]>([]);
+type WishListProps = {
+  listItems: ListItem[];
+  removeFromWishList: (asin: string) => void;
+};
 
-  useEffect(() => {
-    const getListItems = async () => {
-      try {
-        const request = await fetch("/api/products/likedProducts", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const response = await request.json();
-        if (!response.error) {
-          const likedItems: ListItem[] = response;
-          setListItems(likedItems);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getListItems();
-  }, []);
-
-  async function removeFromWishlist(asin: string) {
-    try {
-      setListItems(listItems.filter((item) => asin !== item.asin));
-      await fetch("/api/products/likedProducts", {
-        method: "POST",
-        body: JSON.stringify(asin),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
+const WishList = ({ listItems, removeFromWishList }: WishListProps) => {
   return (
     <div className="w-full h-full">
       <div className="w-full bg-blue-400 p-4 mb-4">
@@ -56,11 +23,10 @@ const WishList = () => {
           <WishListItem
             key={item.asin}
             wishListItem={item}
-            onClose={() => removeFromWishlist(item.asin)}
+            onClose={() => removeFromWishList(item.asin)}
           />
         ))}
       </div>
-      {/* <button className="block p-2 bg-gray-200">Add Item</button> */}
     </div>
   );
 };

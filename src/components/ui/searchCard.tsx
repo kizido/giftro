@@ -1,13 +1,21 @@
 import { useEffect, useState } from "react";
 import SearchCardModal from "./searchCardModal";
 import { ItemWithLikeInfo } from "@/app/my-list/page";
+import { ListItem } from "./wishList";
 
 type SearchCardProps = {
   index: number;
   item: ItemWithLikeInfo;
+  addToWishList?: (item: ListItem) => void;
+  removeFromWishList?: (item: ListItem) => void;
 };
 
-const SearchCard = ({ index, item }: SearchCardProps) => {
+const SearchCard = ({
+  index,
+  item,
+  addToWishList,
+  removeFromWishList,
+}: SearchCardProps) => {
   const titleDisplayedCharacters = 14;
   const [productModalOpen, setProductModalOpen] = useState(false);
 
@@ -32,8 +40,24 @@ const SearchCard = ({ index, item }: SearchCardProps) => {
     e.stopPropagation();
     if (productIsLiked) {
       setProductLikes(productLikes - 1);
+      const removedItem = {
+        asin: item.ASIN,
+        name: item.ItemInfo?.Title?.DisplayValue,
+      };
+      console.log("REMOVING A LIKE");
+      if (removeFromWishList) {
+        console.log("ACTUALLY REMOVING A LIKE");
+        removeFromWishList(removedItem);
+      }
     } else {
       setProductLikes(productLikes + 1);
+      const newItem = {
+        asin: item.ASIN,
+        name: item.ItemInfo?.Title?.DisplayValue,
+      };
+      if (addToWishList) {
+        addToWishList(newItem);
+      }
     }
     setProductIsLiked(!productIsLiked);
     try {
@@ -43,14 +67,9 @@ const SearchCard = ({ index, item }: SearchCardProps) => {
           "Content-Type": "application/json",
         },
       });
-      const response = await request.json();
-      // const { likes, error } = response;
-      // if (error) {
-      //   console.log(error);
-      // } else {
-      //   setProductLikes(likes);
-      // }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
