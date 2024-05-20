@@ -15,11 +15,31 @@ export default function Friends() {
     QueryResultRow[]
   >([]);
 
+  const [friends, setFriends] = useState<string[]>([]);
+
   useEffect(() => {
+    const loadFriends = async () => {
+      try {
+        const request = await fetch("/api/friends", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const requestedFriends = await request.json();
+        const friendNames = requestedFriends.map(
+          (friend: { friend_name: string }) => friend.friend_name
+        );
+        setFriends(friendNames);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    loadFriends();
     loadFriendRequests();
   }, []);
+
   useEffect(() => {
-    console.log("DEBOUNCE: " + debouncedSearchQuery);
     if (debouncedSearchQuery) {
       // Make api fetch request for users
       loadQueriedUsers();
@@ -93,15 +113,27 @@ export default function Friends() {
     }
   };
   return (
-    <div className="w-full flex justify-center">
+    <div className="w-full flex justify-center gap-4">
+      {/* My Friends Section */}
+      <section className="mt-4 w-1/4 h-screen">
+        <div className="mt-4 h-4/5 flex flex-col gap-4 border-2 py-4 px-20">
+          <h1 className="self-center bold text-lg text-center">My Friends</h1>
+          {friends.map((friend) => (
+            <p key={friend}>{friend}</p>
+          ))}
+        </div>
+      </section>
+
+      {/* Friend Request Section */}
       <section className="mt-8 w-1/4 h-screen">
         <Input
           type="search"
           className="bg-input border-2 border-border outline-black"
-          placeholder="Search for friends..."
+          placeholder="Add a Friend..."
           value={searchQuery}
           onChange={handleSearchChange}
         />
+        {/* Add Friend */}
         <div className="mt-4 h-2/5 flex flex-col gap-4 border-2 py-4 px-20">
           {loadedUsers.map((user: QueryResultRow) => (
             <div key={user.id} className="flex justify-between">
@@ -110,8 +142,11 @@ export default function Friends() {
             </div>
           ))}
         </div>
+        {/* Incoming Friend Requests */}
         <div className="mt-4 h-2/5 flex flex-col gap-4 border-2 py-4 px-20">
-          <h1 className="self-center bold text-2xl">My Friend Requests</h1>
+          <h1 className="self-center bold text-lg text-center">
+            Incoming Friend Requests
+          </h1>
           {loadedFriendRequests.map((requester: QueryResultRow) => (
             <div key={requester.id} className="flex justify-between">
               <span>{requester.username}</span>
