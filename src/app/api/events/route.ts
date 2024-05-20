@@ -17,7 +17,8 @@ export async function GET() {
 
   const eventsQuery = await sql`
   SELECT * FROM events
-  WHERE creator_id=${session.id}`;
+  WHERE creator_id=${session.id}
+    AND (annual = true OR event_date >= NOW())`;
   const events = eventsQuery.rows;
   return NextResponse.json(events);
 }
