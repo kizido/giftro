@@ -128,7 +128,8 @@ export default function Page() {
         )}
 
         <h2 className="text-center font-semibold">Upcoming Events</h2>
-        {upcomingEvents.map((event) => (
+        {upcomingEvents.sort((a, b) => new Date(a.event_date).getTime() - new Date(b.event_date).getTime())
+        .map((event) => (
           <p
             key={event.event_id}
             className="cursor-pointer hover:text-gray-400"
@@ -182,11 +183,10 @@ export default function Page() {
         </div>
 
         {/* Recommended Items */}
-        {/* <div className="w-full flex flex-wrap"></div> */}
+
         {/* Gift Searching Area */}
         <div className="w-full lg:w-[36rem] xl:w-[45rem]">
           {/* Search Bar and Categories */}
-          {/* <div className={`${scrolled ? `w-full h-[136px]` : ""}`}></div> */}
           <div
             className={`py-4 flex flex-col gap-2 bg-white z-30`}
           >
