@@ -27,8 +27,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { TCreateEvent, createEventSchema } from "@/lib/types";
 
-
-
 type CreateEventModalProps = {
   onClose: () => void;
 };
@@ -78,7 +76,7 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
         },
       });
       const response = await request.json();
-      if(response.errors) {
+      if (response.errors) {
         console.log(response.errors);
       }
     } catch (error) {

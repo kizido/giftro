@@ -38,7 +38,7 @@ export default function Page() {
   const [isFirstTimeUser, setIsFirstTimeUser] = useState(false);
   const [modalOpen, setModalOpen] = useState(true);
 
-  const [filterState, setFilterState] = useState("trending");
+  const [filterState, setFilterState] = useState("POPULAR");
   const [eventDisplayModal, setEventDisplayModal] = useState(false);
 
   const [displayedEvent, setDisplayedEvent] = useState<TEventDisplay | null>(
@@ -51,12 +51,50 @@ export default function Page() {
 
   useEffect(() => {
     checkIsFirstTimeUser();
+    loadPopularProducts();
     loadUpcomingEvents();
   }, []);
 
   useEffect(() => {
     console.log(upcomingEvents);
   }, [upcomingEvents]);
+
+  const loadPopularProducts = async () => {
+    try {
+      const request = await fetch("/api/loadProducts", {
+        method: "POST",
+        body: JSON.stringify(filterState),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const response = await request.json();
+      console.log(response);
+      if (!response.error) {
+        setResponseItems(response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const searchAmazon = async () => {
+    try {
+      const request = await fetch("/api/searchAmazon", {
+        method: "POST",
+        body: JSON.stringify(searchQuery),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const response = await request.json();
+      if (!response.error) {
+        setResponseItems(response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const checkIsFirstTimeUser = async () => {
     try {
@@ -88,24 +126,6 @@ export default function Page() {
     }
   };
 
-  const searchAmazon = async () => {
-    try {
-      const request = await fetch("/api/searchAmazon", {
-        method: "POST",
-        body: JSON.stringify(searchQuery),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const response = await request.json();
-      if (!response.error) {
-        setResponseItems(response);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const DisplayCards = () => {
     return responseItems.map((item, index) => (
       <SearchCard key={item.ASIN} index={index} item={item} />
@@ -128,20 +148,25 @@ export default function Page() {
         )}
 
         <h2 className="text-center font-semibold">Upcoming Events</h2>
-        {upcomingEvents.sort((a, b) => new Date(a.event_date).getTime() - new Date(b.event_date).getTime())
-        .map((event) => (
-          <p
-            key={event.event_id}
-            className="cursor-pointer hover:text-gray-400"
-            onClick={() => {
-              setDisplayedEvent(event);
-              setEventDisplayModal(true);
-            }}
-          >
-            {months[new Date(event.event_date).getMonth()]}{" "}
-            {new Date(event.event_date).getDate()} - {event.event_name}
-          </p>
-        ))}
+        {upcomingEvents
+          .sort(
+            (a, b) =>
+              new Date(a.event_date).getTime() -
+              new Date(b.event_date).getTime()
+          )
+          .map((event) => (
+            <p
+              key={event.event_id}
+              className="cursor-pointer hover:text-gray-400"
+              onClick={() => {
+                setDisplayedEvent(event);
+                setEventDisplayModal(true);
+              }}
+            >
+              {months[new Date(event.event_date).getMonth()]}{" "}
+              {new Date(event.event_date).getDate()} - {event.event_name}
+            </p>
+          ))}
       </div>
 
       {/* Trending/Popular Items */}
@@ -149,34 +174,34 @@ export default function Page() {
         {/* Item Filters */}
         <div className="w-full self-start flex flex-wrap justify-center gap-x-12 gap-y-12 content-box">
           <div
-            className={`flex justify-center items-center w-36 h-28 border-2 border-black bg-red-200 cursor-pointer ${
-              filterState === "trending" ? "border-4 border-yellow-200" : ""
-            }`}
-            onClick={() => setFilterState("trending")}
-          >
-            <h2 className="font-semibold">Trending</h2>
-          </div>
-          <div
             className={`flex justify-center items-center w-36 h-28 border-2 border-black bg-blue-200 cursor-pointer ${
-              filterState === "popular" ? "border-4 border-yellow-200" : ""
+              filterState === "POPULAR" ? "border-4 border-yellow-200" : ""
             }`}
-            onClick={() => setFilterState("popular")}
+            onClick={() => setFilterState("POPULAR")}
           >
             <h2 className="text-center py-10 font-semibold">Most Popular</h2>
           </div>
           <div
-            className={`flex justify-center items-center w-36 h-28 border-2 border-black bg-orange-200 cursor-pointer ${
-              filterState === "seasonal" ? "border-4 border-yellow-200" : ""
+            className={`flex justify-center items-center w-36 h-28 border-2 border-black bg-red-200 cursor-pointer ${
+              filterState === "TRENDING" ? "border-4 border-yellow-200" : ""
             }`}
-            onClick={() => setFilterState("seasonal")}
+            onClick={() => setFilterState("TRENDING")}
+          >
+            <h2 className="font-semibold">Trending</h2>
+          </div>
+          <div
+            className={`flex justify-center items-center w-36 h-28 border-2 border-black bg-orange-200 cursor-pointer ${
+              filterState === "SEASONAL" ? "border-4 border-yellow-200" : ""
+            }`}
+            onClick={() => setFilterState("SEASONAL")}
           >
             <h2 className="text-center py-10 font-semibold">Seasonal</h2>
           </div>
           <div
             className={`flex justify-center items-center w-36 h-28 border-2 border-black bg-green-200 cursor-pointer ${
-              filterState === "holiday" ? "border-4 border-yellow-200" : ""
+              filterState === "HOLIDAY" ? "border-4 border-yellow-200" : ""
             }`}
-            onClick={() => setFilterState("holiday")}
+            onClick={() => setFilterState("HOLIDAY")}
           >
             <h2 className="text-center py-10 font-semibold">Mothers Day</h2>
           </div>
@@ -187,9 +212,7 @@ export default function Page() {
         {/* Gift Searching Area */}
         <div className="w-full lg:w-[36rem] xl:w-[45rem]">
           {/* Search Bar and Categories */}
-          <div
-            className={`py-4 flex flex-col gap-2 bg-white z-30`}
-          >
+          <div className={`py-4 flex flex-col gap-2 bg-white z-30`}>
             <Input
               className="h-14 text-md"
               placeholder="Search for gifts here..."
