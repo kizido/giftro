@@ -2,7 +2,7 @@
 import OnboardingModal from "@/lib/components/OnboardingModal";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { useDebounceValue } from "@/hooks/useDebounceValue";
+import { useDebounceCallback } from "@/hooks/useDebounceCallback";
 import { QueryResultRow } from "@vercel/postgres";
 import EventDisplayModal from "@/components/ui/eventDisplayModal";
 import { TCreateEvent } from "@/lib/types";
@@ -47,6 +47,8 @@ export default function Page() {
   const [upcomingEvents, setUpcomingEvents] = useState<TEventDisplay[]>([]);
 
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [itemPage, setItemPage] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState(false);
   const [responseItems, setResponseItems] = useState<ItemWithLikeInfo[]>([]);
 
   useEffect(() => {
@@ -56,8 +58,8 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    console.log(upcomingEvents);
-  }, [upcomingEvents]);
+    setItemPage(1);
+  }, [searchQuery]);
 
   const loadPopularProducts = async () => {
     try {
@@ -79,21 +81,32 @@ export default function Page() {
   };
 
   const searchAmazon = async () => {
+    setIsLoading(true);
     try {
-      const request = await fetch("/api/searchAmazon", {
+      const request = await fetch("/api/searchAmazon/" + searchQuery, {
         method: "POST",
-        body: JSON.stringify(searchQuery),
+        body: JSON.stringify(itemPage),
         headers: {
           "Content-Type": "application/json",
         },
       });
       const response = await request.json();
       if (!response.error) {
-        setResponseItems(response);
+        if (Array.isArray(response)) {
+          if (itemPage > 1) {
+            setResponseItems((prevItems) => [...prevItems, ...response]);
+          } else {
+            setResponseItems(response);
+          }
+        } else {
+          console.error("Response is not an array:", response);
+        }
+        setItemPage((prevPage) => prevPage + 1);
       }
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   };
 
   const checkIsFirstTimeUser = async () => {
@@ -125,6 +138,24 @@ export default function Page() {
       console.log(error);
     }
   };
+
+  const debouncedSearchAmazon = useDebounceCallback(searchAmazon, 1500, {
+    leading: true,
+    trailing: false,
+  });
+
+  const handleScroll = () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 2) {
+      if (searchQuery !== "" && !isLoading) {
+        debouncedSearchAmazon();
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isLoading]);
 
   const DisplayCards = () => {
     return responseItems.map((item, index) => (
@@ -220,7 +251,7 @@ export default function Page() {
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  searchAmazon();
+                  debouncedSearchAmazon();
                 }
               }}
             />

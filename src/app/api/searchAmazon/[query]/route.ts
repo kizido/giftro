@@ -8,21 +8,26 @@ import {
   Region,
   SearchResultItem,
 } from "paapi5-typescript-sdk";
-import { authOptions } from "../auth/[...nextauth]/options";
+import { authOptions } from "../../auth/[...nextauth]/options";
 import { ItemWithLikeInfo } from "@/app/my-list/page";
 
-export async function POST(request: Request) {
+export async function POST(
+  request: Request,
+  { params }: { params: { query: string } }
+) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: "Session could not be found." });
   }
-  const body: string = await request.json();
+  const query = params.query;
+  const page: number = await request.json();
 
   try {
     const amazonRequest = new SearchItemsRequest(
       {
         ItemCount: 10,
-        Keywords: body,
+        ItemPage: page,
+        Keywords: query,
         Resources: [
           "Images.Primary.Large",
           "Images.Variants.Large",
@@ -63,6 +68,7 @@ export async function POST(request: Request) {
     (${responseItems[9].ASIN}, ${responseItems[9].ItemInfo?.Title?.DisplayValue})
     ON CONFLICT (asin) DO NOTHING;`;
 
+    // Load like data for designated asins
     const productInfo = await sql`
     SELECT asin, likes, likerids
     FROM products

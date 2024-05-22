@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { SearchResultItem } from "paapi5-typescript-sdk";
 import SearchCard from "@/components/ui/searchCard";
 import WishList, { ListItem } from "@/components/ui/wishList";
+import { useDebounceCallback } from "@/hooks/useDebounceCallback";
 
 export type ItemWithLikeInfo = SearchResultItem & {
   likes: number;
@@ -16,6 +17,9 @@ export default function MyLists() {
   const [responseItems, setResponseItems] = useState<ItemWithLikeInfo[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [listItems, setListItems] = useState<ListItem[]>([]);
+  const [itemPage, setItemPage] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [filterState, setFilterState] = useState("POPULAR");
 
   useEffect(() => {
     const getListItems = async () => {
@@ -36,6 +40,7 @@ export default function MyLists() {
       }
     };
     getListItems();
+    loadPopularProducts();
   }, []);
 
   async function removeFromWishList(asin: string) {
@@ -75,36 +80,20 @@ export default function MyLists() {
   }, []);
 
   useEffect(() => {
-    // Set response items to most liked items on first render
-    const getMostPopularItems = async () => {
-      try {
-        const request = await fetch("/api/searchAmazon", {
-          method: "POST",
-          body: JSON.stringify("|||POPULAR|||"),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const response = await request.json();
-        if (!response.error) {
-          setResponseItems(response);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getMostPopularItems;
-  }, []);
-  const searchAmazon = async () => {
+    setItemPage(1);
+  }, [searchQuery]);
+
+  const loadPopularProducts = async () => {
     try {
-      const request = await fetch("/api/searchAmazon", {
+      const request = await fetch("/api/loadProducts", {
         method: "POST",
-        body: JSON.stringify(searchQuery),
+        body: JSON.stringify(filterState),
         headers: {
           "Content-Type": "application/json",
         },
       });
       const response = await request.json();
+      console.log(response);
       if (!response.error) {
         setResponseItems(response);
       }
@@ -113,9 +102,52 @@ export default function MyLists() {
     }
   };
 
+  const searchAmazon = async () => {
+    setIsLoading(true);
+    try {
+      const request = await fetch("/api/searchAmazon/" + searchQuery, {
+        method: "POST",
+        body: JSON.stringify(itemPage),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const response = await request.json();
+      if (!response.error) {
+        if (Array.isArray(response)) {
+          if (itemPage > 1) {
+            setResponseItems((prevItems) => [...prevItems, ...response]);
+          } else {
+            setResponseItems(response);
+          }
+        } else {
+          console.error("Response is not an array:", response);
+        }
+        setItemPage((prevPage) => prevPage + 1);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
+  };
+
+  const debouncedSearchAmazon = useDebounceCallback(searchAmazon, 1500, {
+    leading: true,
+    trailing: false,
+  });
+
+  const handleProductScroll = () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 2) {
+      if (searchQuery !== "" && !isLoading) {
+        debouncedSearchAmazon();
+      }
+    }
+  };
+
   useEffect(() => {
-    responseItems.forEach((item) => console.log(item));
-  }, [responseItems]);
+    window.addEventListener("scroll", handleProductScroll);
+    return () => window.removeEventListener("scroll", handleProductScroll);
+  }, [isLoading]);
 
   const DisplayCards = () => {
     return responseItems.map((item, index) => (
@@ -125,7 +157,9 @@ export default function MyLists() {
         item={item}
         addToWishList={(newItem) => setListItems([...listItems, newItem])}
         removeFromWishList={(removedItem) =>
-          setListItems(listItems.filter((listItem) => listItem.asin !== removedItem.asin))
+          setListItems(
+            listItems.filter((listItem) => listItem.asin !== removedItem.asin)
+          )
         }
       />
     ));
