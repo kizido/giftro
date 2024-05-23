@@ -18,6 +18,7 @@ export default function MyLists() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [listItems, setListItems] = useState<ListItem[]>([]);
   const [itemPage, setItemPage] = useState<number>(1);
+  const [popularPage, setPopularPage] = useState<number>(1);
   const [isLoading, setIsLoading] = useState(false);
   const [filterState, setFilterState] = useState("POPULAR");
 
@@ -81,11 +82,13 @@ export default function MyLists() {
 
   useEffect(() => {
     setItemPage(1);
+    setPopularPage(1);
   }, [searchQuery]);
 
   const loadPopularProducts = async () => {
+    setIsLoading(true);
     try {
-      const request = await fetch("/api/loadProducts", {
+      const request = await fetch("/api/loadProducts/" + popularPage, {
         method: "POST",
         body: JSON.stringify(filterState),
         headers: {
@@ -93,13 +96,22 @@ export default function MyLists() {
         },
       });
       const response = await request.json();
-      console.log(response);
       if (!response.error) {
-        setResponseItems(response);
+        if (Array.isArray(response)) {
+          if (popularPage > 1) {
+            setResponseItems((prevItems) => [...prevItems, ...response]);
+          } else {
+            setResponseItems(response);
+          }
+        } else {
+          console.error("Response is not an array:", response);
+        }
+        setPopularPage((prevPage) => prevPage + 1);
       }
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   };
 
   const searchAmazon = async () => {
@@ -135,6 +147,14 @@ export default function MyLists() {
     leading: true,
     trailing: false,
   });
+  const debouncedSearchPopular = useDebounceCallback(
+    loadPopularProducts,
+    1500,
+    {
+      leading: true,
+      trailing: false,
+    }
+  );
 
   const handleProductScroll = () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 2) {
@@ -143,10 +163,22 @@ export default function MyLists() {
       }
     }
   };
+  const handlePopularScroll = () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 2) {
+      if (searchQuery === "" && !isLoading) {
+        debouncedSearchPopular();
+      }
+    }
+  };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleProductScroll);
-    return () => window.removeEventListener("scroll", handleProductScroll);
+    if (searchQuery === "") {
+      window.addEventListener("scroll", handlePopularScroll);
+      return () => window.removeEventListener("scroll", handlePopularScroll);
+    } else {
+      window.addEventListener("scroll", handleProductScroll);
+      return () => window.removeEventListener("scroll", handleProductScroll);
+    }
   }, [isLoading]);
 
   const DisplayCards = () => {
