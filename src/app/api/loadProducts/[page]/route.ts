@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/options";
+import { authOptions } from "../../auth/[...nextauth]/options";
 import { NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
 import {
@@ -10,20 +10,29 @@ import {
 } from "paapi5-typescript-sdk";
 import { ItemWithLikeInfo } from "@/app/my-list/page";
 
-export async function POST(request: Request) {
+export async function POST(
+  request: Request,
+  { params }: { params: { page: number } }
+) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: "No session found." });
   }
   const body: string = await request.json();
 
+  const pageSize = 10;
+  const itemPage = params.page;
+
   if (body === "POPULAR") {
     // LOAD THE MOST LIKED PRODUCTS
+    const offset = (itemPage - 1) * pageSize;
+
     const popularItems = await sql`
     SELECT *
     FROM products
     ORDER BY likes DESC
-    LIMIT 10`;
+    LIMIT ${pageSize}
+    OFFSET ${offset}`;
 
     // CONSOLIDATE LIKED PRODUCT LIST INTO ASIN ARRAY
     let asinArray: string[] = popularItems.rows.map((row) => row.asin);
@@ -56,7 +65,7 @@ export async function POST(request: Request) {
       if (data.ItemsResult === undefined) {
         return NextResponse.json({ error: "No search result found." });
       }
-  
+
       const responseItems = data.ItemsResult.Items;
       const sessionId = session.id.toString();
       const enrichedItems: ItemWithLikeInfo[] = responseItems.map((item) => {
@@ -70,7 +79,7 @@ export async function POST(request: Request) {
         const likerIdsArray: string[] = likerIds
           .split(",")
           .map((id) => id.trim());
-  
+
         // Return a new object combining the original item properties
         // with likes and isLikedByUser, defaulting to 0 and false if not found
         return {
