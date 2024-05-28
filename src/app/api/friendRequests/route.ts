@@ -7,6 +7,7 @@ type FriendsRequestBody = {
   receiverId: string;
 };
 
+// Sends a friend request
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
   const body: FriendsRequestBody = await request.json();
@@ -23,6 +24,7 @@ export async function POST(request: Request) {
   }
 }
 
+// Get a user's incoming friend requests
 export async function GET() {
   const session = await getServerSession(authOptions);
 
@@ -43,6 +45,7 @@ export async function GET() {
   }
 }
 
+// Accepts a friend request
 type FriendAcceptRequestBody = {
   senderId: string;
 };
@@ -69,6 +72,33 @@ export async function PATCH(request: Request) {
     console.log(error);
     return NextResponse.json({
       error: "Friend request could not be accepted.",
+    });
+  }
+}
+
+// Accepts a friend request
+export async function DELETE(request: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: "Session could not be found." });
+  }
+
+  const senderId: string = await request.json();
+
+  try {
+    await sql`
+    DELETE FROM user_friends
+    WHERE user_id = ${senderId}
+    AND friend_user_id = ${session?.id}
+    AND status = 'pending';`;
+
+    return NextResponse.json({
+      message: "Friend request deleted.",
+    });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({
+      error: "Friend request could not be deleted.",
     });
   }
 }
