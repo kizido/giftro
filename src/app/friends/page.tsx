@@ -112,6 +112,39 @@ export default function Friends() {
       console.log(error);
     }
   };
+
+  const declineFriendRequest = async (senderId: string) => {
+    try {
+      await fetch("/api/friendRequests", {
+        method: "DELETE",
+        body: JSON.stringify(senderId),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const removeFriend = async (friendName: string) => {
+    try {
+      const response = await fetch("/api/friends", {
+        method: "DELETE",
+        body: JSON.stringify(friendName),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const responseMessage = await response.json();
+      if (!responseMessage.error) {
+        setFriends(friends.filter((friend) => friend !== friendName));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="w-full flex justify-center gap-4">
       {/* My Friends Section */}
@@ -119,7 +152,15 @@ export default function Friends() {
         <div className="mt-4 h-4/5 flex flex-col gap-4 border-2 py-4 px-20 overflow-y-auto">
           <h1 className="self-center bold text-lg text-center">My Friends</h1>
           {friends.map((friend) => (
-            <p key={friend}>{friend}</p>
+            <div className="flex justify-between items-center" key={friend}>
+              <p>{friend}</p>
+              <p
+                className="text-red-500 cursor-pointer"
+                onClick={() => removeFriend(friend)}
+              >
+                X
+              </p>
+            </div>
           ))}
         </div>
       </section>
@@ -150,9 +191,20 @@ export default function Friends() {
           {loadedFriendRequests.map((requester: QueryResultRow) => (
             <div key={requester.id} className="flex justify-between">
               <span>{requester.username}</span>
-              <button onClick={() => acceptFriendRequest(requester.id)}>
-                Accept
-              </button>
+              <div>
+                <button
+                  className="text-green-400 mr-3"
+                  onClick={() => acceptFriendRequest(requester.id)}
+                >
+                  Accept
+                </button>
+                <button
+                  className="text-red-400"
+                  onClick={() => declineFriendRequest(requester.id)}
+                >
+                  Decline
+                </button>
+              </div>
             </div>
           ))}
         </div>
