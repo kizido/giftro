@@ -115,13 +115,17 @@ export default function Friends() {
 
   const declineFriendRequest = async (senderId: string) => {
     try {
-      await fetch("/api/friendRequests", {
+      const response = await fetch("/api/friendRequests", {
         method: "DELETE",
         body: JSON.stringify(senderId),
         headers: {
           "Content-Type": "application/json",
         },
       });
+      const responseMessage = await response.json();
+      if (!responseMessage.error) {
+        loadFriendRequests();
+      }
     } catch (error) {
       console.log(error);
     }
