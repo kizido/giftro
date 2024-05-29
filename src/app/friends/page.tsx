@@ -18,23 +18,6 @@ export default function Friends() {
   const [friends, setFriends] = useState<string[]>([]);
 
   useEffect(() => {
-    const loadFriends = async () => {
-      try {
-        const request = await fetch("/api/friends", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const requestedFriends = await request.json();
-        const friendNames = requestedFriends.map(
-          (friend: { friend_name: string }) => friend.friend_name
-        );
-        setFriends(friendNames);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     loadFriends();
     loadFriendRequests();
   }, []);
@@ -47,6 +30,24 @@ export default function Friends() {
       setLoadedUsers([]);
     }
   }, [debouncedSearchQuery]);
+
+  const loadFriends = async () => {
+    try {
+      const request = await fetch("/api/friends", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const requestedFriends = await request.json();
+      const friendNames = requestedFriends.map(
+        (friend: { friend_name: string }) => friend.friend_name
+      );
+      setFriends(friendNames);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -108,6 +109,7 @@ export default function Friends() {
         },
       });
       loadFriendRequests();
+      loadFriends();
     } catch (error) {
       console.log(error);
     }
