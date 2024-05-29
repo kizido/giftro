@@ -196,85 +196,89 @@ export default function Page() {
   };
 
   return (
-    <div className="w-full h-full flex justify-between items-center px-72">
-      {/* Upcoming Events */}
-      <div className="pt-4 px-4 w-80 h-4/5 shadow-[0_0_8px_0px_rgba(0,0,0,0.5)] rounded-lg flex flex-col gap-4 bg-gray-50">
-        {/* Event Display Modal */}
-        {eventDisplayModal && (
-          <EventDisplayModal
-            onClose={() => {
-              setDisplayedEvent(null);
-              setEventDisplayModal(false);
-            }}
-            event={displayedEvent}
-          />
-        )}
-
-        <h2 className="text-center font-semibold">Upcoming Events</h2>
-        {upcomingEvents
-          .sort(
-            (a, b) =>
-              new Date(a.event_date).getTime() -
-              new Date(b.event_date).getTime()
-          )
-          .map((event) => (
-            <p
-              key={event.event_id}
-              className="cursor-pointer hover:text-gray-400"
-              onClick={() => {
-                setDisplayedEvent(event);
-                setEventDisplayModal(true);
+    <div className="h-full container max-w-[20rem] sm:max-w-[30rem] md:max-w-[45rem] lg:max-w-[80rem] xl:max-w-[90rem] gap-4 mt-8">
+      <div className="h-full flex justify-center lg:justify-between">
+        {/* Upcoming Events */}
+        <div className="pt-4 px-4 w-64 h-5/6 shadow-[0_0_8px_0px_rgba(0,0,0,0.5)] rounded-lg flex flex-col gap-4 bg-gray-50">
+          {/* Event Display Modal */}
+          {eventDisplayModal && (
+            <EventDisplayModal
+              onClose={() => {
+                setDisplayedEvent(null);
+                setEventDisplayModal(false);
               }}
-            >
-              {months[new Date(event.event_date).getMonth()]}{" "}
-              {new Date(event.event_date).getDate()} - {event.event_name}
-            </p>
-          ))}
-      </div>
+              event={displayedEvent}
+            />
+          )}
 
-      {/* Trending/Popular Items */}
-      <div className="px-24 pt-24 w-full self-start">
-        {/* Item Filters */}
-        <div className="w-full self-start flex flex-wrap justify-center gap-x-12 gap-y-12 content-box">
-          <div
-            className={`flex justify-center items-center w-36 h-28 border-2 border-black bg-blue-200 cursor-pointer ${
-              filterState === "POPULAR" ? "border-4 border-yellow-200" : ""
-            }`}
-            onClick={() => setFilterState("POPULAR")}
-          >
-            <h2 className="text-center py-10 font-semibold">Most Popular</h2>
-          </div>
-          <div
-            className={`flex justify-center items-center w-36 h-28 border-2 border-black bg-red-200 cursor-pointer ${
-              filterState === "TRENDING" ? "border-4 border-yellow-200" : ""
-            }`}
-            onClick={() => setFilterState("TRENDING")}
-          >
-            <h2 className="font-semibold">Trending</h2>
-          </div>
-          <div
-            className={`flex justify-center items-center w-36 h-28 border-2 border-black bg-orange-200 cursor-pointer ${
-              filterState === "SEASONAL" ? "border-4 border-yellow-200" : ""
-            }`}
-            onClick={() => setFilterState("SEASONAL")}
-          >
-            <h2 className="text-center py-10 font-semibold">Seasonal</h2>
-          </div>
-          <div
-            className={`flex justify-center items-center w-36 h-28 border-2 border-black bg-green-200 cursor-pointer ${
-              filterState === "HOLIDAY" ? "border-4 border-yellow-200" : ""
-            }`}
-            onClick={() => setFilterState("HOLIDAY")}
-          >
-            <h2 className="text-center py-10 font-semibold">Mothers Day</h2>
-          </div>
+          <h2 className="text-center font-semibold">Upcoming Events</h2>
+          {upcomingEvents
+            .sort(
+              (a, b) =>
+                new Date(a.event_date).getTime() -
+                new Date(b.event_date).getTime()
+            )
+            .map((event) => (
+              <p
+                key={event.event_id}
+                className="cursor-pointer hover:text-gray-400"
+                onClick={() => {
+                  setDisplayedEvent(event);
+                  setEventDisplayModal(true);
+                }}
+              >
+                {months[new Date(event.event_date).getMonth()]}{" "}
+                {new Date(event.event_date).getDate()} - {event.event_name}
+              </p>
+            ))}
         </div>
-
-        {/* Recommended Items */}
 
         {/* Gift Searching Area */}
         <div className="w-full lg:w-[36rem] xl:w-[45rem]">
+
+           {/* Trending/Popular Items */}
+          <div className="pt-16 w-full self-start">
+            {/* Item Filters */}
+            <div className="w-full flex justify-between content-box">
+              <div
+                className={`w-20 h-16 md:w-24 md:h-18 lg:w-32 lg:h-24 xl:w-36 xl:h-28 flex justify-center items-center border-2 border-black bg-blue-200 cursor-pointer ${
+                  filterState === "POPULAR" ? "border-4 border-yellow-200" : ""
+                }`}
+                onClick={() => setFilterState("POPULAR")}
+              >
+                <h2 className="text-center py-10 font-semibold">
+                  Most Popular
+                </h2>
+              </div>
+              <div
+                className={`w-20 h-16 md:w-24 md:h-18 lg:w-32 lg:h-24 xl:w-36 xl:h-28 flex justify-center items-center border-2 border-black bg-red-200 cursor-pointer ${
+                  filterState === "TRENDING" ? "border-4 border-yellow-200" : ""
+                }`}
+                onClick={() => setFilterState("TRENDING")}
+              >
+                <h2 className="font-semibold">Trending</h2>
+              </div>
+              <div
+                className={`w-20 h-16 md:w-24 md:h-18 lg:w-32 lg:h-24 xl:w-36 xl:h-28 flex justify-center items-center border-2 border-black bg-orange-200 cursor-pointer ${
+                  filterState === "SEASONAL" ? "border-4 border-yellow-200" : ""
+                }`}
+                onClick={() => setFilterState("SEASONAL")}
+              >
+                <h2 className="text-center py-10 font-semibold">Seasonal</h2>
+              </div>
+              <div
+                className={`w-20 h-16 md:w-24 md:h-18 lg:w-32 lg:h-24 xl:w-36 xl:h-28 flex justify-center items-center border-2 border-black bg-green-200 cursor-pointer ${
+                  filterState === "HOLIDAY" ? "border-4 border-yellow-200" : ""
+                }`}
+                onClick={() => setFilterState("HOLIDAY")}
+              >
+                <h2 className="text-center py-10 font-semibold">Mothers Day</h2>
+              </div>
+            </div>
+          </div>
+
           {/* Search Bar and Categories */}
+          {/* <div className={`${scrolled ? `w-full h-[136px]` : ""}`}></div> */}
           <div className={`py-4 flex flex-col gap-2 bg-white z-30`}>
             <Input
               className="h-14 text-md"
@@ -283,7 +287,7 @@ export default function Page() {
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  debouncedSearchAmazon();
+                  searchAmazon();
                 }
               }}
             />
@@ -330,17 +334,16 @@ export default function Page() {
             {responseItems && DisplayCards()}
           </div>
         </div>
+        {/* Recent Friend Activity */}
+        <div className="pt-4 px-4 w-64 h-5/6 shadow-[0_0_8px_0px_rgba(0,0,0,0.5)] rounded-lg flex flex-col gap-4 bg-gray-50">
+          <h2 className="text-center font-semibold">Recent Activity</h2>
+          <p>Kieran liked Logitech Headset</p>
+          <p>Junnelle liked PopMart Figure</p>
+        </div>
+        {isFirstTimeUser && modalOpen && (
+          <OnboardingModal onClose={() => setModalOpen(false)} />
+        )}
       </div>
-
-      {/* Recent Friend Activity */}
-      <div className="pt-4 px-4 w-80 h-4/5 shadow-[0_0_8px_0px_rgba(0,0,0,0.5)] rounded-lg flex flex-col gap-4 bg-gray-50">
-        <h2 className="text-center font-semibold">Recent Activity</h2>
-        <p>Kieran liked Logitech Headset</p>
-        <p>Junnelle liked PopMart Figure</p>
-      </div>
-      {isFirstTimeUser && modalOpen && (
-        <OnboardingModal onClose={() => setModalOpen(false)} />
-      )}
     </div>
   );
 }
