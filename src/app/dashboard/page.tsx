@@ -189,6 +189,24 @@ export default function Page() {
     }
   }, [isLoading]);
 
+  useEffect(() => {
+    const getBirthdayEvents = async () => {
+      try {
+        const response = await fetch("/api/events/birthdays", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const responseData = await response.json();
+        console.log(responseData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getBirthdayEvents();
+  }, []);
+
   const DisplayCards = () => {
     return responseItems.map((item, index) => (
       <SearchCard key={item.ASIN} index={index} item={item} />
@@ -235,8 +253,7 @@ export default function Page() {
 
         {/* Gift Searching Area */}
         <div className="w-full lg:w-[36rem] xl:w-[45rem]">
-
-           {/* Trending/Popular Items */}
+          {/* Trending/Popular Items */}
           <div className="pt-16 w-full self-start">
             {/* Item Filters */}
             <div className="w-full flex justify-between content-box">
