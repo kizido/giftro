@@ -8,7 +8,7 @@ const CreateEventButton = () => {
 
   return (
     <>
-      <Button onClick={() => setShowCreateEventButton(true)}>
+      <Button variant="default" onClick={() => setShowCreateEventButton(true)}>
         Create Event
       </Button>
       {showCreateEventButton && (
