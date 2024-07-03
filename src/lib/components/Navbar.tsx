@@ -5,7 +5,9 @@ import CreateEventButton from "@/components/ui/createEventButton";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import React from "react";
-import { IconMenu2 } from "@tabler/icons-react";
+import HamburgerMenu from "./HamburgerMenu";
+import dynamic from "next/dynamic";
+import { useSession } from "next-auth/react";
 
 export default async function Navbar() {
   const session = await getServerSession(authOptions);
@@ -48,10 +50,7 @@ export default async function Navbar() {
             </div>
             <div className="lg:hidden flex items-center gap-4">
               <CreateEventButton />
-              <IconMenu2
-                size={32}
-                className="cursor-pointer"
-              />
+              <HamburgerMenu />
             </div>
           </>
         )}
