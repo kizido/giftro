@@ -152,10 +152,10 @@ export default function Friends() {
   };
 
   return (
-    <div className="w-full flex justify-center gap-4">
+    <div className="w-full h-full flex justify-center gap-4">
       {/* My Friends Section */}
-      <section className="mt-4 w-1/4 h-screen">
-        <div className="mt-4 h-4/5 flex flex-col gap-4 border-2 py-4 px-20 overflow-y-auto">
+      <section className="py-8 w-1/4 h-full">
+        <div className="h-full flex flex-col gap-4 border-2 py-4 px-20 overflow-y-auto">
           <h1 className="self-center bold text-lg text-center">My Friends</h1>
           {friends.map((friend) => (
             <div className="flex justify-between items-center" key={friend}>
@@ -172,7 +172,7 @@ export default function Friends() {
       </section>
 
       {/* Friend Request Section */}
-      <section className="mt-8 w-1/4 h-screen">
+      <section className="py-8 w-1/4 h-full flex flex-col">
         <Input
           type="search"
           className="bg-input border-2 border-border outline-black"
@@ -181,7 +181,7 @@ export default function Friends() {
           onChange={handleSearchChange}
         />
         {/* Add Friend */}
-        <div className="mt-4 h-2/5 flex flex-col gap-4 border-2 py-4 px-20 overflow-y-auto">
+        <div className="mt-4 grow flex flex-col gap-4 border-2 py-4 px-20 overflow-y-auto">
           {loadedUsers.map((user: QueryResultRow) => (
             <div key={user.id} className="flex justify-between">
               <span>{user.username}</span>
@@ -190,7 +190,7 @@ export default function Friends() {
           ))}
         </div>
         {/* Incoming Friend Requests */}
-        <div className="mt-4 h-2/5 flex flex-col gap-4 border-2 py-4 px-20 overflow-y-auto">
+        <div className="mt-4 grow flex flex-col gap-4 border-2 py-4 px-20 overflow-y-auto">
           <h1 className="self-center bold text-lg text-center">
             Incoming Friend Requests
           </h1>
