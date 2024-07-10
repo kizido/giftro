@@ -16,6 +16,7 @@ export default function Friends() {
   >([]);
 
   const [friends, setFriends] = useState<string[]>([]);
+  const [friendsLoaded, setFriendsLoaded] = useState(false);
 
   useEffect(() => {
     loadFriends();
@@ -44,6 +45,11 @@ export default function Friends() {
         (friend: { friend_name: string }) => friend.friend_name
       );
       setFriends(friendNames);
+      if (friendNames.length > 0) {
+        setFriendsLoaded(true);
+      } else {
+        setFriendsLoaded(false);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -159,20 +165,23 @@ export default function Friends() {
           <h1 className="self-center bold text-base lg:text-lg text-center text-primary">
             My Friends
           </h1>
-          {friends.map((friend) => (
-            <div className="flex justify-between items-center" key={friend}>
-              <p className="text-sm lg:text-base">{friend}</p>
-              <p
-                className="text-sm lg:text-base text-red-500 cursor-pointer"
-                onClick={() => removeFriend(friend)}
-              >
-                X
-              </p>
-            </div>
-          ))}
-          {friends.length < 1 && (
-              <span className="text-sm text-center text-gray-400">You have no friends added.</span>
-            )}
+          {friends.length > 0 || !friendsLoaded ? (
+            friends.map((friend) => (
+              <div className="flex justify-between items-center" key={friend}>
+                <p className="text-sm lg:text-base">{friend}</p>
+                <p
+                  className="text-sm lg:text-base text-red-500 cursor-pointer"
+                  onClick={() => removeFriend(friend)}
+                >
+                  X
+                </p>
+              </div>
+            ))
+          ) : (
+            <span className="text-sm text-center text-gray-400">
+              You have no friends added.
+            </span>
+          )}
         </div>
       </section>
 
@@ -201,7 +210,9 @@ export default function Friends() {
               </div>
             ))}
             {loadedUsers.length < 1 && (
-              <span className="text-sm text-center text-gray-400">Search for friends!</span>
+              <span className="text-sm text-center text-gray-400">
+                Search for friends!
+              </span>
             )}
           </div>
         </div>
@@ -230,8 +241,10 @@ export default function Friends() {
             </div>
           ))}
           {loadedFriendRequests.length < 1 && (
-                  <span className="text-sm text-center text-gray-400">You have no friend requests.</span>
-                )}
+            <span className="text-sm text-center text-gray-400">
+              You have no friend requests.
+            </span>
+          )}
         </div>
       </section>
     </div>
