@@ -152,46 +152,62 @@ export default function Friends() {
   };
 
   return (
-    <div className="w-full h-full flex justify-center gap-4">
+    <div className="w-full h-full flex justify-center px-2 gap-1 sm:gap-4 min-w-[360px]">
       {/* My Friends Section */}
-      <section className="py-8 w-1/4 h-full">
-        <div className="h-full flex flex-col gap-4 border-2 py-4 px-20 overflow-y-auto">
-          <h1 className="self-center bold text-lg text-center">My Friends</h1>
+      <section className="py-8 w-1/4 h-full min-w-44">
+        <div className="h-full flex flex-col gap-4 border-2 py-4 px-4 lg:px-12 overflow-y-auto">
+          <h1 className="self-center bold text-base lg:text-lg text-center text-primary">
+            My Friends
+          </h1>
           {friends.map((friend) => (
             <div className="flex justify-between items-center" key={friend}>
-              <p>{friend}</p>
+              <p className="text-sm lg:text-base">{friend}</p>
               <p
-                className="text-red-500 cursor-pointer"
+                className="text-sm lg:text-base text-red-500 cursor-pointer"
                 onClick={() => removeFriend(friend)}
               >
                 X
               </p>
             </div>
           ))}
+          {friends.length < 1 && (
+              <span className="text-sm text-center text-gray-400">You have no friends added.</span>
+            )}
         </div>
       </section>
 
       {/* Friend Request Section */}
-      <section className="py-8 w-1/4 h-full flex flex-col">
-        <Input
-          type="search"
-          className="bg-input border-2 border-border outline-black"
-          placeholder="Add a Friend..."
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
-        {/* Add Friend */}
-        <div className="mt-4 grow flex flex-col gap-4 border-2 py-4 px-20 overflow-y-auto">
-          {loadedUsers.map((user: QueryResultRow) => (
-            <div key={user.id} className="flex justify-between">
-              <span>{user.username}</span>
-              <button onClick={() => addFriend(user.id)}>Add</button>
-            </div>
-          ))}
+      <section className="py-8 w-1/4 h-full min-w-44 flex flex-col">
+        <div className="flex-1 flex flex-col overflow-y-auto">
+          <Input
+            type="search"
+            className="bg-input border-2 border-border outline-black place"
+            placeholder="Add a Friend..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            ringOff
+          />
+          {/* Add Friend */}
+          <div className="mt-4 flex flex-col gap-4 border-2 py-4 px-4 lg:px-12 overflow-y-scroll flex-1">
+            {loadedUsers.map((user: QueryResultRow) => (
+              <div key={user.id} className="flex items-center justify-between">
+                <span className="text-sm lg:text-base">{user.username}</span>
+                <button
+                  className="border border-black px-1 md:px-2 py-1 text-xs lg:text-sm bg-gray-200 hover:bg-gray-300"
+                  onClick={() => addFriend(user.id)}
+                >
+                  Add
+                </button>
+              </div>
+            ))}
+            {loadedUsers.length < 1 && (
+              <span className="text-sm text-center text-gray-400">Search for friends!</span>
+            )}
+          </div>
         </div>
         {/* Incoming Friend Requests */}
-        <div className="mt-4 grow flex flex-col gap-4 border-2 py-4 px-20 overflow-y-auto">
-          <h1 className="self-center bold text-lg text-center">
+        <div className="mt-4 flex flex-col gap-4 border-2 py-4 px-4 lg:px-12 overflow-y-auto flex-1">
+          <h1 className="self-center bold text-md lg:text-lg text-center text-primary">
             Incoming Friend Requests
           </h1>
           {loadedFriendRequests.map((requester: QueryResultRow) => (
@@ -213,6 +229,9 @@ export default function Friends() {
               </div>
             </div>
           ))}
+          {loadedFriendRequests.length < 1 && (
+                  <span className="text-sm text-center text-gray-400">You have no friend requests.</span>
+                )}
         </div>
       </section>
     </div>
