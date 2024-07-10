@@ -33,22 +33,34 @@ export default async function Navbar() {
         {!!session && (
           <>
             <div className="hidden lg:flex gap-8 xl:gap-12 items-center">
-              <Link href={"/dashboard"} className="text-semibold text-md">
+              <Link
+                href={"/dashboard"}
+                className="text-semibold text-md hover:scale-105"
+              >
                 Home
               </Link>
-              <Link href={"/friends"} className="text-semibold text-md">
+              <Link
+                href={"/friends"}
+                className="text-semibold text-md hover:scale-105"
+              >
                 Friends
               </Link>
-              <Link href={"/my-list"} className="text-semibold text-md">
+              <Link
+                href={"/my-list"}
+                className="text-semibold text-md hover:scale-105"
+              >
                 My List
               </Link>
               <Link
                 href={"/upcoming-birthdays"}
-                className="text-semibold text-md"
+                className="text-semibold text-md hover:scale-105"
               >
                 Upcoming Birthdays
               </Link>
-              <Link href={"/profile"} className="text-semibold text-md">
+              <Link
+                href={"/profile"}
+                className="text-semibold text-md hover:scale-105"
+              >
                 Profile
               </Link>
               <CreateEventButton />
@@ -60,13 +72,37 @@ export default async function Navbar() {
 
             <div className="lg:hidden flex items-center gap-4 sm:gap-8">
               {/* IconHome, IconFriends, IconList, IconCalendar, IconPictureInPictureTopFilled */}
-              <IconHome />
-              <IconFriends />
-              <IconList />
-              <IconCalendar />
-              <IconUserCircle />
-              <IconClipboardPlus />
-              {/* <HamburgerMenu /> */}
+              <Link
+                href={"/dashboard"}
+                className="text-semibold text-md hover:scale-105"
+              >
+                <IconHome className="hover:scale-105 cursor-pointer" />
+              </Link>
+              <Link
+                href={"/friends"}
+                className="text-semibold text-md hover:scale-105"
+              >
+                <IconFriends className="hover:scale-105 cursor-pointer" />
+              </Link>
+              <Link
+                href={"/my-list"}
+                className="text-semibold text-md hover:scale-105"
+              >
+                <IconList className="hover:scale-105 cursor-pointer" />
+              </Link>
+              <Link
+                href={"/upcoming-birthdays"}
+                className="text-semibold text-md hover:scale-105"
+              >
+                <IconCalendar className="hover:scale-105 cursor-pointer" />
+              </Link>
+              <Link
+                href={"/profile"}
+                className="text-semibold text-md hover:scale-105"
+              >
+                <IconUserCircle className="hover:scale-105 cursor-pointer" />
+              </Link>
+              {/* <CreateEventButton /> */}
             </div>
 
             <div className="flex lg:hidden">
