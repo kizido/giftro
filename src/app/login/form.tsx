@@ -4,10 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function Form() {
   const router = useRouter();
+  const [generalError, setGeneralError] = useState<string>("");
 
   const {
     register,
@@ -54,6 +56,10 @@ export default function Form() {
       if (!authResponse?.error) {
         router.push("/dashboard");
         router.refresh();
+      } else {
+        setGeneralError(
+          "Sorry, your password was incorrect. Please try again."
+        );
       }
     }
   };
@@ -101,8 +107,13 @@ export default function Form() {
           <h4 className="inline">Remember my login</h4>
         </div>
 
+        <p className="text-red-600">{generalError}</p>
+
         <div className="flex justify-end">
-          <button type="submit" className="w-28 h-12 bg-primary text-primary-foreground font-bold">
+          <button
+            type="submit"
+            className="w-28 h-12 bg-primary text-primary-foreground font-bold"
+          >
             Log In
           </button>
         </div>

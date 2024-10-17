@@ -120,7 +120,7 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
                 <FormItem>
                   <FormLabel>Event Name</FormLabel>
                   <FormControl>
-                    <Input className="h-8 w-96" {...field} />
+                    <Input className="h-8 w-96" autoFocus {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -274,7 +274,7 @@ const CreateEventModal = ({ onClose }: CreateEventModalProps) => {
             </FormMessage>
             <button
               type="submit"
-              className="p-2 text-secondary-foreground bg-secondary text-2xl self-end"
+              className="p-2 text-secondary-foreground bg-secondary text-2xl self-end rounded-xl outline outline-1"
             >
               Create Event
             </button>

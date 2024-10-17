@@ -77,7 +77,7 @@ export default function Form() {
         <input
           {...register("email")}
           type="text"
-          className="h-10 p-4 rounded"
+          className="p-4 h-10 rounded bg-input border"
         />
         {errors.email && (
           <p className="text-red-600">{`${errors.email.message}`}</p>
@@ -87,7 +87,7 @@ export default function Form() {
         <input
           {...register("username")}
           type="text"
-          className="h-10 p-4 rounded"
+          className="p-4 h-10 rounded bg-input border"
         />
         {errors.username && (
           <p className="text-red-600">{`${errors.username.message}`}</p>
@@ -102,14 +102,14 @@ export default function Form() {
         <input
           {...register("password")}
           type="password"
-          className="p-4 h-10 rounded"
+          className="p-4 h-10 rounded bg-input border"
         />
         {errors.password && (
           <p className="text-red-600">{`${errors.password.message}`}</p>
         )}
 
         <div className="flex justify-end">
-          <button type="submit" className="w-28 h-12 bg-blue-400 font-bold">
+          <button type="submit" className="w-28 h-12 bg-blue-400 font-bold mt-4">
             Join Now
           </button>
         </div>
