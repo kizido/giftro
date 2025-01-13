@@ -254,9 +254,9 @@ export default function Page() {
         {/* Gift Searching Area */}
         <div className="w-full lg:w-[36rem] xl:w-[45rem]">
           {/* Trending/Popular Items */}
-          <div className="pt-16 w-full self-start">
+          <div className="w-full self-start">
             {/* Item Filters */}
-            <div className="w-full flex justify-between content-box">
+            {/* <div className="w-full flex justify-between content-box">
               <div
                 className={`w-20 h-16 md:w-24 md:h-18 lg:w-32 lg:h-24 xl:w-36 xl:h-28 flex justify-center items-center border-2 border-black bg-blue-200 cursor-pointer ${
                   filterState === "POPULAR" ? "border-4 border-yellow-200" : ""
@@ -291,7 +291,7 @@ export default function Page() {
               >
                 <h2 className="text-center py-10 font-semibold">Mothers Day</h2>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Search Bar and Categories */}
@@ -308,7 +308,7 @@ export default function Page() {
                 }
               }}
             />
-            <div className="flex flex-wrap gap-2 justify-start items-center">
+            {/* <div className="flex flex-wrap gap-2 justify-start items-center">
               <Button
                 iconUrl="https://static-cdn.drawnames.com//Content/Assets/chevron-gray.svg"
                 iconRotation={90}
@@ -344,7 +344,7 @@ export default function Page() {
               <h3 className="ml-1 text-md text-semibold text-blue-500 cursor-pointer hover:underline overflow-y-hided">
                 Clear all filters
               </h3>
-            </div>
+            </div> */}
           </div>
           {/* Searched Items */}
           <div className="flex justify-start flex-wrap gap-6">

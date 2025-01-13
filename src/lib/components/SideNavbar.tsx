@@ -8,9 +8,9 @@ export default function SideNavbar() {
       <Link href={"/dashboard"} className="text-semibold text-xl">
         Home
       </Link>
-      <Link href={"/profile"} className="text-semibold text-xl">
+      {/* <Link href={"/profile"} className="text-semibold text-xl">
         Profile
-      </Link>
+      </Link> */}
       <Link href={"/friends"} className="text-semibold text-xl">
         Friends
       </Link>

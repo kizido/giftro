@@ -221,7 +221,7 @@ export default function MyLists() {
                 }
               }}
             />
-            <div className="flex flex-wrap gap-2 justify-start items-center">
+            {/* <div className="flex flex-wrap gap-2 justify-start items-center">
               <Button
                 iconUrl="https://static-cdn.drawnames.com//Content/Assets/chevron-gray.svg"
                 iconRotation={90}
@@ -257,7 +257,7 @@ export default function MyLists() {
               <h3 className="ml-1 text-md text-semibold text-blue-500 cursor-pointer hover:underline overflow-y-hided">
                 Clear all filters
               </h3>
-            </div>
+            </div> */}
           </div>
           {/* Searched Items */}
           <div className="flex justify-start flex-wrap gap-6">

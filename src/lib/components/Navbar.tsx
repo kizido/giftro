@@ -57,12 +57,12 @@ export default async function Navbar() {
               >
                 Upcoming Birthdays
               </Link>
-              <Link
+              {/* <Link
                 href={"/profile"}
                 className="text-semibold text-md hover:scale-105"
               >
                 Profile
-              </Link>
+              </Link> */}
               <CreateEventButton />
             </div>
 
@@ -96,12 +96,12 @@ export default async function Navbar() {
               >
                 <IconCalendar className="hover:scale-105 cursor-pointer" />
               </Link>
-              <Link
+              {/* <Link
                 href={"/profile"}
                 className="text-semibold text-md hover:scale-105"
               >
                 <IconUserCircle className="hover:scale-105 cursor-pointer" />
-              </Link>
+              </Link> */}
               {/* <CreateEventButton /> */}
             </div>
 

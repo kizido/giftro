@@ -32,9 +32,9 @@ export default function HamburgerMenu() {
           <Link href={"/upcoming-birthdays"} className="text-semibold text-md">
             Upcoming Birthdays
           </Link>
-          <Link href={"/profile"} className="text-semibold text-md">
+          {/* <Link href={"/profile"} className="text-semibold text-md">
             Profile
-          </Link>
+          </Link> */}
         </div>
       )}
     </div>

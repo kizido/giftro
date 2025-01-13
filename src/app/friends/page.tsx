@@ -1,5 +1,9 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import CreateEventModal from "@/components/ui/createEventModal";
+import FriendWishListModal from "@/components/ui/friendWishListModal";
 import { Input } from "@/components/ui/input";
+import { ListItem } from "@/components/ui/wishList";
 import { useDebounceValue } from "@/hooks/useDebounceValue";
 import { QueryResultRow } from "@vercel/postgres";
 import React, { useEffect, useState } from "react";
@@ -18,6 +22,10 @@ export default function Friends() {
   const [friends, setFriends] = useState<string[]>([]);
   const [friendsLoaded, setFriendsLoaded] = useState(false);
 
+  const [showFriendWishListModal, setShowFriendWishListModal] = useState(false);
+  const [wishListFriendName, setWishListFriendName] = useState<string>("");
+  const [friendWishList, setFriendWishList] = useState<ListItem[]>([]);
+
   useEffect(() => {
     loadFriends();
     loadFriendRequests();
@@ -31,6 +39,11 @@ export default function Friends() {
       setLoadedUsers([]);
     }
   }, [debouncedSearchQuery]);
+  useEffect(() => {
+    if(friendWishList.length > 0) {
+      setShowFriendWishListModal(true);
+    }
+  }, [friendWishList])
 
   const loadFriends = async () => {
     try {
@@ -157,6 +170,38 @@ export default function Friends() {
     }
   };
 
+  const showFriendWishList = async (username: string) => {
+    // Retrieve friend's wish list items
+    // Open Modal with wish list items
+    try {
+      // Get ID of user with username
+      const idResponse = await fetch("/api/userIdFromName", {
+        method: "POST",
+        body: JSON.stringify(username),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const userId = await idResponse.json();
+
+      const wishListResponse = await fetch(
+        "/api/products/friendLikedProducts",
+        {
+          method: "POST",
+          body: JSON.stringify(userId),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const wishList: ListItem[] = await wishListResponse.json();
+      setFriendWishList(wishList);
+    } catch (error) {
+      console.log(error);
+    }
+    setWishListFriendName(username);
+  };
+
   return (
     <div className="w-full h-full flex justify-center px-2 gap-1 sm:gap-4 min-w-[360px]">
       {/* My Friends Section */}
@@ -169,12 +214,20 @@ export default function Friends() {
             friends.map((friend) => (
               <div className="flex justify-between items-center" key={friend}>
                 <p className="text-sm lg:text-base">{friend}</p>
-                <p
-                  className="text-sm lg:text-base text-red-500 cursor-pointer"
-                  onClick={() => removeFriend(friend)}
-                >
-                  X
-                </p>
+                <div className="flex gap-2 items-center">
+                  <button
+                    className="border-2 rounded px-1 py-0.5 text-sm"
+                    onClick={() => showFriendWishList(friend)}
+                  >
+                    View List
+                  </button>
+                  <p
+                    className="text-sm lg:text-base text-red-500 cursor-pointer"
+                    onClick={() => removeFriend(friend)}
+                  >
+                    X
+                  </p>
+                </div>
               </div>
             ))
           ) : (
@@ -247,6 +300,13 @@ export default function Friends() {
           )}
         </div>
       </section>
+      {showFriendWishListModal && (
+        <FriendWishListModal
+          friendName={wishListFriendName}
+          wishList={friendWishList}
+          onClose={() => setShowFriendWishListModal(false)}
+        />
+      )}
     </div>
   );
 }
