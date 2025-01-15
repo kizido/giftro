@@ -29,7 +29,7 @@ export async function POST(
         Keywords: query,
         Resources: [
           "Images.Primary.Large",
-          "Images.Variant.Large",
+          "Images.Variants.Large",
           "Offers.Listings.Price",
           "ItemInfo.ByLineInfo",
           "ItemInfo.Classifications",
