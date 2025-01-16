@@ -5,6 +5,7 @@
 /*COLOR PALETTE IDEA https://coolors.co/palette/8ecae6-219ebc-023047-ffb703-fb8500 */
 @layer base {
   :root {
+    box-sizing: border-box;
     --background: 0, 0%, 100%; /* white */
     --foreground: 0, 0%, 20%; /* Dark grey for foreground text, ensures readability */
 
@@ -19,7 +20,7 @@
     --primary: 192, 70%, 43%; /* Warm, vibrant blue for primary buttons and links */
     --primary-foreground: 0, 0%, 100%; /* Pure white for text on primary elements, for clarity */
 
-    --secondary: 53, 100%, 51%; /* Cheerful yellow for secondary buttons and accents */
+    --secondary: 215, 82%, 65%; /* Cheerful yellow for secondary buttons and accents */
     --secondary-foreground: 0, 0%, 20%; /* Dark grey for text on secondary elements */
 
     --muted: 210, 25%, 90%; /* Muted blue for less important elements, maintains tranquility */
