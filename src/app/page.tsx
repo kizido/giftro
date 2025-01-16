@@ -30,9 +30,14 @@ export default async function Home() {
               <h2 className="text-base md:text-xl">
                 Easily share your wishes and discover theirs – no more guessing.
               </h2>
-              <button className="font-semibold text-base md:text-lg text-secondary-foregrund self-center border border-secondary-foregrund px-4 py-2 rounded-full bg-secondary">
+              <Link href="/signup" className="self-center">
+                <button className="font-semibold text-base md:text-lg text-secondary-foregrund border border-secondary-foregrund px-4 py-2 rounded-full bg-secondary">
+                  Get me shopping!
+                </button>
+              </Link>
+              {/* <button className="font-semibold text-base md:text-lg text-secondary-foregrund self-center border border-secondary-foregrund px-4 py-2 rounded-full bg-secondary">
                 <Link href="/signup">Get me shopping!</Link>
-              </button>
+              </button> */}
             </div>
           </div>
           <div className="flex flex-1 items-center justify-center">
@@ -48,7 +53,7 @@ export default async function Home() {
         <div className="max-w-6xl flex justify-evenly px-8 md:px-16 gap-4 md:gap-8">
           <div className="flex flex-col gap-2 md:gap-4 flex-1">
             <div className="flex items-center gap-2">
-              <IconListDetails className="hidden md:block"/>
+              <IconListDetails className="hidden md:block" />
               <h3 className="text-base md:text-xl font-semibold">
                 Wish Lists, Reinvented
               </h3>
@@ -71,12 +76,12 @@ export default async function Home() {
             </p>
           </div>
           <div className="flex flex-col gap-2 md:gap-4 flex-1">
-          <div className="flex items-center gap-2">
-          <IconShoppingCart className="hidden md:block" />
-          <h3 className="text-base md:text-xl font-semibold">
-              Shop Together
-            </h3>
-          </div>
+            <div className="flex items-center gap-2">
+              <IconShoppingCart className="hidden md:block" />
+              <h3 className="text-base md:text-xl font-semibold">
+                Shop Together
+              </h3>
+            </div>
             <p className="text-sm md:text-base">
               Discover, share, and shop gifts seamlessly in one connected
               platform.

@@ -57,12 +57,12 @@ export default async function Navbar() {
               >
                 Upcoming Birthdays
               </Link>
-              {/* <Link
+              <Link
                 href={"/profile"}
                 className="text-semibold text-md hover:scale-105"
               >
                 Profile
-              </Link> */}
+              </Link>
               <CreateEventButton />
             </div>
 
@@ -86,7 +86,7 @@ export default async function Navbar() {
               </Link>
               <Link
                 href={"/my-list"}
-                className="text-semibold text-md hover:scale-105"
+                className="text-semibold text-md hover:s  cale-105"
               >
                 <IconList className="hover:scale-105 cursor-pointer" />
               </Link>
@@ -96,12 +96,12 @@ export default async function Navbar() {
               >
                 <IconCalendar className="hover:scale-105 cursor-pointer" />
               </Link>
-              {/* <Link
+              <Link
                 href={"/profile"}
                 className="text-semibold text-md hover:scale-105"
               >
                 <IconUserCircle className="hover:scale-105 cursor-pointer" />
-              </Link> */}
+              </Link>
               {/* <CreateEventButton /> */}
             </div>
 
@@ -112,12 +112,12 @@ export default async function Navbar() {
         )}
         {!session && (
           <div className="flex gap-4 md:gap-8">
-            <Button variant="outline">
-              <Link href="/login">Login</Link>
-            </Button>
-            <Button variant="default">
-              <Link href="/signup">Sign Up</Link>
-            </Button>
+            <Link href="/login">
+              <Button variant="outline">Login</Button>
+            </Link>
+            <Link href="/signup">
+              <Button variant="default">Sign Up</Button>
+            </Link>
           </div>
         )}
       </div>
