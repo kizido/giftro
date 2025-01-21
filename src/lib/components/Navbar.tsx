@@ -17,6 +17,7 @@ import {
 import HamburgerMenu from "./HamburgerMenu";
 import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
+import LogoutIcon from "@/app/logoutIcon";
 
 export default async function Navbar() {
   const session = await getServerSession(authOptions);
@@ -51,18 +52,18 @@ export default async function Navbar() {
               >
                 My List
               </Link>
-              <Link
+              {/* <Link
                 href={"/upcoming-birthdays"}
                 className="text-semibold text-md hover:scale-105"
               >
                 Upcoming Birthdays
-              </Link>
-              <Link
+              </Link> */}
+              {/* <Link
                 href={"/profile"}
                 className="text-semibold text-md hover:scale-105"
               >
                 Profile
-              </Link>
+              </Link> */}
               <CreateEventButton />
             </div>
 
@@ -86,11 +87,11 @@ export default async function Navbar() {
               </Link>
               <Link
                 href={"/my-list"}
-                className="text-semibold text-md hover:s  cale-105"
+                className="text-semibold text-md hover:scale-105"
               >
                 <IconList className="hover:scale-105 cursor-pointer" />
               </Link>
-              <Link
+              {/* <Link
                 href={"/upcoming-birthdays"}
                 className="text-semibold text-md hover:scale-105"
               >
@@ -101,12 +102,12 @@ export default async function Navbar() {
                 className="text-semibold text-md hover:scale-105"
               >
                 <IconUserCircle className="hover:scale-105 cursor-pointer" />
-              </Link>
+              </Link> */}
               {/* <CreateEventButton /> */}
             </div>
 
             <div className="flex lg:hidden">
-              <IconLogout />
+              <LogoutIcon />
             </div>
           </>
         )}

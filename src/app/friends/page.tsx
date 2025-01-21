@@ -213,10 +213,10 @@ export default function Friends() {
           {friends.length > 0 || !friendsLoaded ? (
             friends.map((friend) => (
               <div className="flex justify-between items-center" key={friend}>
-                <p className="text-sm lg:text-base">{friend}</p>
+                <p className="text-xs md:text-sm lg:text-base">{friend}</p>
                 <div className="flex gap-2 items-center">
                   <button
-                    className="border-2 rounded px-1 py-0.5 text-sm"
+                    className="border-2 rounded px-1 py-0.5 text-xs md:text-sm"
                     onClick={() => showFriendWishList(friend)}
                   >
                     View List

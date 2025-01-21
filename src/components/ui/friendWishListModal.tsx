@@ -12,7 +12,7 @@ const FriendWishListModal = ({
   wishList
 }: FriendWishListModalProps) => {
   return (
-    <div className="fixed inset-0 bg-gray-400 bg-opacity-40 z-40 flex justify-center items-center">
+    <div className="fixed inset-0 bg-gray-400 bg-opacity-40 z-40 flex justify-center items-center py-4">
       <div
         className="relative px-8 py-4 flex flex-col justify-start items-start lg:w-[36rem] lg:h-[48rem] w-[24rem] h-full bg-white shadow-[0_0_8px_0px_rgba(0,0,0,0.2)] rounded-3xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}

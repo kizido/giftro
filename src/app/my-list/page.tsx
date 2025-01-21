@@ -198,7 +198,7 @@ export default function MyLists() {
   };
 
   return (
-    <div className="container max-w-[20rem] sm:max-w-[30rem] md:max-w-[45rem] lg:max-w-[62rem] xl:max-w-[72rem] gap-4 mt-8">
+    <div className="container max-w-[22rem] sm:max-w-[30rem] md:max-w-[45rem] lg:max-w-[62rem] xl:max-w-[72rem] gap-4 mt-8">
       <div className="h-full flex justify-center lg:justify-between">
         {/* Gift Searching Area */}
         <div className="w-full lg:w-[36rem] xl:w-[45rem]">

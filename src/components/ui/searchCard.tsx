@@ -75,7 +75,7 @@ const SearchCard = ({
   return (
     <div>
       <div
-        className="relative w-[162px] h-[222px] my-2 rounded-lg overflow-hidden shadow-[0_0_8px_0px_rgba(0,0,0,0.2)] cursor-pointer"
+        className="relative w-[162px] h-[222px] my-2 rounded-lg shadow-[0_0_8px_0px_rgba(0,0,0,0.2)] cursor-pointer"
         onClick={() => setProductModalOpen(true)}
       >
         <div className="w-full h-[166px]">

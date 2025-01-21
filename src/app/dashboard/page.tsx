@@ -214,11 +214,10 @@ export default function Page() {
   };
 
   return (
-    <div className="h-full container max-w-[20rem] sm:max-w-[30rem] md:max-w-[45rem] lg:max-w-[80rem] xl:max-w-[90rem] gap-4 mt-8">
-      <div className="h-full flex justify-center lg:justify-between">
+    <div className="h-full container max-w-[22rem] sm:max-w-[30rem] md:max-w-[45rem] lg:max-w-[80rem] xl:max-w-[90rem] gap-4 mt-8">
+      <div className="h-full flex justify-center">
         {/* Upcoming Events */}
-        <div className="pt-4 px-4 w-64 h-5/6 shadow-[0_0_8px_0px_rgba(0,0,0,0.5)] rounded-lg flex flex-col gap-4 bg-gray-50">
-          {/* Event Display Modal */}
+        {/* <div className="pt-4 px-4 w-64 h-5/6 shadow-[0_0_8px_0px_rgba(0,0,0,0.5)] rounded-lg flex flex-col gap-4 bg-gray-50">
           {eventDisplayModal && (
             <EventDisplayModal
               onClose={() => {
@@ -249,7 +248,7 @@ export default function Page() {
                 {new Date(event.event_date).getDate()} - {event.event_name}
               </p>
             ))}
-        </div>
+        </div> */}
 
         {/* Gift Searching Area */}
         <div className="w-full lg:w-[36rem] xl:w-[45rem]">
@@ -352,14 +351,14 @@ export default function Page() {
           </div>
         </div>
         {/* Recent Friend Activity */}
-        <div className="pt-4 px-4 w-64 h-5/6 shadow-[0_0_8px_0px_rgba(0,0,0,0.5)] rounded-lg flex flex-col gap-4 bg-gray-50">
+        {/* <div className="pt-4 px-4 w-64 h-5/6 shadow-[0_0_8px_0px_rgba(0,0,0,0.5)] rounded-lg flex flex-col gap-4 bg-gray-50">
           <h2 className="text-center font-semibold">Recent Activity</h2>
           <p>Kieran liked Logitech Headset</p>
           <p>Junnelle liked PopMart Figure</p>
         </div>
         {isFirstTimeUser && modalOpen && (
           <OnboardingModal onClose={() => setModalOpen(false)} />
-        )}
+        )} */}
       </div>
     </div>
   );
