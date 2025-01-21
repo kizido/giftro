@@ -84,13 +84,13 @@ export default function Form() {
 
         <div className="flex justify-between">
           <h3 className="text-base">Password</h3>
-          <Link
+          {/* <Link
             href="/forgotpassword"
             className="text-sm text-accent underline"
             tabIndex={-1}
           >
             Forgot password?
-          </Link>
+          </Link> */}
         </div>
         <input
           {...register("password")}
@@ -102,10 +102,10 @@ export default function Form() {
           <p className="text-red-600">{`${errors.password.message}`}</p>
         )}
 
-        <div className="flex items-center">
+        {/* <div className="flex items-center">
           <input type="checkbox" className="mr-2 h-6 w-6 rounded-lg" />
           <h4 className="inline">Remember my login</h4>
-        </div>
+        </div> */}
 
         <p className="text-red-600">{generalError}</p>
 

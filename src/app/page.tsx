@@ -31,7 +31,7 @@ export default async function Home() {
                 Easily share your wishes and discover theirs – no more guessing.
               </h2>
               <Link href="/signup" className="self-center">
-                <button className="font-semibold text-base md:text-lg text-secondary-foregrund border border-secondary-foregrund px-4 py-2 rounded-full bg-secondary">
+                <button className="font-semibold text-base md:text-lg text-secondary-foregrund border border-secondary-foregrund px-6 py-3 rounded-full bg-secondary">
                   Get me shopping!
                 </button>
               </Link>

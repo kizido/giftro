@@ -1,8 +1,9 @@
 "use client";
-import { TSignUpSchema, loginSchema, signUpSchema } from "@/lib/types";
+import { TSignUpSchema, signUpSchema } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function Form() {
@@ -53,6 +54,8 @@ export default function Form() {
     }
   };
 
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -95,13 +98,16 @@ export default function Form() {
 
         <div className="flex justify-between items-center">
           <h3 className="text-lg">Password</h3>
-          <h4 className="cursor-pointer hover:underline text-sm text-teal-500">
+          <h4
+            onClick={() => setPasswordVisible((state) => (state = !state))}
+            className="cursor-pointer hover:underline text-sm text-teal-500 select-none"
+          >
             Show password
           </h4>
         </div>
         <input
           {...register("password")}
-          type="password"
+          type={passwordVisible ? "text" : "password"}
           className="p-4 h-10 rounded bg-input border"
         />
         {errors.password && (
@@ -109,7 +115,10 @@ export default function Form() {
         )}
 
         <div className="flex justify-end">
-          <button type="submit" className="w-28 h-12 bg-blue-400 font-bold mt-4">
+          <button
+            type="submit"
+            className="w-28 h-12 bg-blue-400 font-bold mt-4"
+          >
             Join Now
           </button>
         </div>
