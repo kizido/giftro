@@ -18,7 +18,7 @@ const FriendWishListModal = ({
         onClick={(e) => e.stopPropagation()}
       >
         <header className="mb-8">
-          <h1 className="font-semibold text-3xl">{friendName}'s Wish List</h1>
+          <h1 className="font-semibold text-3xl">{friendName}&apos;s Wish List</h1>
           <img
             src="https://static-cdn.drawnames.com/Content/Assets/icon-close.svg"
             width={40}
