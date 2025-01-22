@@ -56,8 +56,8 @@ export async function POST(
         },
         "shufflebirdco-20",
         PartnerType.ASSOCIATES,
-        "AKIAJUDJSHRMOK7KVLEQ",
-        "4SjclgzbbUc1IUHljQiK2scP7E8+87OkKA5zkTbk",
+        process.env.PAAPI_ACCESSKEY!,
+        process.env.PAAPI_SECRETKEY!,
         Host.UNITED_STATES,
         Region.UNITED_STATES
       );
