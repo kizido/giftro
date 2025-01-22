@@ -7,7 +7,7 @@ import {
   Host,
   PartnerType,
   Region,
-} from "paapi5-typescript-sdk";
+} from "@/lib/paapi5-typescript-sdk";
 import { ItemWithLikeInfo } from "@/app/my-list/page";
 
 export async function POST(

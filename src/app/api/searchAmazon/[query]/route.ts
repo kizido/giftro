@@ -6,7 +6,7 @@ import {
   PartnerType,
   Host,
   Region,
-} from "paapi5-typescript-sdk";
+} from "@/lib/paapi5-typescript-sdk";
 import { authOptions } from "../../auth/[...nextauth]/options";
 import { ItemWithLikeInfo } from "@/app/my-list/page";
 
