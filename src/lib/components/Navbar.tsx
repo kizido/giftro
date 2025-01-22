@@ -29,7 +29,7 @@ export default async function Navbar() {
           href={!!session ? "/dashboard" : "/"}
           className="text-foreground text-xl w-22"
         >
-          Gift App
+          Giftro
         </Link>
         {!!session && (
           <>

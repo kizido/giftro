@@ -11,7 +11,7 @@ const montserrat = Montserrat({ subsets: ["latin"] });
 const poppins = Poppins({ subsets: ["latin"], weight: "500" });
 
 export const metadata: Metadata = {
-  title: "Gift App",
+  title: "Giftro",
   description: "The future of gift-giving",
 };
 
