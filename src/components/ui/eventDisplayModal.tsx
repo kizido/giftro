@@ -1,5 +1,5 @@
 import { TEventDisplay } from "@/app/dashboard/page";
-import { months } from "@/app/dashboard/page";
+import { months } from "@/lib/constants";
 
 type EventDisplayModalProps = {
   onClose: () => void;
